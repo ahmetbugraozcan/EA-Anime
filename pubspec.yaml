@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 1.0.0+1
+version: 1.0.0+3
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
@@ -12,16 +12,26 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Network
+  # Network & Database
   http: ^0.13.5
+  firebase_database: ^9.1.4
+  firebase_storage: ^10.3.8
+  firebase_core: ^1.22.0
+  connectivity_plus: ^2.3.7
 
   # State Management
   bloc: ^8.1.0
   flutter_bloc: ^8.1.1
+  equatable: ^2.0.5
 
   # Theme & Decoration
   google_fonts: ^3.0.1
   cupertino_icons: ^1.0.2
+  lottie: ^1.4.3
+  flutter_vector_icons: ^1.0.0
+  # ios android configurasyonları var
+  image_downloader: ^0.31.0
+  async_wallpaper: ^2.0.0
 
   # Cache
   shared_preferences: ^2.0.15
@@ -30,13 +40,12 @@ dependencies:
 
   # Size
   device_preview: ^1.1.0
-  flutter_vector_icons: ^1.0.0
   another_flushbar: ^1.12.29
-  connectivity_plus: ^2.3.7
-  lottie: ^1.4.3
-  equatable: ^2.0.5
+
   google_mobile_ads: ^2.0.1
   change_app_package_name: ^1.1.0
+
+  collection: ^1.16.0
 
 dev_dependencies:
   flutter_test:

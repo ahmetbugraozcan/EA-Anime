@@ -33,7 +33,7 @@ class GuessingModel {
     if (json['hintImages'] != null) {
       hintImages = <HintImages>[];
       json['hintImages'].forEach((v) {
-        hintImages!.add(new HintImages.fromJson(v));
+        hintImages!.add(new HintImages.fromJson(Map<String, dynamic>.from(v)));
       });
     }
     mainImage = json['mainImage'];

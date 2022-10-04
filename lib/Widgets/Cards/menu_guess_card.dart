@@ -13,12 +13,13 @@ class MenuGuessCard extends StatelessWidget {
   String subtitle;
   ImageEnums? background;
   VoidCallback? onPressed;
-
+  BoxFit fit;
   MenuGuessCard(
       {super.key,
       required this.title,
       required this.subtitle,
       this.onPressed,
+      this.fit = BoxFit.cover,
       this.background});
 
   @override
@@ -31,7 +32,7 @@ class MenuGuessCard extends StatelessWidget {
         padding: EdgeInsets.all(24),
         margin: EdgeInsets.all(12),
         decoration: Utils.instance
-            .backgroundDecoration(background ?? ImageEnums.background)
+            .backgroundDecoration(background ?? ImageEnums.background, fit: fit)
             .copyWith(
           boxShadow: [
             BoxShadow(),

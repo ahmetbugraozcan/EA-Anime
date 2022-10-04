@@ -20,7 +20,7 @@ class SplashView extends StatelessWidget {
         listener: (context, state) {
           if (state.isLoading) {
           } else {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => MenuView(),

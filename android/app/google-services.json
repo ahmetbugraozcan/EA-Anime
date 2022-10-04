@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "437654232542",
+    "project_id": "herseyanime-bf7ec",
+    "storage_bucket": "herseyanime-bf7ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437654232542:android:09a650e71e2169c77ad14f",
+        "android_client_info": {
+          "package_name": "com.bakapps.herseyanime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437654232542-sluenk8df1d23o25okoipuaorvapd1o4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYoGVEjbWZYwGF9vbOQVe8nH1AYFzDWWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437654232542-sluenk8df1d23o25okoipuaorvapd1o4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

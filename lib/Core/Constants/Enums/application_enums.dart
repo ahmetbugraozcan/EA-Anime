@@ -19,8 +19,10 @@ enum PreferencesKeys {
   KEY_COUNT,
   DIAMOND_COUNT,
   GOLD_COUNT,
+  USER_GUESSING_LEVEL,
   LANGUAGE,
-  THEME
+  THEME,
+  DOWNLOAD_COUNT,
 }
 
 enum LottieEnums { angrySasuke }

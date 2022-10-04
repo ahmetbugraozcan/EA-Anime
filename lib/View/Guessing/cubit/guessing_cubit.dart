@@ -2,35 +2,35 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/services.dart';
-import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Models/guess_card_model.dart';
+import 'package:flutterglobal/Models/guessing_data_model.dart';
 import 'package:flutterglobal/Models/guessing_model.dart';
+import 'package:flutterglobal/Service/firebase_realtime_db_service.dart';
 
 part 'guessing_state.dart';
 
 class GuessingCubit extends Cubit<GuessingState> {
+  FirebaseRealtimeDBService _firebaseRealtimeDBService =
+      FirebaseRealtimeDBService.instance;
   GuessingCubit() : super(GuessingState()) {
     getQuestionsFromJson();
   }
 
   Future<void> getQuestionsFromJson() async {
     _switchLoading();
-    String dataString =
-        await rootBundle.loadString(AppConstants.instance.DATA_ASSET_PATH);
-    Map<String, dynamic> jsonData = json.decode(dataString);
-    if (jsonData["data"] is List) {
-      List<GuessingModel> questions = [];
-      jsonData["data"].forEach((value) {
-        questions.add(GuessingModel.fromJson(value));
-      });
+    _firebaseRealtimeDBService.getDatas();
 
+    List<GuessingModel> questions = [];
+    GuessingDataModel? model = await _firebaseRealtimeDBService.getDatas();
+    if (model != null) {
+      questions = model.guessingModels!;
       List<GuessCardModel?> list = List.filled(
           questions[state.questionIndex].guessingWord?.length ?? 0, null);
 
       emit(state.copyWith(guessingModels: questions, userGuessedWords: list));
     }
+
     _getShuffeledList();
     _switchLoading();
   }

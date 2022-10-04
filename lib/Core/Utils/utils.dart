@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Constants/app_constants.dart';
+import 'package:flutterglobal/Service/wallpaper_manager_service.dart';
 
 class Utils {
   // make lazy singleton class
@@ -60,5 +61,18 @@ class Utils {
 
     print(a);
     return list;
+  }
+
+  String getWallpaperTypeString(WallpaperType wallpaperType) {
+    switch (wallpaperType) {
+      case WallpaperType.BOTH_SCREENS:
+        return "Her ikisi";
+      case WallpaperType.HOME_SCREEN:
+        return "Ana Ekran";
+      case WallpaperType.LOCK_SCREEN:
+        return "Kilit Ekranı";
+      default:
+        return "Photo";
+    }
   }
 }

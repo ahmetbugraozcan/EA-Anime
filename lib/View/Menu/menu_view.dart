@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
+import 'package:flutterglobal/Provider/testgame/cubit/test_game_selection_cubit.dart';
 import 'package:flutterglobal/View/Guessing/guessing_view.dart';
+import 'package:flutterglobal/View/TestGame/test_game_view.dart';
+import 'package:flutterglobal/View/TestGameSelection/test_game_selection_view.dart';
+import 'package:flutterglobal/View/TestType/test_type_view.dart';
+import 'package:flutterglobal/View/WallpaperPage/wallpaper_view.dart';
+import 'package:flutterglobal/View/WallpaperRootPage/wallpaper_root_view.dart';
 import 'package:flutterglobal/Widgets/Bounce/bounce_without_hover.dart';
 import 'package:flutterglobal/Widgets/Cards/menu_guess_card.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -81,6 +88,20 @@ class _MenuViewState extends State<MenuView>
                       );
                     },
                   ),
+                  MenuGuessCard(
+                    title: "Testler",
+                    subtitle:
+                        "Çeşitli testlerle anime karakterlerini tanıyıp tanımadığını öğren. Süre sınırı yok.",
+                    background: ImageEnums.drstone,
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TestTypeView(),
+                        ),
+                      );
+                    },
+                  ),
                   // MenuGuessCard(
                   //   title: "Haberler",
                   //   subtitle:
@@ -99,12 +120,20 @@ class _MenuViewState extends State<MenuView>
                   //       "Birbirinden güzel anime duvar kağıtlarını indir ve telefonunu süsle.",
                   //   background: ImageEnums.sao,
                   // ),
-                  // MenuGuessCard(
-                  //   title: "Duvar kağıtları",
-                  //   subtitle:
-                  //       "Birbirinden güzel anime duvar kağıtlarını indir ve telefonunu süsle.",
-                  //   background: ImageEnums.sao,
-                  // )
+                  MenuGuessCard(
+                    title: "Duvar kağıtları",
+                    subtitle:
+                        "Birbirinden güzel anime duvar kağıtlarını indir ve telefonunu süsle.",
+                    background: ImageEnums.sao,
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WallpaperRootView(),
+                        ),
+                      );
+                    },
+                  )
                 ],
               ),
             ),
