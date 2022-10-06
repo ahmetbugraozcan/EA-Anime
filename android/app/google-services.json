@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "437654232542",
+    "firebase_url": "https://herseyanime-bf7ec-default-rtdb.firebaseio.com",
     "project_id": "herseyanime-bf7ec",
     "storage_bucket": "herseyanime-bf7ec.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "437654232542-sluenk8df1d23o25okoipuaorvapd1o4.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "437654232542-e0hpft5n5odvupnf2203rl5urt0qnr0a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bakapps.herseyanime"
+              }
             }
           ]
         }

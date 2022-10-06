@@ -118,6 +118,8 @@ class _WallpaperViewState extends State<WallpaperView> {
                 ),
               ),
               Builder(builder: (context) {
+                print(
+                    "ADSPROVIDER BUILDER :${context.watch<AdsProviderCubit>().state.bannerAd}");
                 if (context.watch<AdsProviderCubit>().state.bannerAd != null) {
                   return SizedBox(
                     height: context
@@ -156,6 +158,7 @@ class _WallpaperViewState extends State<WallpaperView> {
     return Stack(
       children: [
         GridView.builder(
+          cacheExtent: 1000,
           controller: controller,
           physics: BouncingScrollPhysics(),
           itemCount: state.paginationCount > wallpapers.length
