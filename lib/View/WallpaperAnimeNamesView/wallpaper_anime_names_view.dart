@@ -19,8 +19,6 @@ class WallpaperAnimeNamesView extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: BlocBuilder<WallpaperCubit, WallpaperState>(
-          buildWhen: (previous, current) =>
-              previous.isLoading != current.isLoading,
           bloc: context.read<WallpaperCubit>(),
           builder: (context, state) {
             if (state.isLoading)

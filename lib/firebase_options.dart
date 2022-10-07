@@ -54,16 +54,18 @@ class DefaultFirebaseOptions {
     appId: '1:437654232542:android:09a650e71e2169c77ad14f',
     messagingSenderId: '437654232542',
     projectId: 'herseyanime-bf7ec',
+    databaseURL: 'https://herseyanime-bf7ec-default-rtdb.firebaseio.com',
     storageBucket: 'herseyanime-bf7ec.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBvaf1hxPZJBS_SG64_ap8FVHD38ejNqdw',
-    appId: '1:437654232542:ios:13b33b77c1633ff07ad14f',
+    appId: '1:437654232542:ios:21acd42dd9253d6d7ad14f',
     messagingSenderId: '437654232542',
     projectId: 'herseyanime-bf7ec',
+    databaseURL: 'https://herseyanime-bf7ec-default-rtdb.firebaseio.com',
     storageBucket: 'herseyanime-bf7ec.appspot.com',
-    iosClientId: '437654232542-kmrph09tog8ho0tnqr8q3pat6ts7fudg.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flutterglobal',
+    iosClientId: '437654232542-e0hpft5n5odvupnf2203rl5urt0qnr0a.apps.googleusercontent.com',
+    iosBundleId: 'com.bakapps.herseyanime',
   );
 }
