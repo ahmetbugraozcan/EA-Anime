@@ -7,6 +7,7 @@ import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Provider/testgame/cubit/test_game_selection_cubit.dart';
+import 'package:flutterglobal/View/Blogs/blogs_view.dart';
 import 'package:flutterglobal/View/Guessing/guessing_view.dart';
 import 'package:flutterglobal/View/TestGame/test_game_view.dart';
 import 'package:flutterglobal/View/TestGameSelection/test_game_selection_view.dart';
@@ -130,6 +131,20 @@ class _MenuViewState extends State<MenuView>
                         context,
                         MaterialPageRoute(
                           builder: (context) => WallpaperRootView(),
+                        ),
+                      );
+                    },
+                  ),
+                  MenuGuessCard(
+                    title: "Anime Önerileri ve Listeler",
+                    subtitle:
+                        "Anime önerileri ve listelerine göz atmak için tıkla.",
+                    background: ImageEnums.sao,
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BlogsView(),
                         ),
                       );
                     },

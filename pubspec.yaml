@@ -17,6 +17,7 @@ dependencies:
   firebase_database: ^9.1.4
   firebase_storage: ^10.3.8
   firebase_core: ^1.22.0
+  cloud_firestore: ^3.5.1
   connectivity_plus: ^2.3.7
 
   # State Management
@@ -46,6 +47,7 @@ dependencies:
   change_app_package_name: ^1.1.0
 
   collection: ^1.16.0
+  flutter_html: ^2.2.1
 
 dev_dependencies:
   flutter_test:
