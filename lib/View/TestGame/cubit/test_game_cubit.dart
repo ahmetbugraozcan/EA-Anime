@@ -54,7 +54,8 @@ class TestGameCubit extends Cubit<TestGameState> {
     for (int i = 0; i < data!.length; i++) {
       data[i]
           .answers
-          ?.firstWhere((answer) => answer.value == state.answers[i])
+          ?.firstWhere((answer) =>
+              answer.value.toString() == state.answers[i].toString())
           .answerPoints
           ?.forEach((answerPoint) {
         // puan ekleme işlemi

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
@@ -16,10 +17,37 @@ import 'package:flutterglobal/Widgets/Dialog/dialog_with_background.dart';
 import 'package:flutterglobal/Widgets/Game/user_assets_info.dart';
 import 'package:lottie/lottie.dart';
 
-class GuessingView extends StatelessWidget {
-  GuessingView({super.key});
+class GuessingView extends StatefulWidget {
+  GuessingModel guessingModel;
+  GuessingView({super.key, required this.guessingModel});
 
-  GuessingCubit cubit = GuessingCubit();
+  @override
+  State<GuessingView> createState() => _GuessingViewState();
+}
+
+class _GuessingViewState extends State<GuessingView> {
+  late GuessingCubit cubit = GuessingCubit();
+  @override
+  void initState() {
+    super.initState();
+    cubit.setGuessingModel(widget.guessingModel);
+    int? questionIndex = context
+        .read<AppProviderCubit>()
+        .state
+        .user
+        ?.levels
+        .firstWhereOrNull((e) => e.levelId == widget.guessingModel.id)
+        ?.questionIndex;
+    if (questionIndex != null ||
+        questionIndex! <= (widget.guessingModel.questions?.length ?? 0)) {
+      cubit.changeQuestionIndex(questionIndex);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +57,8 @@ class GuessingView extends StatelessWidget {
         width: context.width,
         decoration: Utils.instance.backgroundDecoration(ImageEnums.background),
         child: SafeArea(
-          // TODO her widgeta ayrı ayrı blocconsumer yapılacak
           child: BlocConsumer<GuessingCubit, GuessingState>(
             listener: (context, state) {
-              print("state changed : ");
               if (state.isAnsweredWrong) {
                 context.showSnackbar(
                   title: "Yanlış Cevap",
@@ -46,24 +72,12 @@ class GuessingView extends StatelessWidget {
             builder: (context, state) {
               if (context.watch<NetworkProviderCubit>().state.networkStatus ==
                   NetworkStatus.OFFLINE) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "İnternet bağlantınız kesildi. Lütfen bağlantınızı kontrol edin.",
-                      style: context.textTheme.headline6
-                          ?.copyWith(color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                    Lottie.asset(
-                      Utils.instance.getLottiePath(LottieEnums.angrySasuke),
-                      height: context.height * 0.3,
-                    ),
-                  ],
-                );
+                return NoInternetWidget(context);
               }
-              if (state.isLoading)
+
+              if (state.isLoading) {
                 return Center(child: CircularProgressIndicator());
+              }
               return Stack(
                 children: [
                   Column(
@@ -85,7 +99,7 @@ class GuessingView extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 5,
-                        child: guessingWordsRow(state),
+                        child: guessingWordsRow(state, context),
                       ),
                       Spacer(
                         flex: 2,
@@ -104,6 +118,23 @@ class GuessingView extends StatelessWidget {
     );
   }
 
+  Column NoInternetWidget(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "İnternet bağlantınız kesildi. Lütfen bağlantınızı kontrol edin.",
+          style: context.textTheme.headline6?.copyWith(color: Colors.white),
+          textAlign: TextAlign.center,
+        ),
+        Lottie.asset(
+          Utils.instance.getLottiePath(LottieEnums.angrySasuke),
+          height: context.height * 0.3,
+        ),
+      ],
+    );
+  }
+
   Container userButtonsRow(BuildContext context, GuessingState state) {
     return Container(
       color: Colors.black.withOpacity(0.3),
@@ -113,12 +144,16 @@ class GuessingView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CircleAvatar(
+              backgroundColor: Color(0xff2e3192),
               child: IconButton(
                 onPressed: () {
                   Navigator.pop(context);
                   // todo save game state
                 },
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
               ),
             ),
             Container(
@@ -132,7 +167,7 @@ class GuessingView extends StatelessWidget {
                                 .user
                                 ?.goldCount ??
                             0) >=
-                        250) {
+                        500) {
                       showDialog(
                         context: context,
                         builder: (context) {
@@ -140,12 +175,12 @@ class GuessingView extends StatelessWidget {
                               dialogType: DialogEnums.INTERACTIVE,
                               title: "Kilit Aç",
                               contentText:
-                                  "Anime başlığını açmak için 250 altın harcamak istiyor musunuz?",
+                                  "Cevabı açmak için 500 altın harcamak istiyor musunuz?",
                               onConfirm: () {
                                 cubit.changeAnimeTitleVisibility(true);
                                 context
                                     .read<AppProviderCubit>()
-                                    .decrementGold(250);
+                                    .decrementGold(500);
                                 Navigator.pop(context);
                               });
                         },
@@ -158,7 +193,7 @@ class GuessingView extends StatelessWidget {
                             dialogType: DialogEnums.ERROR,
                             title: "Yetersiz Altın",
                             contentText:
-                                "Anime başlığını açmak için 250 altınınız bulunmamaktadır. Reklam izleyerek altın sayınızı artırabilirsiniz.",
+                                "Cevabı açmak için 500 altınınız bulunmamaktadır. Reklam izleyerek altın sayınızı artırabilirsiniz.",
                           );
                         },
                       );
@@ -166,8 +201,8 @@ class GuessingView extends StatelessWidget {
                   }
                 },
                 child: Text(state.isAnimeTitleActive
-                    ? "${state.guessingModels[state.questionIndex].animeTitle}"
-                    : "Anime adını göster"),
+                    ? "${state.guessingModel?.questions?[state.questionIndex].guessingWord}"
+                    : "Cevabı Göster"),
               ),
             ),
             CircleAvatar(
@@ -190,7 +225,7 @@ class GuessingView extends StatelessWidget {
     );
   }
 
-  Widget guessingWordsRow(GuessingState state) {
+  Widget guessingWordsRow(GuessingState state, BuildContext context) {
     return Container(
       child: Center(
         child: Padding(
@@ -204,6 +239,7 @@ class GuessingView extends StatelessWidget {
                 (index) {
                   var data = state.shuffeledList.sublist(0, 8)[index];
                   return guessingWordCard(
+                    context,
                     guessCardModel: data,
                     isVisible: !data.isHidden,
                     onTap: (() {
@@ -224,6 +260,7 @@ class GuessingView extends StatelessWidget {
                       state.shuffeledList.length ~/ 2,
                       state.shuffeledList.length)[index];
                   return guessingWordCard(
+                    context,
                     guessCardModel: data,
                     isVisible: !data.isHidden,
                     onTap: (() {
@@ -242,10 +279,11 @@ class GuessingView extends StatelessWidget {
   Container guessedWordsRow(BuildContext context, GuessingState state) {
     return Container(
       width: context.width,
-      margin: EdgeInsets.symmetric(horizontal: 12),
+      margin: EdgeInsets.symmetric(horizontal: 6),
       child: Row(
           children: List.generate(
-              state.guessingModels[state.questionIndex].guessingWord?.length ??
+              state.guessingModel?.questions?[state.questionIndex].guessingWord
+                      ?.length ??
                   0, (index) {
         return Expanded(
             child: IgnorePointer(
@@ -257,7 +295,7 @@ class GuessingView extends StatelessWidget {
             },
             child: Container(
               padding: EdgeInsets.all(12),
-              margin: EdgeInsets.all(8),
+              margin: EdgeInsets.all(4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
@@ -265,7 +303,8 @@ class GuessingView extends StatelessWidget {
               child: Text(
                 state.userGuessedWords[index]?.guessingWord ?? "",
                 textAlign: TextAlign.center,
-                style: context.textTheme.headline6,
+                style: context.textTheme.headline6
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -283,13 +322,15 @@ class GuessingView extends StatelessWidget {
             child: Row(
               children: [
                 guessContainer(
-                    state.guessingModels[state.questionIndex].hintImages?[0],
+                    state.guessingModel?.questions?[state.questionIndex]
+                        .answers?[0],
                     context),
                 SizedBox(
                   width: 12,
                 ),
                 guessContainer(
-                    state.guessingModels[state.questionIndex].hintImages?[1],
+                    state.guessingModel?.questions?[state.questionIndex]
+                        .answers?[1],
                     context),
               ],
             ),
@@ -301,14 +342,17 @@ class GuessingView extends StatelessWidget {
             child: Row(
               children: [
                 guessContainer(
-                    state.guessingModels[state.questionIndex].hintImages?[2],
+                    state.guessingModel?.questions?[state.questionIndex]
+                        .answers?[2],
                     context),
                 SizedBox(
                   width: 12,
                 ),
                 guessContainer(
-                    state.guessingModels[state.questionIndex].hintImages?[3],
-                    context),
+                    state.guessingModel?.questions?[state.questionIndex]
+                        .answers?[3],
+                    context,
+                    keyCount: 2),
               ],
             ),
           ),
@@ -338,14 +382,17 @@ class GuessingView extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 70,
-                backgroundImage: NetworkImage(
-                    state.guessingModels[state.questionIndex].mainImage ?? ""),
+                backgroundImage: NetworkImage(state.guessingModel
+                        ?.questions?[state.questionIndex].imageUrl ??
+                    ""),
               ),
               SizedBox(
                 height: 12,
               ),
               Text(
-                state.guessingModels[state.questionIndex].guessingWord ?? "",
+                state.guessingModel?.questions?[state.questionIndex]
+                        .guessingWord ??
+                    "",
                 style: context.textTheme.headline5?.copyWith(
                   color: Colors.grey.shade200,
                 ),
@@ -360,11 +407,25 @@ class GuessingView extends StatelessWidget {
               ),
               SizedBox(height: 12),
               ElevatedButton(
-                  onPressed: () {
-                    cubit.switchPanel();
-                    cubit.changeQuestion();
-                  },
-                  child: Text("Devam"))
+                onPressed: () async {
+                  if (state.questionIndex + 1 ==
+                      widget.guessingModel.questions?.length) {
+                    Navigator.pop(context);
+                    context.showSnackbar(
+                      title: "Tebrikler!",
+                      subtitle: "Tebrikler. Testi başarıyla tamamladınız.",
+                      icon: Icon(Icons.verified, color: Colors.green),
+                      borderColor: Colors.green,
+                    );
+                  }
+                  cubit.switchPanel();
+                  cubit.changeQuestion();
+
+                  context.read<AppProviderCubit>().updateLevelValue(
+                      widget.guessingModel.id!, state.questionIndex + 1);
+                },
+                child: Text("Devam"),
+              )
             ],
           ),
         ),
@@ -372,7 +433,7 @@ class GuessingView extends StatelessWidget {
     );
   }
 
-  Widget guessingWordCard(
+  Widget guessingWordCard(BuildContext context,
       {required GuessCardModel guessCardModel,
       required VoidCallback onTap,
       required bool isVisible}) {
@@ -389,93 +450,122 @@ class GuessingView extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
-            child:
-                Text(guessCardModel.guessingWord, textAlign: TextAlign.center),
+            child: Text(guessCardModel.guessingWord,
+                textAlign: TextAlign.center,
+                style: context.textTheme.headline6
+                    ?.copyWith(fontWeight: FontWeight.bold)),
           ),
         ),
       ),
     );
   }
 
-  Widget guessContainer(HintImages? image, BuildContext context) {
+  Widget guessContainer(Answers? image, BuildContext context,
+      {int keyCount = 1}) {
     if (image == null) return Spacer();
     print(image.isLocked);
     return Expanded(
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.network(
-            image.url.toString(),
-            fit: BoxFit.fill,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Center(
-                child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
-                      : null,
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 2),
+            ),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.network(
+                  image.url.toString(),
+                  fit: BoxFit.fill,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
+                image.isLocked ?? true
+                    ? ((context
+                                        .watch<AppProviderCubit>()
+                                        .state
+                                        .user
+                                        ?.keyCount ??
+                                    0) -
+                                keyCount) >=
+                            0
+                        ? InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return DialogWithBackground(
+                                      dialogType: DialogEnums.INTERACTIVE,
+                                      title: "Kilit Aç",
+                                      contentText:
+                                          "Fotoğrafın kilidini açmak için ${keyCount} anahtar harcayacaksın. Onaylıyor musun?",
+                                      onConfirm: () {
+                                        cubit.unlockImage(image);
+                                        context
+                                            .read<AppProviderCubit>()
+                                            .decrementKey(keyCount);
+                                        Navigator.pop(context);
+                                      });
+                                },
+                              );
+                            },
+                            child: Container(
+                              color: Colors.white,
+                              child: Image.asset(
+                                Utils.instance.getPNGImage(
+                                  ImageEnums.treasureChest,
+                                ),
+                                width: 56,
+                                height: 56,
+                              ),
+                            ),
+                          )
+                        : InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return DialogWithBackground(
+                                    title: "Yetersiz anahtar",
+                                    dialogType: DialogEnums.ERROR,
+                                    onConfirm: () {},
+                                    contentText:
+                                        "Fotoğrafın kilidini açmak için yeterli anahtarınız yok. Anahtar satın almak için mağaza sayfasını ziyaret edebilirsiniz.",
+                                  );
+                                },
+                              );
+                            },
+                            child: Container(
+                              color: Colors.white,
+                              child: Image.asset(
+                                Utils.instance.getPNGImage(
+                                  ImageEnums.treasureChest,
+                                ),
+                                width: 56,
+                                height: 56,
+                              ),
+                            ),
+                          )
+                    : SizedBox()
+              ],
+            ),
           ),
-          image.isLocked ?? true
-              ? (context.watch<AppProviderCubit>().state.user?.keyCount ?? 0) >
-                      0
-                  ? InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return DialogWithBackground(
-                                dialogType: DialogEnums.INTERACTIVE,
-                                title: "Kilit Aç",
-                                contentText:
-                                    "Fotoğrafın kilidini açmak için 1 anahtar harcayacaksın. Onaylıyor musun?",
-                                onConfirm: () {
-                                  cubit.unlockImage(image);
-                                  context
-                                      .read<AppProviderCubit>()
-                                      .decrementKey();
-                                  Navigator.pop(context);
-                                });
-                          },
-                        );
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        child: Icon(
-                          Icons.lock,
-                          size: 56,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    )
-                  : InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return DialogWithBackground(
-                              title: "Yetersiz anahtar",
-                              dialogType: DialogEnums.ERROR,
-                              onConfirm: () {},
-                              contentText:
-                                  "Fotoğrafın kilidini açmak için yeterli anahtarınız yok. Anahtar satın almak için mağaza sayfasını ziyaret edebilirsiniz.",
-                            );
-                          },
-                        );
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        child: Icon(
-                          Icons.lock,
-                          size: 56,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    )
-              : SizedBox()
+          IgnorePointer(
+            child: Image.asset(
+              Utils.instance.getPNGImage(ImageEnums.border),
+              fit: BoxFit.fill,
+            ),
+          )
         ],
       ),
     );

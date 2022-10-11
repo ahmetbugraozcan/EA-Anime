@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BounceWithoutHover extends StatefulWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Widget child;
   final Duration duration;
   // This will get the data from the pages
@@ -21,7 +21,7 @@ class BounceWithoutHoverState extends State<BounceWithoutHover>
   late AnimationController _animate;
 
   //Getting the VoidCallack onPressed passed by the user
-  VoidCallback get onPressed => widget.onPressed;
+  VoidCallback? get onPressed => widget.onPressed;
 
   // This is a user defined duration, which will be responsible for
   // what kind of bounce he/she wants
@@ -53,7 +53,7 @@ class BounceWithoutHoverState extends State<BounceWithoutHover>
   Widget build(BuildContext context) {
     _scale = 1 - _animate.value;
     return GestureDetector(
-        onTap: _onTap,
+        onTap: onPressed == null ? null : _onTap,
         child: Transform.scale(
           scale: _scale,
           child: widget.child,
@@ -72,7 +72,7 @@ class BounceWithoutHoverState extends State<BounceWithoutHover>
       _animate.reverse();
 
       //Calling the callback
-      onPressed();
+      onPressed!();
     });
   }
 }

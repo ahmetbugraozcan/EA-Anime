@@ -20,6 +20,10 @@ class Utils {
     return "${AssetEnums.assets.name}/${AssetEnums.images.name}/${imageEnums.name}.jpg";
   }
 
+  String getGif(ImageEnums imageEnums) {
+    return "${AssetEnums.assets.name}/${AssetEnums.images.name}/${imageEnums.name}.gif";
+  }
+
   String getPNGImage(ImageEnums imageEnums) {
     return "${AssetEnums.assets.name}/${AssetEnums.images.name}/${imageEnums.name}.png";
   }
@@ -41,7 +45,8 @@ class Utils {
     );
   }
 
-  List<String> getShuffeledRandomList(String shuffleText, int size) {
+  List<String> getShuffeledRandomList(String? shuffleText, int size) {
+    if (shuffleText == null) return [];
     List<String> list = [];
     for (int i = 0; i < shuffleText.length; i++) {
       list.add(shuffleText[i].toUpperCase());

@@ -59,6 +59,7 @@ class WallpaperAnimeNamesView extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             state.animeNames[index].animeName.toString(),
+                            textAlign: TextAlign.right,
                             style: context.textTheme.headline6?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

@@ -1,6 +1,7 @@
 enum AssetEnums { assets, data, images, language, lottie }
 
 // TODO png images ve jpg images olarak ayrılabilir
+
 enum ImageEnums {
   background,
   drstone,
@@ -11,7 +12,17 @@ enum ImageEnums {
   gold,
   goldkey,
   treasure,
-  coin
+  coin,
+  treasureChest,
+  border,
+  anya,
+  anyaLoading,
+  stickers,
+  notfound,
+  megumin,
+  animeview,
+  blackgoku,
+  naruto
 }
 
 enum PreferencesKeys {
@@ -22,6 +33,7 @@ enum PreferencesKeys {
   USER_GUESSING_LEVEL,
   LANGUAGE,
   THEME,
+  USERMODEL,
   DOWNLOAD_COUNT,
 }
 

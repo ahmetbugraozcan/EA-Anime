@@ -32,7 +32,7 @@ class WallpaperState extends Equatable {
       this.wallpaperModels = const [],
       this.downloadingImages = const [],
       this.settingWallpapers = const [],
-      this.gridState = GridState.ONE});
+      this.gridState = GridState.TWO});
 
   @override
   List<Object?> get props => [

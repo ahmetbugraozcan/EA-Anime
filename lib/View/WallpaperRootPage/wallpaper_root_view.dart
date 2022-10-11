@@ -4,6 +4,7 @@ import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Provider/wallpaper/cubit/wallpaper_cubit.dart';
 import 'package:flutterglobal/Provider/wallpaperRoot/cubit/wallpaper_root_cubit.dart';
+import 'package:flutterglobal/Widgets/Buttons/back_button.dart';
 
 class WallpaperRootView extends StatelessWidget {
   WallpaperRootView({super.key});
@@ -12,7 +13,7 @@ class WallpaperRootView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: globalKey,
-      drawer: BlocBuilder<WallpaperRootCubit, WallpaperRootState>(
+      endDrawer: BlocBuilder<WallpaperRootCubit, WallpaperRootState>(
         bloc: context.read<WallpaperRootCubit>(),
         buildWhen: (previous, current) =>
             previous.pageIndex != current.pageIndex,
@@ -33,26 +34,34 @@ class WallpaperRootView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(
-                        onPressed: () {
-                          globalKey.currentState?.openDrawer();
-                        },
-                        icon: Icon(Icons.menu),
-                        color: Colors.white,
-                      ),
-                      Builder(builder: (ctx) {
-                        if (state.pageIndex == 1) {
-                          return IconButton(
+                      BackButtonWidget(),
+                      Row(
+                        children: [
+                          Builder(builder: (ctx) {
+                            if (state.pageIndex == 1) {
+                              return IconButton(
+                                onPressed: () {
+                                  context
+                                      .read<WallpaperCubit>()
+                                      .switchGridState();
+                                },
+                                icon: Icon(Icons.calendar_view_week),
+                                color: Colors.white,
+                              );
+                            }
+                            return SizedBox();
+                          }),
+                          IconButton(
                             onPressed: () {
-                              context.read<WallpaperCubit>().switchGridState();
+                              globalKey.currentState?.openEndDrawer();
                             },
-                            icon: Icon(Icons.calendar_view_week),
+                            icon: Icon(Icons.menu),
                             color: Colors.white,
-                          );
-                        }
-                        return SizedBox();
-                      })
+                          ),
+                        ],
+                      )
                     ],
                   ),
                   state.pages[state.pageIndex],

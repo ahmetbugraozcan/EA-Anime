@@ -1,42 +1,30 @@
-import 'dart:convert';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Models/guess_card_model.dart';
-import 'package:flutterglobal/Models/guessing_data_model.dart';
 import 'package:flutterglobal/Models/guessing_model.dart';
-import 'package:flutterglobal/Service/firebase_realtime_db_service.dart';
 
 part 'guessing_state.dart';
 
 class GuessingCubit extends Cubit<GuessingState> {
-  FirebaseRealtimeDBService _firebaseRealtimeDBService =
-      FirebaseRealtimeDBService.instance;
-  GuessingCubit() : super(GuessingState()) {
-    getQuestionsFromJson();
-  }
-
-  Future<void> getQuestionsFromJson() async {
-    _switchLoading();
-    _firebaseRealtimeDBService.getDatas();
-
-    List<GuessingModel> questions = [];
-    GuessingDataModel? model = await _firebaseRealtimeDBService.getDatas();
-    if (model != null) {
-      questions = model.guessingModels!;
-      List<GuessCardModel?> list = List.filled(
-          questions[state.questionIndex].guessingWord?.length ?? 0, null);
-
-      emit(state.copyWith(guessingModels: questions, userGuessedWords: list));
-    }
-
-    _getShuffeledList();
-    _switchLoading();
-  }
+  GuessingCubit() : super(GuessingState()) {}
 
   void changeQuestion() {
     changeQuestionIndex(state.questionIndex + 1);
+  }
+
+  void setGuessingModel(GuessingModel guessingModel) {
+    emit(state.copyWith(guessingModel: guessingModel));
+    List<GuessCardModel?> list = List.filled(
+        state.guessingModel?.questions?[state.questionIndex].guessingWord
+                ?.length ??
+            0,
+        null);
+
+    emit(state.copyWith(userGuessedWords: list));
+    _getShuffeledList();
   }
 
   void addGuessingWord(GuessCardModel cardModel) {
@@ -50,7 +38,8 @@ class GuessingCubit extends Cubit<GuessingState> {
         emit(state.copyWith(userGuessedWords: list, shuffeledList: shuffle));
 
         if (_getGuessedWordsLength() ==
-            state.guessingModels[state.questionIndex].guessingWord?.length) {
+            state.guessingModel?.questions?[state.questionIndex].guessingWord
+                ?.length) {
           if (_checkAnswer())
             switchPanel();
           else
@@ -59,6 +48,10 @@ class GuessingCubit extends Cubit<GuessingState> {
         break;
       }
     }
+  }
+
+  setQuestionIndex(int index) {
+    emit(state.copyWith(questionIndex: index));
   }
 
   void removeGuessingWord(GuessCardModel? cardModel) {
@@ -76,16 +69,17 @@ class GuessingCubit extends Cubit<GuessingState> {
     emit(state.copyWith(userGuessedWords: list, shuffeledList: shuffle));
   }
 
-  void unlockImage(HintImages images) {
-    int? indexOfImage =
-        state.guessingModels[state.questionIndex].hintImages?.indexOf(images);
+  void unlockImage(Answers images) {
+    int? indexOfImage = state
+        .guessingModel?.questions?[state.questionIndex].answers
+        ?.indexOf(images);
 
     if (indexOfImage != null) {
-      state.guessingModels[state.questionIndex].hintImages![indexOfImage]
-          .isLocked = false;
+      state.guessingModel?.questions?[state.questionIndex]
+          .answers![indexOfImage].isLocked = false;
 
       emit(state.copyWith(
-        guessingModels: state.guessingModels,
+        guessingModel: state.guessingModel,
       ));
     }
   }
@@ -118,7 +112,8 @@ class GuessingCubit extends Cubit<GuessingState> {
     });
 
     if (answer ==
-        state.guessingModels[state.questionIndex].guessingWord?.toUpperCase()) {
+        state.guessingModel?.questions?[state.questionIndex].guessingWord
+            ?.toUpperCase()) {
       return true;
     }
     return false;
@@ -137,7 +132,9 @@ class GuessingCubit extends Cubit<GuessingState> {
 
   void _resetGuessingWords() {
     List<GuessCardModel?> list = List.filled(
-        state.guessingModels[state.questionIndex].guessingWord?.length ?? 0,
+        state.guessingModel?.questions?[state.questionIndex].guessingWord
+                ?.length ??
+            0,
         null);
 
     emit(state.copyWith(userGuessedWords: list));
@@ -145,7 +142,7 @@ class GuessingCubit extends Cubit<GuessingState> {
 
   void _getShuffeledList() {
     List<String> list = Utils.instance.getShuffeledRandomList(
-        state.guessingModels[state.questionIndex].guessingWord!, 14);
+        state.guessingModel?.questions?[state.questionIndex].guessingWord, 14);
     List<GuessCardModel> shuffeledList = List.generate(
         list.length,
         (index) => GuessCardModel(
@@ -157,19 +154,16 @@ class GuessingCubit extends Cubit<GuessingState> {
     emit(state.copyWith(shuffeledList: shuffeledList));
   }
 
-  void _switchLoading() {
-    emit(state.copyWith(isLoading: !state.isLoading));
-  }
-
   void switchPanel() {
     emit(state.copyWith(isPanelActive: !state.isPanelActive));
   }
 
   void changeQuestionIndex(int index) {
-    if (index < state.guessingModels.length) {
+    if (index < (state.guessingModel?.questions?.length ?? 0)) {
       emit(state.copyWith(questionIndex: index));
       _getShuffeledList();
       _resetGuessingWords();
+
       changeAnimeTitleVisibility(false);
     }
   }

@@ -117,32 +117,37 @@ class _WallpaperViewState extends State<WallpaperView> {
                   ],
                 ),
               ),
-              Builder(builder: (context) {
-                print(
-                    "ADSPROVIDER BUILDER :${context.watch<AdsProviderCubit>().state.bannerAd}");
-                if (context.watch<AdsProviderCubit>().state.bannerAd != null) {
-                  return SizedBox(
-                    height: context
-                        .watch<AdsProviderCubit>()
-                        .state
-                        .bannerAd
-                        ?.size
-                        .height
-                        .toDouble(),
-                    width: context
-                        .watch<AdsProviderCubit>()
-                        .state
-                        .bannerAd
-                        ?.size
-                        .width
-                        .toDouble(),
-                    child: AdWidget(
-                      ad: context.read<AdsProviderCubit>().state.bannerAd!,
-                    ),
-                  );
-                }
-                return SizedBox();
-              }),
+              BlocBuilder<AdsProviderCubit, AdsProviderState>(
+                  bloc: context.read<AdsProviderCubit>(),
+                  buildWhen: (previous, current) =>
+                      previous.bannerAd != current.bannerAd,
+                  builder: (context, state) {
+                    print(
+                        "ADSPROVIDER BUILDER :${context.watch<AdsProviderCubit>().state.bannerAd}");
+                    if (context.watch<AdsProviderCubit>().state.bannerAd !=
+                        null) {
+                      return SizedBox(
+                        height: context
+                            .watch<AdsProviderCubit>()
+                            .state
+                            .bannerAd
+                            ?.size
+                            .height
+                            .toDouble(),
+                        width: context
+                            .watch<AdsProviderCubit>()
+                            .state
+                            .bannerAd
+                            ?.size
+                            .width
+                            .toDouble(),
+                        child: AdWidget(
+                          ad: context.read<AdsProviderCubit>().state.bannerAd!,
+                        ),
+                      );
+                    }
+                    return SizedBox();
+                  }),
             ],
           );
         },
@@ -188,13 +193,20 @@ class _WallpaperViewState extends State<WallpaperView> {
                 child: Container(
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(Utils.instance
+                            .getPNGImage(ImageEnums.anyaLoading))),
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.white.withOpacity(0.2),
                   ),
-                  child: CachedNetworkImage(
-                    imageUrl: wallpapers[index].imageUrl.toString(),
-                    fit: BoxFit.cover,
+                  child: Image.network(
+                    wallpapers[index].imageUrl.toString(),
+                    fit: BoxFit.fill,
                   ),
+                  // child: CachedNetworkImage(
+                  //   imageUrl: wallpapers[index].imageUrl.toString(),
+                  //   fit: BoxFit.cover,
+                  // ),
                 ),
               ),
             );

@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
-import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
-import 'package:flutterglobal/Provider/testgame/cubit/test_game_selection_cubit.dart';
 import 'package:flutterglobal/View/Blogs/blogs_view.dart';
 import 'package:flutterglobal/View/Guessing/guessing_view.dart';
-import 'package:flutterglobal/View/TestGame/test_game_view.dart';
-import 'package:flutterglobal/View/TestGameSelection/test_game_selection_view.dart';
+import 'package:flutterglobal/View/GuessingGamesList/guessing_games_list_view.dart';
 import 'package:flutterglobal/View/TestType/test_type_view.dart';
-import 'package:flutterglobal/View/WallpaperPage/wallpaper_view.dart';
 import 'package:flutterglobal/View/WallpaperRootPage/wallpaper_root_view.dart';
-import 'package:flutterglobal/Widgets/Bounce/bounce_without_hover.dart';
 import 'package:flutterglobal/Widgets/Cards/menu_guess_card.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class MenuView extends StatefulWidget {
   MenuView({super.key});
@@ -32,7 +23,6 @@ class _MenuViewState extends State<MenuView>
   late Animation<double> animation;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
@@ -61,32 +51,20 @@ class _MenuViewState extends State<MenuView>
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  AnimatedBuilder(
-                    animation: animationController,
-                    builder: (context, child) {
-                      return Transform.translate(
-                        offset: Offset(animation.value, 0),
-                        child: MenuGuessCard(
-                          title: "Tahmin Et",
-                          subtitle:
-                              "Verilen ipuçlarına göre anime karakterlerini tahmin etmeye çalış. Süre sınırı yok.",
-                          background: ImageEnums.guess,
-                          onPressed: () async {
-                            await animationController.forward();
-
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => GuessingView(),
-                              ),
-                            );
-
-                            /* Bu delayı eklemediğimizde sayfa geçişinden önce buton eski yerine tekrar dönüyor
-                            ve bu durum kullanıcıya yansıyor bundan dolayı delayi ekledik */
-                            await Future.delayed(Duration(milliseconds: 100));
-                            animationController.reset();
-                          },
+                  MenuGuessCard(
+                    title: "Tahmin Et",
+                    subtitle:
+                        "Verilen ipuçlarına göre anime karakterlerini tahmin etmeye çalış. Süre sınırı yok.",
+                    background: ImageEnums.guess,
+                    onPressed: () async {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => GuessingGamesListView(),
                         ),
                       );
+
+                      /* Bu delayı eklemediğimizde sayfa geçişinden önce buton eski yerine tekrar dönüyor
+                            ve bu durum kullanıcıya yansıyor bundan dolayı delayi ekledik */
                     },
                   ),
                   MenuGuessCard(
@@ -136,10 +114,10 @@ class _MenuViewState extends State<MenuView>
                     },
                   ),
                   MenuGuessCard(
-                    title: "Anime Önerileri ve Listeler",
+                    title: "En İyi 10",
                     subtitle:
-                        "Anime önerileri ve listelerine göz atmak için tıkla.",
-                    background: ImageEnums.sao,
+                        "En iyi 10 anime ve anime karakterlerini görmek için en iyi 10 bölümüne göz at.",
+                    background: ImageEnums.naruto,
                     onPressed: () async {
                       Navigator.push(
                         context,
@@ -148,6 +126,11 @@ class _MenuViewState extends State<MenuView>
                         ),
                       );
                     },
+                  ),
+                  MenuGuessCard(
+                    title: "Stickerlar",
+                    subtitle: "ÇOK YAKINDA!",
+                    background: ImageEnums.megumin,
                   )
                 ],
               ),

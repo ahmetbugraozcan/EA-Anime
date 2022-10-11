@@ -19,4 +19,7 @@ class AppConstants {
       "${AssetEnums.assets.name}/${AssetEnums.lottie.name}";
 
   String get upperCaseChars => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  String get imageNotFound =>
+      "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg";
 }

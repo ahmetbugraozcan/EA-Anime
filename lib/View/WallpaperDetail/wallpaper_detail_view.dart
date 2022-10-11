@@ -45,20 +45,15 @@ class _WallpaperDetailViewState extends State<WallpaperDetailView> {
                       Hero(
                         tag:
                             "wallpaper${context.read<WallpaperCubit>().state.selectedWallpaper?.imageUrl}",
-                        child: CachedNetworkImage(
-                          imageUrl: context
+                        child: FadeInImage.assetNetwork(
+                          image: context
                               .read<WallpaperCubit>()
                               .state
                               .selectedWallpaper!
                               .imageUrl!,
                           fit: BoxFit.fill,
-                          placeholder: (context, url) => Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
+                          placeholder: Utils.instance
+                              .getPNGImage(ImageEnums.anyaLoading),
                         ),
                       ),
                       Positioned(

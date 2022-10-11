@@ -39,24 +39,6 @@ class UserAssetsInfo extends StatelessWidget {
                     )
                   ],
                 ),
-                Row(
-                  children: [
-                    Image.asset(
-                      Utils.instance.getPNGImage(
-                        ImageEnums.coin,
-                      ),
-                      width: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "${context.watch<AppProviderCubit>().state.user?.goldCount}",
-                        style: context.textTheme.subtitle2
-                            ?.copyWith(color: Colors.white),
-                      ),
-                    )
-                  ],
-                )
               ],
             ),
             Icon(
@@ -66,14 +48,16 @@ class UserAssetsInfo extends StatelessWidget {
             ),
             Row(
               children: [
-                Icon(
-                  Icons.diamond,
-                  color: Colors.white,
+                Image.asset(
+                  Utils.instance.getPNGImage(
+                    ImageEnums.coin,
+                  ),
+                  width: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "${context.read<AppProviderCubit>().state.user?.diamondCount}",
+                    "${context.watch<AppProviderCubit>().state.user?.goldCount}",
                     style: context.textTheme.subtitle2
                         ?.copyWith(color: Colors.white),
                   ),

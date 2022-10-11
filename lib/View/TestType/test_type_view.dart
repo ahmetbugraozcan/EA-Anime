@@ -6,6 +6,7 @@ import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Provider/testgame/cubit/test_game_selection_cubit.dart';
 import 'package:flutterglobal/View/TestGameSelection/test_game_selection_view.dart';
+import 'package:flutterglobal/Widgets/Buttons/back_button.dart';
 import 'package:flutterglobal/Widgets/Cards/menu_guess_card.dart';
 
 class TestTypeView extends StatelessWidget {
@@ -19,11 +20,12 @@ class TestTypeView extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
+              BackButtonWidget(),
               MenuGuessCard(
                 title: "Kişilik Testleri",
                 subtitle:
                     "Kişilik testleri ile hangi anime karakterine benzediğini öğren!",
-                background: ImageEnums.background,
+                background: ImageEnums.animeview,
                 onPressed: () async {
                   Navigator.push(
                     context,
@@ -35,10 +37,8 @@ class TestTypeView extends StatelessWidget {
               ),
               MenuGuessCard(
                 title: "Bilgi Testleri",
-                subtitle:
-                    "Çeşitli testlerle anime karakterlerini ve evrenleri tanıyıp tanımadığını öğren. Süre sınırı yok.",
-                background: ImageEnums.drstone,
-                onPressed: () async {},
+                subtitle: "ÇOK YAKINDA!",
+                background: ImageEnums.itachi,
               )
             ],
           ),

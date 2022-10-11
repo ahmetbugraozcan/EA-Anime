@@ -3,6 +3,7 @@ part of 'app_provider_cubit.dart';
 class AppProviderState extends Equatable {
   UserModel? user;
   bool isLoading;
+
   AppProviderState({
     this.user,
     this.isLoading = false,
@@ -19,6 +20,5 @@ class AppProviderState extends Equatable {
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [user, isLoading];
 }

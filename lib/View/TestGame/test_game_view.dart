@@ -175,12 +175,13 @@ class TestGameView extends StatelessWidget {
             ),
             Expanded(
               flex: 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: question.answers!
-                    .mapIndexed(
-                      ((index, element) => Expanded(
-                            child: AnswerCard(
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: question.answers!
+                      .mapIndexed(
+                        ((index, element) => AnswerCard(
                               context,
                               question,
                               index,
@@ -190,10 +191,10 @@ class TestGameView extends StatelessWidget {
                               isSelected:
                                   state.answers[state.currentQuestionIndex] ==
                                       index,
-                            ),
-                          )),
-                    )
-                    .toList(),
+                            )),
+                      )
+                      .toList(),
+                ),
               ),
             ),
             Expanded(
@@ -243,10 +244,14 @@ class TestGameView extends StatelessWidget {
                         }
                         cubit.increaseCurrentQuestionIndex();
                       },
-                      child: Text(state.currentQuestionIndex + 1 ==
-                              state.personalityTestModel?.tests?.length
-                          ? "Bitir"
-                          : "Sonraki"),
+                      child: Text(
+                        state.currentQuestionIndex + 1 ==
+                                state.personalityTestModel?.tests?.length
+                            ? "Bitir"
+                            : "Sonraki",
+                        style: context.textTheme.headline6
+                            ?.copyWith(color: Colors.white),
+                      ),
                     ),
                   )
                 ],
@@ -260,35 +265,41 @@ class TestGameView extends StatelessWidget {
 
   Widget AnswerCard(BuildContext context, Tests question, int index,
       {VoidCallback? onPressed, bool isSelected = false}) {
-    return BounceWithoutHover(
-      duration: Duration(milliseconds: 100),
-      onPressed: onPressed ?? () {},
-      child: Card(
-        color: isSelected ? Colors.greenAccent.withOpacity(0.3) : null,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6),
-          side: BorderSide(
-            color: isSelected ? Colors.green : Colors.black,
-            width: 1,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Checkbox(
-                activeColor: Colors.green,
-                shape: CircleBorder(),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                value: isSelected,
-                onChanged: (value) {},
+    return Align(
+      child: BounceWithoutHover(
+        duration: Duration(milliseconds: 100),
+        onPressed: onPressed ?? () {},
+        child: Container(
+          child: Card(
+            color: isSelected ? Colors.greenAccent.withOpacity(0.3) : null,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+              side: BorderSide(
+                color: isSelected ? Colors.green : Colors.black,
+                width: 1,
               ),
-              Text(
-                question.answers![index].answer.toString(),
-                style: context.textTheme.headline6
-                    ?.copyWith(color: isSelected ? Colors.white : Colors.black),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Checkbox(
+                    activeColor: Colors.green,
+                    shape: CircleBorder(),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    value: isSelected,
+                    onChanged: (value) {},
+                  ),
+                  Expanded(
+                    child: Text(
+                      question.answers![index].answer.toString(),
+                      style: context.textTheme.headline6?.copyWith(
+                          color: isSelected ? Colors.white : Colors.black),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

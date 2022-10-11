@@ -2,6 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Init/Cache/locale_manager.dart';
@@ -19,7 +20,9 @@ Future<void> main() async {
   );
   await EasyLocalization.ensureInitialized();
   await CacheManager.preferencesInit();
-  MobileAds.instance.initialize();
+  await MobileAds.instance.initialize();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   runApp(
     EasyLocalization(
       supportedLocales: LanguageManager.instance.supportedLocales,

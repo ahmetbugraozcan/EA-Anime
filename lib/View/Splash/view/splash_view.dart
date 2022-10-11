@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -15,11 +17,12 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<AppProviderCubit, AppProviderState>(
-        listenWhen: (previous, current) =>
-            previous.isLoading != current.isLoading,
+        bloc: context.watch<AppProviderCubit>(),
+        listenWhen: (previous, current) {
+          return previous.isLoading != current.isLoading;
+        },
         listener: (context, state) {
-          if (state.isLoading) {
-          } else {
+          if (!state.isLoading) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(

@@ -1,71 +1,85 @@
-import 'package:equatable/equatable.dart';
-
 class GuessingModel {
-  String? animeTitle;
-  String? guessingWord;
-  List<HintImages>? hintImages;
   String? mainImage;
+  List<Questions>? questions;
+  String? id;
+  String? animeName;
 
-  GuessingModel({
-    this.animeTitle,
-    this.guessingWord,
-    this.hintImages,
-    this.mainImage,
-  });
-
-  GuessingModel copyWith({
-    String? animeTitle,
-    String? guessingWord,
-    List<HintImages>? hintImages,
-    String? mainImage,
-  }) {
-    return GuessingModel(
-      animeTitle: animeTitle ?? this.animeTitle,
-      guessingWord: guessingWord ?? this.guessingWord,
-      hintImages: hintImages ?? this.hintImages,
-      mainImage: mainImage ?? this.mainImage,
-    );
-  }
+  GuessingModel({this.mainImage, this.questions, this.id, this.animeName});
 
   GuessingModel.fromJson(Map<String, dynamic> json) {
-    animeTitle = json['animeTitle'];
-    guessingWord = json['guessingWord'];
-    if (json['hintImages'] != null) {
-      hintImages = <HintImages>[];
-      json['hintImages'].forEach((v) {
-        hintImages!.add(new HintImages.fromJson(Map<String, dynamic>.from(v)));
+    mainImage = json['mainImage'];
+    if (json['questions'] != null) {
+      questions = <Questions>[];
+      json['questions'].forEach((v) {
+        questions!.add(new Questions.fromJson(v));
       });
     }
-    mainImage = json['mainImage'];
+    id = json['id'];
+    animeName = json['animeName'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['animeTitle'] = this.animeTitle;
-    data['guessingWord'] = this.guessingWord;
-    if (this.hintImages != null) {
-      data['hintImages'] = this.hintImages!.map((v) => v.toJson()).toList();
-    }
     data['mainImage'] = this.mainImage;
+    if (this.questions != null) {
+      data['questions'] = this.questions!.map((v) => v.toJson()).toList();
+    }
+    data['id'] = this.id;
+    data['animeName'] = this.animeName;
     return data;
   }
 }
 
-class HintImages {
-  String? url;
-  bool? isLocked;
+class Questions {
+  String? guessingWord;
+  String? imageUrl;
+  List<Answers>? answers;
+  String? id;
 
-  HintImages({this.url, this.isLocked});
+  Questions({this.guessingWord, this.imageUrl, this.answers, this.id});
 
-  HintImages.fromJson(Map<String, dynamic> json) {
-    url = json['url'];
-    isLocked = json['isLocked'];
+  Questions.fromJson(Map<String, dynamic> json) {
+    guessingWord = json['guessingWord'];
+    imageUrl = json['imageUrl'];
+    if (json['answers'] != null) {
+      answers = <Answers>[];
+      json['answers'].forEach((v) {
+        answers!.add(new Answers.fromJson(v));
+      });
+    }
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
+    data['guessingWord'] = this.guessingWord;
+    data['imageUrl'] = this.imageUrl;
+    if (this.answers != null) {
+      data['answers'] = this.answers!.map((v) => v.toJson()).toList();
+    }
+    data['id'] = this.id;
+    return data;
+  }
+}
+
+class Answers {
+  bool? isLocked;
+  String? id;
+  String? url;
+
+  Answers({this.isLocked, this.id, this.url});
+
+  Answers.fromJson(Map<String, dynamic> json) {
+    isLocked = json['isLocked'];
+    id = json['id'];
+    url = json['url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['isLocked'] = this.isLocked;
+    data['id'] = this.id;
+    data['url'] = this.url;
     return data;
   }
 }

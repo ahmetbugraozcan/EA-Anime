@@ -44,12 +44,12 @@ class ShopView extends StatelessWidget {
                             icon: Icon(Icons.arrow_back),
                           ),
                         ),
-                        CircleAvatar(
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.settings),
-                          ),
-                        ),
+                        // CircleAvatar(
+                        //   child: IconButton(
+                        //     onPressed: () {},
+                        //     icon: Icon(Icons.settings),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

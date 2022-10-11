@@ -44,6 +44,7 @@ class FirebaseRealtimeDBService {
 
       List<PersonalityTestModel> list = [];
       (jsonData["data"] as List).forEach((element) {
+        if (element == null) return;
         list.add(PersonalityTestModel.fromJson(Map.from(element as Map)));
       });
 

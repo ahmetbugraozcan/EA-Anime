@@ -1,4 +1,4 @@
-import 'package:flutter/src/material/theme_data.dart';
+import 'package:flutter/material.dart';
 import 'package:flutterglobal/Core/Init/Theme/i_app_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,5 +11,15 @@ class AppThemeLight implements IAppTheme {
   @override
   ThemeData? themeData = ThemeData.light().copyWith(
     textTheme: GoogleFonts.ubuntuTextTheme(),
+    primaryColor: Color(0xff2e3192),
+    primaryColorDark: Color(0xff2e3192),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color(0xff2e3192),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    ),
   );
 }
