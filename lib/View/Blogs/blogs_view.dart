@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
-import 'package:flutterglobal/Models/blog_model.dart';
 import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
 import 'package:flutterglobal/Provider/blogs/cubit/blogs_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +34,7 @@ class BlogsView extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             "En iyi 10",
-                            style: context.textTheme.headline5
+                            style: context.textTheme.headlineSmall
                                 ?.copyWith(color: Colors.white),
                           ),
                         ),
@@ -111,7 +107,7 @@ class BlogsView extends StatelessWidget {
                                                 state.blogs[index].title
                                                     .toString(),
                                                 style: context
-                                                    .textTheme.headline6
+                                                    .textTheme.titleLarge
                                                     ?.copyWith(
                                                   color: Colors.white,
                                                   shadows: [

@@ -18,6 +18,7 @@ class ShopCard extends StatelessWidget {
   String title;
   String subtitle;
   ImageEnums image;
+  bool isloading;
 
   ShopCard(
       {super.key,
@@ -25,6 +26,7 @@ class ShopCard extends StatelessWidget {
       required this.title,
       required this.subtitle,
       required this.image,
+      this.isloading = false,
       this.shopCardType = ShopCardType.VIDEO});
 
   @override
@@ -52,6 +54,15 @@ class ShopCard extends StatelessWidget {
         ),
         trailing: Builder(
           builder: (context) {
+            if (isloading)
+              return SizedBox(
+                width: 100,
+                child: ElevatedButton(
+                    onPressed: null,
+                    style: ElevatedButton.styleFrom(
+                        disabledBackgroundColor: context.theme.primaryColor),
+                    child: CircularProgressIndicator.adaptive()),
+              );
             switch (shopCardType) {
               case ShopCardType.VIDEO:
                 return SizedBox(

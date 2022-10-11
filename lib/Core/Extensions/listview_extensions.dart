@@ -17,7 +17,8 @@ extension ListViewExtension on ListView {
         itemCount: itemCount,
         itemBuilder: (context, index) {
           if (index == (itemCount - 1))
-            itemLoadWidget ?? Center(child: CircularProgressIndicator());
+            itemLoadWidget ??
+                Center(child: CircularProgressIndicator.adaptive());
           return delegate.builder(context, index)!;
         },
       ),

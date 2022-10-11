@@ -22,7 +22,7 @@ class TestGameSelectionView extends StatelessWidget {
             bloc: context.read<TestGameSelectionCubit>(),
             builder: (context, state) {
               if (state.isLoading) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator.adaptive());
               }
               return SafeArea(
                 child: Column(

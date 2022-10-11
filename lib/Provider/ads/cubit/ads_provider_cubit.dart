@@ -28,6 +28,10 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
     emit(state.copyWith(bannerAd: ad));
   }
 
+  void setIsAdLoading(bool isAdLoading) {
+    emit(state.copyWith(isAdLoading: isAdLoading));
+  }
+
   Future<void> getBannerAd() async {
     state.bannerAd?.dispose();
 
@@ -66,7 +70,7 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
     setBannerAd(myBanner);
   }
 
-  void getInitialRewardAd() {
+  Future<void> getInitialRewardAd() async {
     state.ad?.dispose();
     String adId;
     if (Platform.isAndroid) {
@@ -76,7 +80,7 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
     } else {
       adId = 'ca-app-pub-3940256099942544/5224354917';
     }
-    RewardedAd.load(
+    await RewardedAd.load(
         request: AdRequest(),
         // test reklam id
         // adUnitId: 'ca-app-pub-3940256099942544/5224354917',
@@ -89,6 +93,7 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
             print('RewardedAd failed to load: $error');
           },
         ));
+    setIsAdLoading(false);
   }
 
   Future<void> getTop10TransitionAd() async {

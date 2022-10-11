@@ -74,10 +74,8 @@ class _GuessingViewState extends State<GuessingView> {
                   NetworkStatus.OFFLINE) {
                 return NoInternetWidget(context);
               }
-
-              if (state.isLoading) {
-                return Center(child: CircularProgressIndicator());
-              }
+              if (state.isLoading)
+                return Center(child: CircularProgressIndicator.adaptive());
               return Stack(
                 children: [
                   Column(

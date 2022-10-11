@@ -65,10 +65,16 @@ class ShopView extends StatelessWidget {
                     children: [
                       ShopCard(
                           title: "500 Altın",
+                          isloading: context
+                              .watch<AdsProviderCubit>()
+                              .state
+                              .isAdLoading,
                           subtitle:
                               "Kısa bir reklam videosu izleyerek 500 altın kazan.",
                           image: ImageEnums.coin,
                           onTap: () {
+                            print(context.read<AdsProviderCubit>().state.ad ??
+                                "ad null");
                             context.read<AdsProviderCubit>().state.ad?.show(
                                 onUserEarnedReward:
                                     (AdWithoutView ad, RewardItem rewardItem) {
