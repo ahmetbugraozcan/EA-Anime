@@ -61,7 +61,9 @@ class ShopCard extends StatelessWidget {
                     onPressed: null,
                     style: ElevatedButton.styleFrom(
                         disabledBackgroundColor: context.theme.primaryColor),
-                    child: CircularProgressIndicator.adaptive()),
+                    child: CircularProgressIndicator.adaptive(
+                      backgroundColor: Colors.white,
+                    )),
               );
             switch (shopCardType) {
               case ShopCardType.VIDEO:
@@ -70,7 +72,7 @@ class ShopCard extends StatelessWidget {
                   child: ElevatedButton(
                       child: Text(
                         "İzle",
-                        style: context.textTheme.subtitle1?.copyWith(
+                        style: context.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),

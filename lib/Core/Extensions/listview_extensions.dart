@@ -18,7 +18,10 @@ extension ListViewExtension on ListView {
         itemBuilder: (context, index) {
           if (index == (itemCount - 1))
             itemLoadWidget ??
-                Center(child: CircularProgressIndicator.adaptive());
+                Center(
+                    child: CircularProgressIndicator.adaptive(
+                  backgroundColor: Colors.white,
+                ));
           return delegate.builder(context, index)!;
         },
       ),

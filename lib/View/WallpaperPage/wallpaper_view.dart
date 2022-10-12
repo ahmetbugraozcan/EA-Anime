@@ -38,8 +38,8 @@ class _WallpaperViewState extends State<WallpaperView> {
         builder: (context, state) {
           if (state.isLoading) {
             return Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
+              child: CircularProgressIndicator.adaptive(
+                backgroundColor: Colors.white,
               ),
             );
           }
@@ -51,8 +51,7 @@ class _WallpaperViewState extends State<WallpaperView> {
                   children: [
                     Builder(
                       builder: (context) {
-                        if (state.filterWord != null &&
-                            state.filterWord != "") {
+                        if (state.filterWord != "") {
                           return Row(
                             children: [
                               Padding(
@@ -232,10 +231,9 @@ class _WallpaperViewState extends State<WallpaperView> {
             CachedNetworkImage(
               imageUrl: wallpapers[index].imageUrl.toString(),
               placeholder: (context, url) => Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                ),
-              ),
+                  child: CircularProgressIndicator.adaptive(
+                backgroundColor: Colors.white,
+              )),
               fit: BoxFit.cover,
             ),
             Positioned(
@@ -302,8 +300,8 @@ class _WallpaperViewState extends State<WallpaperView> {
                             return SizedBox(
                               width: 20,
                               height: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
+                              child: CircularProgressIndicator.adaptive(
+                                backgroundColor: Colors.white,
                               ),
                             );
                           }
@@ -350,8 +348,8 @@ class _WallpaperViewState extends State<WallpaperView> {
                             return SizedBox(
                               width: 20,
                               height: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
+                              child: CircularProgressIndicator.adaptive(
+                                backgroundColor: Colors.white,
                               ),
                             );
                           }

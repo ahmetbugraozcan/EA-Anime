@@ -38,8 +38,8 @@ class _GuessingViewState extends State<GuessingView> {
         ?.levels
         .firstWhereOrNull((e) => e.levelId == widget.guessingModel.id)
         ?.questionIndex;
-    if (questionIndex != null ||
-        questionIndex! <= (widget.guessingModel.questions?.length ?? 0)) {
+    if (questionIndex != null &&
+        questionIndex <= (widget.guessingModel.questions?.length ?? 0)) {
       cubit.changeQuestionIndex(questionIndex);
     }
   }
@@ -75,7 +75,10 @@ class _GuessingViewState extends State<GuessingView> {
                 return NoInternetWidget(context);
               }
               if (state.isLoading)
-                return Center(child: CircularProgressIndicator.adaptive());
+                return Center(
+                    child: CircularProgressIndicator.adaptive(
+                  backgroundColor: Colors.white,
+                ));
               return Stack(
                 children: [
                   Column(
@@ -479,7 +482,7 @@ class _GuessingViewState extends State<GuessingView> {
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
                     return Center(
-                      child: CircularProgressIndicator(
+                      child: CircularProgressIndicator.adaptive(
                         value: loadingProgress.expectedTotalBytes != null
                             ? loadingProgress.cumulativeBytesLoaded /
                                 loadingProgress.expectedTotalBytes!

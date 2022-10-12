@@ -24,7 +24,9 @@ class GuessingGamesListView extends StatelessWidget {
             builder: (context, state) {
               return state.isLoading
                   ? Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator.adaptive(
+                        backgroundColor: Colors.white,
+                      ),
                     )
                   : SafeArea(
                       child: Column(

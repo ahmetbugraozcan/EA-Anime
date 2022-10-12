@@ -105,9 +105,8 @@ class _WallpaperDetailViewState extends State<WallpaperDetailView> {
                                         ),
                                         width: 20,
                                         height: 20,
-                                        child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                        ),
+                                        child: CircularProgressIndicator
+                                            .adaptive(),
                                       ),
                                     );
                                   }
@@ -166,9 +165,8 @@ class _WallpaperDetailViewState extends State<WallpaperDetailView> {
                                           return SizedBox(
                                             width: 20,
                                             height: 20,
-                                            child: CircularProgressIndicator(
-                                              color: Colors.white,
-                                            ),
+                                            child: CircularProgressIndicator
+                                                .adaptive(),
                                           );
                                         }
                                         return WallpaperSetButton(

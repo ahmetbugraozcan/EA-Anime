@@ -51,7 +51,9 @@ class BlogsView extends StatelessWidget {
                             ),
                             if (state.isLoading)
                               Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator.adaptive(
+                                  backgroundColor: Colors.white,
+                                ),
                               )
                             else
                               ListView.builder(

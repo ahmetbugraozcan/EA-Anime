@@ -23,10 +23,9 @@ class WallpaperAnimeNamesView extends StatelessWidget {
           builder: (context, state) {
             if (state.isLoading)
               return Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                ),
-              );
+                  child: CircularProgressIndicator.adaptive(
+                backgroundColor: Colors.white,
+              ));
             return Center(
               child: ListView.builder(
                 itemBuilder: (context, index) {
@@ -50,8 +49,8 @@ class WallpaperAnimeNamesView extends StatelessWidget {
                           height: 200,
                           width: double.infinity,
                           placeholder: (context, url) => Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
+                            child: CircularProgressIndicator.adaptive(
+                              backgroundColor: Colors.white,
                             ),
                           ),
                         ),
@@ -60,7 +59,7 @@ class WallpaperAnimeNamesView extends StatelessWidget {
                           child: Text(
                             state.animeNames[index].animeName.toString(),
                             textAlign: TextAlign.right,
-                            style: context.textTheme.headline6?.copyWith(
+                            style: context.textTheme.titleLarge?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               shadows: [

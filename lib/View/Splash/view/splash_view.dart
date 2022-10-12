@@ -35,8 +35,9 @@ class SplashView extends StatelessWidget {
           decoration: Utils.instance
               .backgroundDecoration(ImageEnums.background, fit: BoxFit.fill),
           child: Center(
-            child:
-                CircularProgressIndicator(color: Colors.white, strokeWidth: 3),
+            child: CircularProgressIndicator.adaptive(
+              backgroundColor: Colors.white,
+            ),
           ),
         ),
       ),
