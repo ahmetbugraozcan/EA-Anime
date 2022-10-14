@@ -7,6 +7,7 @@ import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
 import 'package:flutterglobal/Provider/wallpaper/cubit/wallpaper_cubit.dart';
 import 'package:flutterglobal/Widgets/Buttons/wallpaper_set_button.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class WallpaperDetailView extends StatefulWidget {
   WallpaperDetailView({super.key});
@@ -267,31 +268,31 @@ class _WallpaperDetailViewState extends State<WallpaperDetailView> {
                     ],
                   ),
                 ),
-                // Builder(builder: (context) {
-                //   if (context.watch<AdsProviderCubit>().state.bannerAd !=
-                //       null) {
-                //     return SizedBox(
-                //       height: context
-                //           .watch<AdsProviderCubit>()
-                //           .state
-                //           .bannerAd
-                //           ?.size
-                //           .height
-                //           .toDouble(),
-                //       width: context
-                //           .watch<AdsProviderCubit>()
-                //           .state
-                //           .bannerAd
-                //           ?.size
-                //           .width
-                //           .toDouble(),
-                //       child: AdWidget(
-                //         ad: context.read<AdsProviderCubit>().state.bannerAd!,
-                //       ),
-                //     );
-                //   }
-                //   return SizedBox();
-                // })
+                Builder(builder: (context) {
+                  if (context.watch<AdsProviderCubit>().state.bannerAd !=
+                      null) {
+                    return SizedBox(
+                      height: context
+                          .watch<AdsProviderCubit>()
+                          .state
+                          .bannerAd
+                          ?.size
+                          .height
+                          .toDouble(),
+                      width: context
+                          .watch<AdsProviderCubit>()
+                          .state
+                          .bannerAd
+                          ?.size
+                          .width
+                          .toDouble(),
+                      child: AdWidget(
+                        ad: context.read<AdsProviderCubit>().state.bannerAd!,
+                      ),
+                    );
+                  }
+                  return SizedBox();
+                })
               ],
             ),
           )),
