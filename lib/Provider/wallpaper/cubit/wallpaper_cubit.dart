@@ -4,6 +4,7 @@ import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Init/Cache/locale_manager.dart';
 import 'package:flutterglobal/Models/anime_name_model.dart';
 import 'package:flutterglobal/Models/wallpaper_model.dart';
+import 'package:flutterglobal/Service/firebase_firestore_service.dart';
 import 'package:flutterglobal/Service/firebase_realtime_db_service.dart';
 import 'package:flutterglobal/Service/image_downloader_service.dart';
 import 'package:flutterglobal/Service/wallpaper_manager_service.dart';
@@ -13,7 +14,9 @@ part 'wallpaper_state.dart';
 class WallpaperCubit extends Cubit<WallpaperState> {
   CacheManager _cacheManager = CacheManager.instance;
 
-  FirebaseRealtimeDBService _firebaseRealtimeDBService =
+  FirebaseFireStoreService _fireStoreService =
+      FirebaseFireStoreService.instance;
+  FirebaseRealtimeDBService _realtimeDBService =
       FirebaseRealtimeDBService.instance;
 
   ImageDownloaderService _imageDownloaderService =
@@ -23,31 +26,42 @@ class WallpaperCubit extends Cubit<WallpaperState> {
       WallpaperManagerService.instance;
 
   WallpaperCubit() : super(WallpaperState()) {
-    getWallpaperData();
     getAnimeNames();
   }
 
-  Future<void> getWallpaperData() async {
-    setIsLoading(true);
-
-    List<WallpaperModel>? model =
-        await _firebaseRealtimeDBService.gelWallpaperData();
-    // var a = Future.delayed(Duration(seconds: 2));
-    // // a.asStream().
-    if (model != null) {
-      emit(state.copyWith(
-          wallpaperModels: model,
-          paginationCount: state.paginationCount + state.paginationLimit));
-    }
-
-    setIsLoading(false);
+  void resetWallpapers() {
+    emit(state.copyWith(
+      wallpaperModels: [],
+    ));
   }
 
-  void onPagination() {
-    emit(
-      state.copyWith(
-          paginationCount: state.paginationCount + state.paginationLimit),
-    );
+  Future<void> getWallpaperData({bool isPagination = false}) async {
+    if (isPagination)
+      setIsPaginationLoading(true);
+    else
+      setIsLoading(true);
+    List<WallpaperModel> wallpapers = List.from(state.wallpaperModels);
+
+    List<WallpaperModel>? model = await _fireStoreService.getWallpapersLazyLoad(
+        state.paginationLimit, state.selectedAnimeWallpapersName);
+    print("model: $model");
+    if (model != null) {
+      wallpapers.addAll(model);
+      emit(state.copyWith(
+        wallpaperModels: wallpapers,
+      ));
+    }
+
+    if (isPagination)
+      setIsPaginationLoading(false);
+    else
+      setIsLoading(false);
+  }
+
+  void onPagination() async {
+    await Future.delayed(Duration.zero);
+
+    await getWallpaperData(isPagination: true);
   }
 
   void changeGridState(GridState gridState) {
@@ -77,7 +91,7 @@ class WallpaperCubit extends Cubit<WallpaperState> {
     }
   }
 
-  Future<bool> downloadImage(int? id, String? url) async {
+  Future<bool> downloadImage(String? id, String? url) async {
     if (id == null || url == null) return false;
 
     emit(state.copyWith(
@@ -92,7 +106,7 @@ class WallpaperCubit extends Cubit<WallpaperState> {
   }
 
   Future<bool> setWallpaper(
-      int? id, String? url, WallpaperType wallpaperType) async {
+      String? id, String? url, WallpaperType wallpaperType) async {
     if (id == null || url == null) return false;
     emit(state.copyWith(
         settingWallpapers: List.from(state.settingWallpapers)..add(id)));
@@ -122,31 +136,22 @@ class WallpaperCubit extends Cubit<WallpaperState> {
     emit(state.copyWith(isLoading: isLoading));
   }
 
+  void setIsPaginationLoading(bool isLoading) {
+    emit(state.copyWith(isPaginationLoading: isLoading));
+  }
+
   Future<void> getAnimeNames() async {
     setIsLoading(true);
-    List<AnimeNameModel> animeNames =
-        await _firebaseRealtimeDBService.getAnimeNames();
+    List<AnimeNameModel> animeNames = await _realtimeDBService.getAnimeNames();
     setAnimeNames(animeNames);
     setIsLoading(false);
   }
 
-  void filterWallpapersWithAnimeName(String animeName) {
-    List<WallpaperModel> filteredWallpapers =
-        state.wallpaperModels.where((element) {
-      return element.animeName == animeName ||
-          element.tags!.any((element) => element == animeName);
-    }).toList();
-
+  void setSelectedAnimeWallpapersName(String animeName) {
     emit(
       state.copyWith(
-        filteredWallpapers: filteredWallpapers,
-        filterWord: animeName,
-        paginationCount: state.paginationLimit,
+        selectedAnimeWallpapersName: animeName,
       ),
     );
-  }
-
-  void setFilterWord(String? filterWord) {
-    emit(state.copyWith(filterWord: filterWord));
   }
 }

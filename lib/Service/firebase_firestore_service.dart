@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutterglobal/Models/blog_model.dart';
 import 'package:flutterglobal/Models/guessing_model.dart';
+import 'package:flutterglobal/Models/wallpaper_model.dart';
 
 class FirebaseFireStoreService {
   static FirebaseFireStoreService? _instance;
@@ -43,6 +44,53 @@ class FirebaseFireStoreService {
       });
       return list;
     }
+    return null;
+  }
+
+  DocumentSnapshot<WallpaperModel>? lastDocument;
+
+  Future<List<WallpaperModel>?> getWallpapersLazyLoad(
+      int takeCount, String? animeName) async {
+    print("ANIME NAME: $animeName");
+    if (animeName == null) return null;
+    CollectionReference ref = _firestore.collection("compressedWallpapers");
+    QuerySnapshot<WallpaperModel?> data;
+    if (lastDocument == null) {
+      data = await ref
+          .orderBy("id", descending: true)
+          .where("animeName", isEqualTo: animeName)
+          .limit(takeCount)
+          .withConverter<WallpaperModel>(
+              fromFirestore: (snapshot, options) =>
+                  WallpaperModel.fromJson(snapshot.data()),
+              toFirestore: (model, options) => model.toJson())
+          .get();
+    } else {
+      data = await ref
+          .orderBy("id", descending: true)
+           .where("animeName", isEqualTo: animeName)
+          .startAfterDocument(lastDocument!)
+          .limit(takeCount)
+          .withConverter<WallpaperModel>(
+              fromFirestore: (snapshot, options) =>
+                  WallpaperModel.fromJson(snapshot.data()),
+              toFirestore: (model, options) => model.toJson())
+          .get();
+    }
+
+    if (data.docs.isNotEmpty) {
+      List<WallpaperModel> list = [];
+      data.docs.forEach((element) {
+        if (element.data() != null) {
+          list.add(element.data()!);
+        }
+      });
+
+      lastDocument = data.docs.last as DocumentSnapshot<WallpaperModel>;
+
+      return list;
+    }
+
     return null;
   }
 }

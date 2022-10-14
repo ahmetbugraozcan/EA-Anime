@@ -2,11 +2,12 @@ class WallpaperModel {
   String? animeName;
   List<String>? tags;
   String? imageUrl;
-  int? id;
+  String? id;
 
   WallpaperModel({this.animeName, this.tags, this.imageUrl, this.id});
 
-  WallpaperModel.fromJson(Map<String, dynamic> json) {
+  WallpaperModel.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return;
     print(json);
     animeName = json['animeName'];
     tags = json['tags'] == null ? [] : json['tags'].cast<String>();

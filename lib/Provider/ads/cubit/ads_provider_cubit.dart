@@ -12,6 +12,10 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
     getTop10TransitionAd();
   }
 
+  setIsBannerAdLoaded(bool value) {
+    emit(state.copyWith(isBannerAdLoaded: value));
+  }
+
   void setAd(RewardedAd ad) {
     emit(state.copyWith(ad: ad));
   }
@@ -34,7 +38,7 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
 
   Future<void> getBannerAd() async {
     state.bannerAd?.dispose();
-
+    setIsBannerAdLoaded(false);
     setBannerAd(null);
 
     String adId;
@@ -56,6 +60,7 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
         onAdLoaded: (Ad ad) {
           print('Ad loaded.');
           setBannerAd(ad as BannerAd);
+          setIsBannerAdLoaded(true);
         },
         onAdFailedToLoad: (Ad ad, LoadAdError error) {
           ad.dispose();
@@ -68,6 +73,7 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
 
     await myBanner.load();
     setBannerAd(myBanner);
+    setIsBannerAdLoaded(true);
   }
 
   Future<void> getInitialRewardAd() async {

@@ -9,26 +9,27 @@ enum GridState {
 
 class WallpaperState extends Equatable {
   List<AnimeNameModel> animeNames;
-  String filterWord;
+  String? selectedAnimeWallpapersName;
+
   WallpaperModel? selectedWallpaper;
   bool isLoading;
+  bool isPaginationLoading;
   GridState gridState;
   List<WallpaperModel> wallpaperModels;
-  List<WallpaperModel> filteredWallpapers;
-  List<int> downloadingImages;
-  List<int> settingWallpapers;
+  List<String> downloadingImages;
+  List<String> settingWallpapers;
 
   int paginationCount;
   int paginationLimit;
 
   WallpaperState(
       {this.isLoading = false,
+      this.isPaginationLoading = false,
+      this.selectedAnimeWallpapersName,
       this.animeNames = const [],
-      this.filteredWallpapers = const [],
       this.selectedWallpaper,
-      this.filterWord = "",
       this.paginationCount = 0,
-      this.paginationLimit = 30,
+      this.paginationLimit = 15,
       this.wallpaperModels = const [],
       this.downloadingImages = const [],
       this.settingWallpapers = const [],
@@ -43,22 +44,21 @@ class WallpaperState extends Equatable {
         settingWallpapers,
         selectedWallpaper,
         animeNames,
-        filteredWallpapers,
-        filterWord,
         paginationCount,
-        paginationLimit
+        paginationLimit,
+        selectedAnimeWallpapersName,
       ];
 
   WallpaperState copyWith({
     bool? isLoading,
+    bool? isPaginationLoading,
     List<WallpaperModel>? wallpaperModels,
-    List<int>? settingWallpapers,
+    List<String>? settingWallpapers,
     GridState? gridState,
     WallpaperModel? selectedWallpaper,
-    List<int>? downloadingImages,
+    List<String>? downloadingImages,
     List<AnimeNameModel>? animeNames,
-    String? filterWord,
-    List<WallpaperModel>? filteredWallpapers,
+    String? selectedAnimeWallpapersName,
     int? paginationCount,
     int? paginationLimit,
   }) {
@@ -70,10 +70,11 @@ class WallpaperState extends Equatable {
       downloadingImages: downloadingImages ?? this.downloadingImages,
       settingWallpapers: settingWallpapers ?? this.settingWallpapers,
       animeNames: animeNames ?? this.animeNames,
-      filteredWallpapers: filteredWallpapers ?? this.filteredWallpapers,
-      filterWord: filterWord ?? this.filterWord,
       paginationCount: paginationCount ?? this.paginationCount,
       paginationLimit: paginationLimit ?? this.paginationLimit,
+      selectedAnimeWallpapersName:
+          selectedAnimeWallpapersName ?? this.selectedAnimeWallpapersName,
+      isPaginationLoading: isPaginationLoading ?? this.isPaginationLoading,
     );
   }
 }

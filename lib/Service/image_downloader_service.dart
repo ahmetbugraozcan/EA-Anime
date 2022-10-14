@@ -11,7 +11,8 @@ class ImageDownloaderService {
 
   Future<bool> downloadImage(String url) async {
     try {
-      var imageId = await ImageDownloader.downloadImage(url);
+      var imageId = await ImageDownloader.downloadImage(url,
+          destination: AndroidDestinationType.directoryPictures);
       if (imageId == null) {
         return false;
       }
@@ -26,7 +27,7 @@ class ImageDownloaderService {
       print('size: $size');
       print('mimeType: $mimeType');
       return true;
-    } on PlatformException catch (error) {
+    } catch (error) {
       print(error);
       return false;
     }

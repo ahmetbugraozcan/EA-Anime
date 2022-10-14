@@ -5,8 +5,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Provider/wallpaper/cubit/wallpaper_cubit.dart';
-import 'package:flutterglobal/Provider/wallpaperRoot/cubit/wallpaper_root_cubit.dart';
 import 'package:flutterglobal/View/WallpaperAnimeNamesView/cubit/wallpaper_anime_names_cubit.dart';
+import 'package:flutterglobal/View/WallpaperPage/wallpaper_view.dart';
 import 'package:flutterglobal/Widgets/Bounce/bounce_without_hover.dart';
 
 class WallpaperAnimeNamesView extends StatelessWidget {
@@ -31,13 +31,21 @@ class WallpaperAnimeNamesView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return BounceWithoutHover(
                     duration: Duration(milliseconds: 200),
-                    onPressed: () {
+                    onPressed: () async {
+                      context.read<WallpaperCubit>().resetWallpapers();
+                      await Future.delayed(Duration.zero);
                       context
                           .read<WallpaperCubit>()
-                          .filterWallpapersWithAnimeName(
+                          .setSelectedAnimeWallpapersName(
                             state.animeNames[index].animeName.toString(),
                           );
-                      context.read<WallpaperRootCubit>().setPageIndex(1);
+                      print("animename: ${state.animeNames[index].animeName}");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WallpaperView(),
+                        ),
+                      );
                     },
                     child: Container(
                         child: Stack(

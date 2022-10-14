@@ -1,17 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
-import 'package:flutterglobal/Models/wallpaper_model.dart';
 import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
 import 'package:flutterglobal/Provider/wallpaper/cubit/wallpaper_cubit.dart';
-import 'package:flutterglobal/Service/wallpaper_manager_service.dart';
 import 'package:flutterglobal/Widgets/Buttons/wallpaper_set_button.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class WallpaperDetailView extends StatefulWidget {
   WallpaperDetailView({super.key});
@@ -23,7 +18,6 @@ class WallpaperDetailView extends StatefulWidget {
 class _WallpaperDetailViewState extends State<WallpaperDetailView> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     BlocProvider.of<AdsProviderCubit>(context).getBannerAd();
   }
@@ -45,15 +39,18 @@ class _WallpaperDetailViewState extends State<WallpaperDetailView> {
                       Hero(
                         tag:
                             "wallpaper${context.read<WallpaperCubit>().state.selectedWallpaper?.imageUrl}",
-                        child: FadeInImage.assetNetwork(
-                          image: context
+                        child: CachedNetworkImage(
+                          placeholder: (context, url) => Image.asset(
+                            Utils.instance.getPNGImage(ImageEnums.anyaLoading),
+                          ),
+                          imageUrl: context
                               .read<WallpaperCubit>()
                               .state
                               .selectedWallpaper!
                               .imageUrl!,
-                          fit: BoxFit.fill,
-                          placeholder: Utils.instance
-                              .getPNGImage(ImageEnums.anyaLoading),
+                          memCacheHeight: 800,
+                          memCacheWidth: 500,
+                          fit: BoxFit.cover,
                         ),
                       ),
                       Positioned(
@@ -245,35 +242,19 @@ class _WallpaperDetailViewState extends State<WallpaperDetailView> {
                                         0, (i) {
                                   return Padding(
                                     padding: const EdgeInsets.only(right: 8.0),
-                                    child: InkWell(
-                                      onTap: () {
+                                    child: Chip(
+                                      backgroundColor: Colors.primaries[
+                                          i % Colors.primaries.length],
+                                      label: Text(
                                         context
-                                            .read<WallpaperCubit>()
-                                            .filterWallpapersWithAnimeName(
-                                              context
-                                                      .read<WallpaperCubit>()
-                                                      .state
-                                                      .selectedWallpaper
-                                                      ?.tags?[i]
-                                                      .toString() ??
-                                                  "",
-                                            );
-                                        Navigator.pop(context);
-                                      },
-                                      child: Chip(
-                                        backgroundColor: Colors.primaries[
-                                            i % Colors.primaries.length],
-                                        label: Text(
-                                          context
-                                                  .read<WallpaperCubit>()
-                                                  .state
-                                                  .selectedWallpaper
-                                                  ?.tags?[i]
-                                                  .toString() ??
-                                              "",
-                                          style: context.textTheme.subtitle2
-                                              ?.copyWith(color: Colors.white),
-                                        ),
+                                                .read<WallpaperCubit>()
+                                                .state
+                                                .selectedWallpaper
+                                                ?.tags?[i]
+                                                .toString() ??
+                                            "",
+                                        style: context.textTheme.subtitle2
+                                            ?.copyWith(color: Colors.white),
                                       ),
                                     ),
                                   );

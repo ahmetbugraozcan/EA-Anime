@@ -4,6 +4,8 @@ class AdsProviderState {
   RewardedAd? ad;
   InterstitialAd? adForTop10;
   bool isAdLoading;
+
+  bool isBannerAdLoaded;
   BannerAd? bannerAd;
 
   RewardedAd? adForWallpaper;
@@ -12,7 +14,8 @@ class AdsProviderState {
       this.isAdLoading = false,
       this.bannerAd,
       this.adForWallpaper,
-      this.adForTop10});
+      this.adForTop10,
+      this.isBannerAdLoaded = false});
 
   // List<Object?> get props => [ad, isAdLoading, bannerAd, adForWallpaper];
 
@@ -22,6 +25,7 @@ class AdsProviderState {
     BannerAd? bannerAd,
     RewardedAd? adForWallpaper,
     InterstitialAd? adForTop10,
+    bool? isBannerAdLoaded,
   }) {
     return AdsProviderState(
       ad: ad ?? this.ad,
@@ -29,6 +33,7 @@ class AdsProviderState {
       bannerAd: bannerAd ?? this.bannerAd,
       adForWallpaper: adForWallpaper ?? this.adForWallpaper,
       adForTop10: adForTop10 ?? this.adForTop10,
+      isBannerAdLoaded: isBannerAdLoaded ?? this.isBannerAdLoaded,
     );
   }
 }
