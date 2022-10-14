@@ -42,9 +42,10 @@ class WallpaperCubit extends Cubit<WallpaperState> {
       setIsLoading(true);
     List<WallpaperModel> wallpapers = List.from(state.wallpaperModels);
 
+// if ispagination false means it is first request to firebase
     List<WallpaperModel>? model = await _fireStoreService.getWallpapersLazyLoad(
-        state.paginationLimit, state.selectedAnimeWallpapersName);
-    print("model: $model");
+        state.paginationLimit, state.selectedAnimeWallpapersName,
+        isFirst: !isPagination);
     if (model != null) {
       wallpapers.addAll(model);
       emit(state.copyWith(

@@ -50,11 +50,12 @@ class FirebaseFireStoreService {
   DocumentSnapshot<WallpaperModel>? lastDocument;
 
   Future<List<WallpaperModel>?> getWallpapersLazyLoad(
-      int takeCount, String? animeName) async {
-    print("ANIME NAME: $animeName");
+      int takeCount, String? animeName,
+      {bool isFirst = false}) async {
     if (animeName == null) return null;
     CollectionReference ref = _firestore.collection("compressedWallpapers");
     QuerySnapshot<WallpaperModel?> data;
+    if (isFirst) lastDocument = null;
     if (lastDocument == null) {
       data = await ref
           .orderBy("id", descending: true)
@@ -68,7 +69,7 @@ class FirebaseFireStoreService {
     } else {
       data = await ref
           .orderBy("id", descending: true)
-           .where("animeName", isEqualTo: animeName)
+          .where("animeName", isEqualTo: animeName)
           .startAfterDocument(lastDocument!)
           .limit(takeCount)
           .withConverter<WallpaperModel>(
@@ -80,11 +81,11 @@ class FirebaseFireStoreService {
 
     if (data.docs.isNotEmpty) {
       List<WallpaperModel> list = [];
-      data.docs.forEach((element) {
+      for (var element in data.docs) {
         if (element.data() != null) {
           list.add(element.data()!);
         }
-      });
+      }
 
       lastDocument = data.docs.last as DocumentSnapshot<WallpaperModel>;
 
