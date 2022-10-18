@@ -60,6 +60,7 @@ class _MenuViewState extends State<MenuView>
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => GuessingGamesListView(),
+                          settings: RouteSettings(name: "GuessingGamesList"),
                         ),
                       );
 

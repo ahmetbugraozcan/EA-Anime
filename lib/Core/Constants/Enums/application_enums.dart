@@ -22,7 +22,8 @@ enum ImageEnums {
   megumin,
   animeview,
   blackgoku,
-  naruto
+  naruto,
+  randomAnimes,
 }
 
 enum PreferencesKeys {

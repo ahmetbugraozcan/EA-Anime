@@ -7,7 +7,8 @@ import 'package:flutterglobal/Provider/cubit/app_provider_cubit.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
 class UserAssetsInfo extends StatelessWidget {
-  const UserAssetsInfo({super.key});
+  Widget? centerWidget;
+  UserAssetsInfo({super.key, this.centerWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +42,14 @@ class UserAssetsInfo extends StatelessWidget {
                 ),
               ],
             ),
-            Icon(
-              Icons.gamepad,
-              color: Colors.white,
-              size: 48,
-            ),
+            ...[
+              centerWidget ??
+                  Icon(
+                    Icons.gamepad,
+                    color: Colors.white,
+                    size: 48,
+                  )
+            ],
             Row(
               children: [
                 Image.asset(

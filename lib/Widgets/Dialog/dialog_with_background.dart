@@ -10,13 +10,17 @@ class DialogWithBackground extends StatelessWidget {
   String title;
   String contentText;
   VoidCallback? onConfirm;
+  VoidCallback? onCancel;
+  String? confirmText;
 
   DialogEnums dialogType;
 
   DialogWithBackground({
     super.key,
+    this.confirmText,
     this.title = "",
     this.contentText = "",
+    this.onCancel,
     this.dialogType = DialogEnums.INFORMATION,
     this.onConfirm,
   });
@@ -108,9 +112,10 @@ class DialogWithBackground extends StatelessWidget {
                                     padding: EdgeInsets.zero,
                                     backgroundColor:
                                         colorScheme.cancelButtonColor),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
+                                onPressed: onCancel ??
+                                    () {
+                                      Navigator.pop(context);
+                                    },
                                 child: Text(
                                   "Vazgeç",
                                   style: context.textTheme.caption?.copyWith(
@@ -135,7 +140,7 @@ class DialogWithBackground extends StatelessWidget {
                                 ),
                                 onPressed: onConfirm,
                                 child: Text(
-                                  "Onayla",
+                                  confirmText ?? "Onayla",
                                   style: context.textTheme.caption?.copyWith(
                                       color:
                                           colorScheme.approvalButtonTextColor),

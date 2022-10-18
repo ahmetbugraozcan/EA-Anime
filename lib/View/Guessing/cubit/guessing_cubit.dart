@@ -9,7 +9,7 @@ import 'package:flutterglobal/Models/guessing_model.dart';
 part 'guessing_state.dart';
 
 class GuessingCubit extends Cubit<GuessingState> {
-  GuessingCubit() : super(GuessingState()) {}
+  GuessingCubit() : super(GuessingState());
 
   void changeQuestion() {
     changeQuestionIndex(state.questionIndex + 1);
