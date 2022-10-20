@@ -2,7 +2,7 @@ part of 'time_limit_guessing_cubit.dart';
 
 class TimeLimitGuessingState extends Equatable {
   List<Questions> randomQuestions;
-  final int timeLimit;
+  int timeLimit;
   final bool isTimeOut;
   int questionIndex;
   bool isAnsweredWrong;
@@ -10,9 +10,10 @@ class TimeLimitGuessingState extends Equatable {
   bool isAnimeTitleActive;
   List<GuessCardModel> shuffeledList;
   List<GuessCardModel?> userGuessedWords;
+  bool isAdShown;
 
   TimeLimitGuessingState(
-      {this.timeLimit = 10,
+      {this.timeLimit = 3,
       this.randomQuestions = const [],
       this.questionIndex = 0,
       this.isAnimeTitleActive = false,
@@ -20,7 +21,8 @@ class TimeLimitGuessingState extends Equatable {
       this.userGuessedWords = const [],
       this.isPanelActive = false,
       this.isAnsweredWrong = false,
-      this.isTimeOut = false});
+      this.isTimeOut = false,
+      this.isAdShown = false});
 
   @override
   List<Object?> get props => [
@@ -32,7 +34,8 @@ class TimeLimitGuessingState extends Equatable {
         isAnimeTitleActive,
         shuffeledList,
         userGuessedWords,
-        isTimeOut
+        isTimeOut,
+        isAdShown
       ];
 
   TimeLimitGuessingState copyWith(
@@ -44,7 +47,8 @@ class TimeLimitGuessingState extends Equatable {
       bool? isAnimeTitleActive,
       List<GuessCardModel>? shuffeledList,
       List<GuessCardModel?>? userGuessedWords,
-      bool? isTimeOut}) {
+      bool? isTimeOut,
+      bool? isAdShown}) {
     return TimeLimitGuessingState(
       timeLimit: timeLimit ?? this.timeLimit,
       randomQuestions: randomQuestions ?? this.randomQuestions,
@@ -55,6 +59,7 @@ class TimeLimitGuessingState extends Equatable {
       shuffeledList: shuffeledList ?? this.shuffeledList,
       userGuessedWords: userGuessedWords ?? this.userGuessedWords,
       isTimeOut: isTimeOut ?? this.isTimeOut,
+      isAdShown: isAdShown ?? this.isAdShown,
     );
   }
 }

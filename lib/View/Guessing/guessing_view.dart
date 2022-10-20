@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
+import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Models/guess_card_model.dart';
@@ -176,7 +177,7 @@ class _GuessingViewState extends State<GuessingView> {
                               dialogType: DialogEnums.INTERACTIVE,
                               title: "Kilit Aç",
                               contentText:
-                                  "Cevabı açmak için 500 altın harcamak istiyor musunuz?",
+                                  "Cevabı açmak için ${AppConstants.instance.goldCountForAnswer} altın harcamak istiyor musunuz?",
                               onConfirm: () {
                                 cubit.changeAnimeTitleVisibility(true);
                                 context
@@ -194,7 +195,7 @@ class _GuessingViewState extends State<GuessingView> {
                             dialogType: DialogEnums.ERROR,
                             title: "Yetersiz Altın",
                             contentText:
-                                "Cevabı açmak için 500 altınınız bulunmamaktadır. Reklam izleyerek altın sayınızı artırabilirsiniz.",
+                                "Cevabı açmak için ${AppConstants.instance.goldCountForAnswer} altınınız bulunmamaktadır. Reklam izleyerek altın sayınızı artırabilirsiniz.",
                           );
                         },
                       );

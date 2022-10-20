@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
+import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
@@ -64,13 +65,14 @@ class ShopView extends StatelessWidget {
                     physics: BouncingScrollPhysics(),
                     children: [
                       ShopCard(
-                          title: "500 Altın",
+                          title:
+                              "${AppConstants.instance.goldCountForAnswer} Altın",
                           isloading: context
                               .watch<AdsProviderCubit>()
                               .state
                               .isAdLoading,
                           subtitle:
-                              "Kısa bir reklam videosu izleyerek 500 altın kazan.",
+                              "Kısa bir reklam videosu izleyerek ${AppConstants.instance.goldCountForAnswer} altın kazan.",
                           image: ImageEnums.coin,
                           onTap: () {
                             print(context.read<AdsProviderCubit>().state.ad ??
@@ -78,7 +80,8 @@ class ShopView extends StatelessWidget {
                             context.read<AdsProviderCubit>().state.ad?.show(
                                 onUserEarnedReward:
                                     (AdWithoutView ad, RewardItem rewardItem) {
-                              context.read<AppProviderCubit>().addGold(500);
+                              context.read<AppProviderCubit>().addGold(
+                                  AppConstants.instance.goldCountForAnswer);
                               context
                                   .read<AdsProviderCubit>()
                                   .getInitialRewardAd();

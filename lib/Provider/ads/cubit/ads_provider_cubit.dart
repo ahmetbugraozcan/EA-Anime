@@ -77,7 +77,6 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
   }
 
   Future<void> getInitialRewardAd() async {
-    state.ad?.dispose();
     String adId;
     if (Platform.isAndroid) {
       adId = "ca-app-pub-9258462632949376/8233385378";
@@ -86,6 +85,8 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
     } else {
       adId = 'ca-app-pub-3940256099942544/5224354917';
     }
+    setIsAdLoading(true);
+
     await RewardedAd.load(
         request: AdRequest(),
         // test reklam id

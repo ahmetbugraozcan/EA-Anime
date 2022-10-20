@@ -9,13 +9,14 @@ class AdsProviderState {
   BannerAd? bannerAd;
 
   RewardedAd? adForWallpaper;
-  AdsProviderState(
-      {this.ad,
-      this.isAdLoading = false,
-      this.bannerAd,
-      this.adForWallpaper,
-      this.adForTop10,
-      this.isBannerAdLoaded = false});
+  AdsProviderState({
+    this.ad,
+    this.isAdLoading = false,
+    this.bannerAd,
+    this.adForWallpaper,
+    this.adForTop10,
+    this.isBannerAdLoaded = false,
+  });
 
   // List<Object?> get props => [ad, isAdLoading, bannerAd, adForWallpaper];
 

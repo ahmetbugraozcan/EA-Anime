@@ -85,9 +85,7 @@ class DialogWithBackground extends StatelessWidget {
                               elevation: 1,
                               backgroundColor: colorScheme.cancelButtonColor,
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                            onPressed: onConfirm,
                             child: Text(
                               "Tamam",
                               style: context.textTheme.caption?.copyWith(

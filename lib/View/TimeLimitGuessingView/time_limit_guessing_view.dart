@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
+import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Models/guess_card_model.dart';
 import 'package:flutterglobal/Models/guessing_model.dart';
+import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
 import 'package:flutterglobal/Provider/cubit/app_provider_cubit.dart';
 import 'package:flutterglobal/Provider/network/cubit/network_provider_cubit.dart';
 import 'package:flutterglobal/View/GuessingGamesList/cubit/guessing_games_cubit.dart';
@@ -14,6 +16,7 @@ import 'package:flutterglobal/Widgets/Bounce/bounce_without_hover.dart';
 import 'package:flutterglobal/Widgets/Dialog/dialog_color.scheme.dart';
 import 'package:flutterglobal/Widgets/Dialog/dialog_with_background.dart';
 import 'package:flutterglobal/Widgets/Game/user_assets_info.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lottie/lottie.dart';
 
 class TimeLimitGuessingView extends StatefulWidget {
@@ -49,34 +52,106 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
         decoration: Utils.instance.backgroundDecoration(ImageEnums.background),
         child: SafeArea(
           child: BlocConsumer<TimeLimitGuessingCubit, TimeLimitGuessingState>(
-            buildWhen: (previous, current) =>
-                previous.shuffeledList != current.shuffeledList ||
-                previous.userGuessedWords != current.userGuessedWords ||
-                previous.questionIndex != current.questionIndex ||
-                previous.isTimeOut != current.isTimeOut ||
-                previous.isAnimeTitleActive != current.isAnimeTitleActive ||
-                previous.randomQuestions != current.randomQuestions,
+            buildWhen: (previous, current) {
+              // print all of them is different
+              // print(previous.shuffeledList != current.shuffeledList);
+              // print(previous.isAdShown != current.isAdShown);
+              // print(previous.isTimeOut != current.isTimeOut);
+              // print(previous.randomQuestions != current.randomQuestions);
+              // print(previous.isAnimeTitleActive != current.isAnimeTitleActive);
+              // print(previous.questionIndex != current.questionIndex);
+
+              return previous.shuffeledList != current.shuffeledList ||
+                  previous.userGuessedWords != current.userGuessedWords ||
+                  previous.questionIndex != current.questionIndex ||
+                  previous.isTimeOut != current.isTimeOut ||
+                  previous.isAnimeTitleActive != current.isAnimeTitleActive ||
+                  previous.randomQuestions != current.randomQuestions;
+            },
             listener: (context, state) {
-              if (state.isTimeOut) {
-                print("Time out");
+              if (state.isTimeOut && state.isAdShown) {
+                cubit.timer.cancel();
+
                 showDialog(
+                  barrierDismissible: false,
                   context: context,
                   builder: (context) {
-                    return DialogWithBackground(
-                      dialogType: DialogEnums.INTERACTIVE,
-                      title: "Süre doldu.",
-                      confirmText: "İzle",
-                      contentText:
-                          "Süreniz dolduğu için oyunu kaybettiniz. Reklam izleyerek 30 saniye kazanabilirsiniz.",
-                      onCancel: () {
-                        Navigator.popUntil(
-                          context,
-                          ModalRoute.withName("GuessingGamesList"),
-                        );
-                      },
-                      onConfirm: () {
-                        // reklam izle eğer reklam izlediyse süreyi 30 saniye arttır ve oyuna devam ettir iptal eder ise 2 kere nav.pop yap
-                      },
+                    return WillPopScope(
+                      onWillPop: () async => false,
+                      child: DialogWithBackground(
+                        dialogType: DialogEnums.ERROR,
+                        title: "Süre doldu.",
+                        contentText: "Süreniz dolduğu için oyunu kaybettiniz.",
+                        onConfirm: () {
+                          Navigator.popUntil(
+                            context,
+                            ModalRoute.withName("GuessingGamesList"),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                );
+              } else if (state.isTimeOut && !state.isAdShown) {
+                print("showed again");
+                cubit.timer.cancel();
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) {
+                    return WillPopScope(
+                      onWillPop: () async => false,
+                      child: DialogWithBackground(
+                        dialogType: DialogEnums.INTERACTIVE,
+                        title: "Süre doldu.",
+                        confirmText:
+                            context.watch<AdsProviderCubit>().state.isAdLoading
+                                ? "Yükleniyor"
+                                : "İzle",
+                        contentText:
+                            "Süreniz dolduğu için oyunu kaybettiniz. Reklam izleyerek ${AppConstants.instance.extraTimeForGuessingGame} saniye kazanabilirsiniz.",
+                        onCancel: () {
+                          Navigator.pop(context);
+                          // Navigator.popUntil(
+                          //   context,
+                          //   ModalRoute.withName("GuessingGamesList"),
+                          // );
+                        },
+                        onConfirm: () async {
+                          print("onConfirm");
+                          await context
+                              .read<AdsProviderCubit>()
+                              .getInitialRewardAd();
+
+                          var ad = context.read<AdsProviderCubit>().state.ad;
+
+                          await ad?.show(
+                            onUserEarnedReward: (rewardedAd, reward) async {
+                              print("onAdUserEarnedReward TRIGGERED");
+                              cubit.whenUserWatchedAd();
+                              await Future.delayed(Duration.zero);
+                              ad.fullScreenContentCallback =
+                                  FullScreenContentCallback(
+                                onAdImpression: (ad) {
+                                  print("onAdImpression");
+                                },
+                                onAdShowedFullScreenContent: (ad) {
+                                  print("onAdShowedFullScreenContent");
+                                },
+                                onAdDismissedFullScreenContent: (ad) async {
+                                  Navigator.pop(context);
+                                  cubit.restartTimer();
+                                },
+                                onAdFailedToShowFullScreenContent: (ad, error) {
+                                  print("onAdFailedToShowFullScreenContent");
+                                },
+                              );
+                            },
+                          );
+
+                          // reklam izle eğer reklam izlediyse süreyi 30 saniye arttır ve oyuna devam ettir iptal eder ise 2 kere nav.pop yap
+                        },
+                      ),
                     );
                   },
                 );
@@ -199,7 +274,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                                 .user
                                 ?.goldCount ??
                             0) >=
-                        500) {
+                        AppConstants.instance.goldCountForAnswer) {
                       showDialog(
                         context: context,
                         builder: (context) {
@@ -207,12 +282,11 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                               dialogType: DialogEnums.INTERACTIVE,
                               title: "Kilit Aç",
                               contentText:
-                                  "Cevabı açmak için 500 altın harcamak istiyor musunuz?",
+                                  "Cevabı açmak için ${AppConstants.instance.goldCountForAnswer} altın harcamak istiyor musunuz?",
                               onConfirm: () {
                                 cubit.changeAnimeTitleVisibility(true);
-                                context
-                                    .read<AppProviderCubit>()
-                                    .decrementGold(500);
+                                context.read<AppProviderCubit>().decrementGold(
+                                    AppConstants.instance.goldCountForAnswer);
                                 Navigator.pop(context);
                               });
                         },
@@ -225,7 +299,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                             dialogType: DialogEnums.ERROR,
                             title: "Yetersiz Altın",
                             contentText:
-                                "Cevabı açmak için 500 altınınız bulunmamaktadır. Reklam izleyerek altın sayınızı artırabilirsiniz.",
+                                "Cevabı açmak için ${AppConstants.instance.goldCountForAnswer} altınınız bulunmamaktadır. Reklam izleyerek altın sayınızı artırabilirsiniz.",
                           );
                         },
                       );

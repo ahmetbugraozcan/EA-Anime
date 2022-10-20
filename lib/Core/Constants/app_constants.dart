@@ -22,4 +22,10 @@ class AppConstants {
 
   String get imageNotFound =>
       "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg";
+
+  int get goldCountForAnswer => 500;
+
+  int get defaultTimeForGuessingGame => 30;
+
+  int get extraTimeForGuessingGame => 10;
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Models/guess_card_model.dart';
 import 'package:flutterglobal/Models/guessing_model.dart';
@@ -11,10 +12,10 @@ part 'time_limit_guessing_state.dart';
 class TimeLimitGuessingCubit extends Cubit<TimeLimitGuessingState> {
   late Timer timer;
   TimeLimitGuessingCubit() : super(TimeLimitGuessingState()) {
+    state.timeLimit = AppConstants.instance.defaultTimeForGuessingGame;
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (state.timeLimit == 1) {
-        emit(state.copyWith(isTimeOut: true));
-        emit(state.copyWith(timeLimit: state.timeLimit - 1));
+        emit(state.copyWith(isTimeOut: true, timeLimit: state.timeLimit - 1));
         timer.cancel();
       } else {
         emit(state.copyWith(timeLimit: state.timeLimit - 1));
@@ -30,8 +31,31 @@ class TimeLimitGuessingCubit extends Cubit<TimeLimitGuessingState> {
     changeQuestionIndex(state.questionIndex + 1);
   }
 
+  void restartTimer() {
+    timer.cancel();
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (state.timeLimit == 1) {
+        emit(state.copyWith(isTimeOut: true, timeLimit: state.timeLimit - 1));
+        timer.cancel();
+      } else {
+        emit(state.copyWith(timeLimit: state.timeLimit - 1));
+      }
+    });
+  }
+
+  void whenUserWatchedAd() {
+    emit(state.copyWith(
+        isTimeOut: false,
+        timeLimit: AppConstants.instance.extraTimeForGuessingGame,
+        isAdShown: true));
+  }
+
   void setTimeLimit(int timeLimit) {
     emit(state.copyWith(timeLimit: timeLimit));
+  }
+
+  void setAdShown(bool isAdShown) {
+    emit(state.copyWith(isAdShown: isAdShown));
   }
 
   void setRandomQuestions(List<Questions> randomQuestions) {
