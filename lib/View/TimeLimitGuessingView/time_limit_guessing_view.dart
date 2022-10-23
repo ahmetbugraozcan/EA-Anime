@@ -85,7 +85,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                               onConfirm: () {
                                 Navigator.popUntil(
                                   context,
-                                  ModalRoute.withName("GuessingGamesList"),
+                                  ModalRoute.withName("GuessingGameTypesRoot"),
                                 );
                               },
                             ),
@@ -114,7 +114,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                               onCancel: () {
                                 Navigator.popUntil(
                                   context,
-                                  ModalRoute.withName("GuessingGamesList"),
+                                  ModalRoute.withName("GuessingGameTypesRoot"),
                                 );
                               },
                               onConfirm: () async {
