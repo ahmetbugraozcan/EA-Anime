@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
-import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Widgets/Dialog/dialog_color.scheme.dart';
 
 class DialogWithBackground extends StatelessWidget {

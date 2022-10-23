@@ -3,9 +3,7 @@ import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/View/Blogs/blogs_view.dart';
-import 'package:flutterglobal/View/Guessing/guessing_view.dart';
 import 'package:flutterglobal/View/GuessingGameTypesRoot/guessing_game_types_root.dart';
-import 'package:flutterglobal/View/GuessingGamesList/guessing_games_list_view.dart';
 import 'package:flutterglobal/View/TestType/test_type_view.dart';
 import 'package:flutterglobal/View/WallpaperRootPage/wallpaper_root_view.dart';
 import 'package:flutterglobal/Widgets/Cards/MenuGuessCard/menu_guess_card.dart';
@@ -58,10 +56,13 @@ class _MenuViewState extends State<MenuView>
                         "Verilen ipuçlarına göre anime karakterlerini tahmin etmeye çalış.",
                     background: ImageEnums.guess,
                     onPressed: () async {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GuessingGameTypesRoot()));
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => GuessingGameTypesRoot(),
+                          settings:
+                              RouteSettings(name: "GuessingGameTypesRoot"),
+                        ),
+                      );
                     },
                   ),
                   MenuGuessCard(
