@@ -7,6 +7,8 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.2'
+        // flutter local notifications için
+        // classpath 'com.android.tools.build:gradle:4.2.2'
         // START: FlutterFire Configuration
         classpath 'com.google.gms:google-services:4.3.10'
         // END: FlutterFire Configuration

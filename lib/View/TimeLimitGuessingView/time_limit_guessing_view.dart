@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
@@ -8,8 +9,8 @@ import 'package:flutterglobal/Models/guess_card_model.dart';
 import 'package:flutterglobal/Models/guessing_model.dart';
 import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
 import 'package:flutterglobal/Provider/cubit/app_provider_cubit.dart';
+import 'package:flutterglobal/Provider/guessingGames/guessing_games_cubit.dart';
 import 'package:flutterglobal/Provider/network/cubit/network_provider_cubit.dart';
-import 'package:flutterglobal/View/GuessingGamesList/cubit/guessing_games_cubit.dart';
 import 'package:flutterglobal/View/Shop/shop_view.dart';
 import 'package:flutterglobal/View/TimeLimitGuessingView/cubit/time_limit_guessing_cubit.dart';
 import 'package:flutterglobal/Widgets/Bounce/bounce_without_hover.dart';
@@ -51,174 +52,198 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
         width: context.width,
         decoration: Utils.instance.backgroundDecoration(ImageEnums.background),
         child: SafeArea(
-          child: BlocConsumer<TimeLimitGuessingCubit, TimeLimitGuessingState>(
-            buildWhen: (previous, current) {
-              // print all of them is different
-              // print(previous.shuffeledList != current.shuffeledList);
-              // print(previous.isAdShown != current.isAdShown);
-              // print(previous.isTimeOut != current.isTimeOut);
-              // print(previous.randomQuestions != current.randomQuestions);
-              // print(previous.isAnimeTitleActive != current.isAnimeTitleActive);
-              // print(previous.questionIndex != current.questionIndex);
+          child: Column(
+            children: [
+              Expanded(
+                child: BlocConsumer<TimeLimitGuessingCubit,
+                    TimeLimitGuessingState>(
+                  buildWhen: (previous, current) {
+                    return previous.shuffeledList != current.shuffeledList ||
+                        previous.userGuessedWords != current.userGuessedWords ||
+                        previous.questionIndex != current.questionIndex ||
+                        previous.isTimeOut != current.isTimeOut ||
+                        previous.isAnimeTitleActive !=
+                            current.isAnimeTitleActive ||
+                        previous.randomQuestions != current.randomQuestions ||
+                        previous.isPanelActive != current.isPanelActive;
+                  },
+                  listener: (context, state) {
+                    if (state.isTimeOut && state.isAdShown) {
+                      cubit.timer.cancel();
 
-              return previous.shuffeledList != current.shuffeledList ||
-                  previous.userGuessedWords != current.userGuessedWords ||
-                  previous.questionIndex != current.questionIndex ||
-                  previous.isTimeOut != current.isTimeOut ||
-                  previous.isAnimeTitleActive != current.isAnimeTitleActive ||
-                  previous.randomQuestions != current.randomQuestions;
-            },
-            listener: (context, state) {
-              if (state.isTimeOut && state.isAdShown) {
-                cubit.timer.cancel();
-
-                showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (context) {
-                    return WillPopScope(
-                      onWillPop: () async => false,
-                      child: DialogWithBackground(
-                        dialogType: DialogEnums.ERROR,
-                        title: "Süre doldu.",
-                        contentText: "Süreniz dolduğu için oyunu kaybettiniz.",
-                        onConfirm: () {
-                          Navigator.popUntil(
-                            context,
-                            ModalRoute.withName("GuessingGamesList"),
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (context) {
+                          return WillPopScope(
+                            onWillPop: () async => false,
+                            child: DialogWithBackground(
+                              dialogType: DialogEnums.ERROR,
+                              title: "Süre doldu.",
+                              contentText:
+                                  "Süreniz dolduğu için oyunu kaybettiniz.",
+                              onConfirm: () {
+                                Navigator.popUntil(
+                                  context,
+                                  ModalRoute.withName("GuessingGamesList"),
+                                );
+                              },
+                            ),
                           );
                         },
-                      ),
-                    );
-                  },
-                );
-              } else if (state.isTimeOut && !state.isAdShown) {
-                print("showed again");
-                cubit.timer.cancel();
-                showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (context) {
-                    return WillPopScope(
-                      onWillPop: () async => false,
-                      child: DialogWithBackground(
-                        dialogType: DialogEnums.INTERACTIVE,
-                        title: "Süre doldu.",
-                        confirmText:
-                            context.watch<AdsProviderCubit>().state.isAdLoading
-                                ? "Yükleniyor"
-                                : "İzle",
-                        contentText:
-                            "Süreniz dolduğu için oyunu kaybettiniz. Reklam izleyerek ${AppConstants.instance.extraTimeForGuessingGame} saniye kazanabilirsiniz.",
-                        onCancel: () {
-                          Navigator.pop(context);
-                          // Navigator.popUntil(
-                          //   context,
-                          //   ModalRoute.withName("GuessingGamesList"),
-                          // );
-                        },
-                        onConfirm: () async {
-                          print("onConfirm");
-                          await context
-                              .read<AdsProviderCubit>()
-                              .getInitialRewardAd();
+                      );
+                    } else if (state.isTimeOut && !state.isAdShown) {
+                      cubit.timer.cancel();
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (context) {
+                          return WillPopScope(
+                            onWillPop: () async => false,
+                            child: DialogWithBackground(
+                              dialogType: DialogEnums.INTERACTIVE,
+                              title: "Süre doldu.",
+                              confirmText: context
+                                      .watch<AdsProviderCubit>()
+                                      .state
+                                      .isAdLoading
+                                  ? "Yükleniyor"
+                                  : "İzle",
+                              contentText:
+                                  "Süreniz dolduğu için oyunu kaybettiniz. Reklam izleyerek ${AppConstants.instance.extraTimeForGuessingGameFromAd} saniye kazanabilirsiniz.",
+                              onCancel: () {
+                                Navigator.popUntil(
+                                  context,
+                                  ModalRoute.withName("GuessingGamesList"),
+                                );
+                              },
+                              onConfirm: () async {
+                                print("onConfirm");
+                                await context
+                                    .read<AdsProviderCubit>()
+                                    .getInitialRewardAd();
 
-                          var ad = context.read<AdsProviderCubit>().state.ad;
+                                var ad =
+                                    context.read<AdsProviderCubit>().state.ad;
 
-                          await ad?.show(
-                            onUserEarnedReward: (rewardedAd, reward) async {
-                              print("onAdUserEarnedReward TRIGGERED");
-                              cubit.whenUserWatchedAd();
-                              await Future.delayed(Duration.zero);
-                              ad.fullScreenContentCallback =
-                                  FullScreenContentCallback(
-                                onAdImpression: (ad) {
-                                  print("onAdImpression");
-                                },
-                                onAdShowedFullScreenContent: (ad) {
-                                  print("onAdShowedFullScreenContent");
-                                },
-                                onAdDismissedFullScreenContent: (ad) async {
-                                  Navigator.pop(context);
-                                  cubit.restartTimer();
-                                },
-                                onAdFailedToShowFullScreenContent: (ad, error) {
-                                  print("onAdFailedToShowFullScreenContent");
-                                },
-                              );
-                            },
+                                await ad?.show(
+                                  onUserEarnedReward:
+                                      (rewardedAd, reward) async {
+                                    print("onAdUserEarnedReward TRIGGERED");
+                                    cubit.whenUserWatchedAd();
+                                    await Future.delayed(Duration.zero);
+                                    ad.fullScreenContentCallback =
+                                        FullScreenContentCallback(
+                                      onAdImpression: (ad) {
+                                        print("onAdImpression");
+                                      },
+                                      onAdShowedFullScreenContent: (ad) {
+                                        print("onAdShowedFullScreenContent");
+                                      },
+                                      onAdDismissedFullScreenContent:
+                                          (ad) async {
+                                        Navigator.pop(context);
+                                        cubit.restartTimer();
+                                      },
+                                      onAdFailedToShowFullScreenContent:
+                                          (ad, error) {
+                                        print(
+                                            "onAdFailedToShowFullScreenContent");
+                                      },
+                                    );
+                                  },
+                                );
+
+                                // reklam izle eğer reklam izlediyse süreyi 30 saniye arttır ve oyuna devam ettir iptal eder ise 2 kere nav.pop yap
+                              },
+                            ),
                           );
-
-                          // reklam izle eğer reklam izlediyse süreyi 30 saniye arttır ve oyuna devam ettir iptal eder ise 2 kere nav.pop yap
                         },
-                      ),
-                    );
+                      );
+                    }
+                    if (state.isAnsweredWrong) {
+                      context.showSnackbar(
+                        title: "Yanlış Cevap",
+                        subtitle: "Tekrar Deneyin",
+                        icon: Icon(Icons.close, color: Colors.red),
+                        borderColor: Colors.red,
+                      );
+                    }
                   },
-                );
-              }
-              if (state.isAnsweredWrong) {
-                context.showSnackbar(
-                  title: "Yanlış Cevap",
-                  subtitle: "Tekrar Deneyin",
-                  icon: Icon(Icons.close, color: Colors.red),
-                  borderColor: Colors.red,
-                );
-              }
-            },
-            bloc: cubit,
-            builder: (context, state) {
-              if (context.watch<NetworkProviderCubit>().state.networkStatus ==
-                  NetworkStatus.OFFLINE) {
-                return NoInternetWidget(context);
-              }
-              return Stack(
-                children: [
-                  Column(
-                    children: [
-                      Spacer(),
-                      UserAssetsInfo(
-                        centerWidget: BlocBuilder<TimeLimitGuessingCubit,
-                            TimeLimitGuessingState>(
-                          bloc: cubit,
-                          buildWhen: (previous, current) =>
-                              previous.timeLimit != current.timeLimit,
-                          builder: (context, state) {
-                            return Text(
-                              state.timeLimit.toString(),
-                              style: context.textTheme.headlineMedium
-                                  ?.copyWith(color: Colors.white),
-                            );
-                          },
+                  bloc: cubit,
+                  builder: (context, state) {
+                    if (context
+                            .watch<NetworkProviderCubit>()
+                            .state
+                            .networkStatus ==
+                        NetworkStatus.OFFLINE) {
+                      return NoInternetWidget(context);
+                    }
+                    return Stack(
+                      children: [
+                        Column(
+                          children: [
+                            Spacer(),
+                            UserAssetsInfo(
+                              centerWidget: BlocBuilder<TimeLimitGuessingCubit,
+                                  TimeLimitGuessingState>(
+                                bloc: cubit,
+                                buildWhen: (previous, current) =>
+                                    previous.timeLimit != current.timeLimit,
+                                builder: (context, state) {
+                                  return Text(
+                                    state.timeLimit.toString(),
+                                    style: context.textTheme.headlineMedium
+                                        ?.copyWith(color: Colors.white),
+                                  );
+                                },
+                              ),
+                            ),
+                            Spacer(),
+                            Expanded(
+                              flex: 2,
+                              child: userButtonsRow(context, state),
+                            ),
+                            Expanded(
+                              flex: 10,
+                              child: hintImagesGrid(state, context),
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: guessedWordsRow(context, state),
+                            ),
+                            Expanded(
+                              flex: 5,
+                              child: guessingWordsRow(state, context),
+                            ),
+                            Spacer(
+                              flex: 2,
+                            ),
+                          ],
                         ),
-                      ),
-                      Spacer(),
-                      Expanded(
-                        flex: 2,
-                        child: userButtonsRow(context, state),
-                      ),
-                      Expanded(
-                        flex: 10,
-                        child: hintImagesGrid(state, context),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: guessedWordsRow(context, state),
-                      ),
-                      Expanded(
-                        flex: 5,
-                        child: guessingWordsRow(state, context),
-                      ),
-                      Spacer(
-                        flex: 2,
-                      ),
-                    ],
-                  ),
-                  state.isPanelActive
-                      ? successPanel(state, context)
-                      : SizedBox(),
-                ],
-              );
-            },
+                        state.isPanelActive
+                            ? successPanel(state, context)
+                            : SizedBox(),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              BlocBuilder<AdsProviderCubit, AdsProviderState>(
+                bloc: context.read<AdsProviderCubit>(),
+                builder: (context, state) {
+                  if (state.isBannerAdLoaded) {
+                    return Container(
+                      height: 50,
+                      width: context.width,
+                      child: AdWidget(ad: state.bannerAd!),
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                },
+              )
+            ],
           ),
         ),
       ),
@@ -296,6 +321,9 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                         context: context,
                         builder: (context) {
                           return DialogWithBackground(
+                            onConfirm: () {
+                              Navigator.pop(context);
+                            },
                             dialogType: DialogEnums.ERROR,
                             title: "Yetersiz Altın",
                             contentText:
@@ -518,7 +546,9 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                   }
                   cubit.switchPanel();
                   cubit.changeQuestion();
-
+                  cubit.setTimeLimit(state.timeLimit +
+                      AppConstants
+                          .instance.extraTimeForGuessingGameFromCorrectAnswer);
                   // context.read<AppProviderCubit>().updateLevelValue(
                   //     widget.guessingModel.id!, state.questionIndex + 1);
                 },
@@ -573,20 +603,27 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Image.network(
-                  image.url.toString(),
+                // Image.network(
+                //   image.url.toString(),
+                //   fit: BoxFit.fill,
+                //   loadingBuilder: (context, child, loadingProgress) {
+                //     if (loadingProgress == null) return child;
+                //     return Center(
+                //       child: CircularProgressIndicator.adaptive(
+                //         value: loadingProgress.expectedTotalBytes != null
+                //             ? loadingProgress.cumulativeBytesLoaded /
+                //                 loadingProgress.expectedTotalBytes!
+                //             : null,
+                //       ),
+                //     );
+                //   },
+                // ),
+                CachedNetworkImage(
+                  imageUrl: image.url.toString(),
                   fit: BoxFit.fill,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator.adaptive(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
-                      ),
-                    );
-                  },
+                  placeholder: (context, url) =>
+                      Center(child: CircularProgressIndicator.adaptive()),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
                 image.isLocked ?? true
                     ? ((context
@@ -636,7 +673,9 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                                   return DialogWithBackground(
                                     title: "Yetersiz anahtar",
                                     dialogType: DialogEnums.ERROR,
-                                    onConfirm: () {},
+                                    onConfirm: () {
+                                      Navigator.pop(context);
+                                    },
                                     contentText:
                                         "Fotoğrafın kilidini açmak için yeterli anahtarınız yok. Anahtar satın almak için mağaza sayfasını ziyaret edebilirsiniz.",
                                   );

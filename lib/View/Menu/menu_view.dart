@@ -4,10 +4,11 @@ import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/View/Blogs/blogs_view.dart';
 import 'package:flutterglobal/View/Guessing/guessing_view.dart';
+import 'package:flutterglobal/View/GuessingGameTypesRoot/guessing_game_types_root.dart';
 import 'package:flutterglobal/View/GuessingGamesList/guessing_games_list_view.dart';
 import 'package:flutterglobal/View/TestType/test_type_view.dart';
 import 'package:flutterglobal/View/WallpaperRootPage/wallpaper_root_view.dart';
-import 'package:flutterglobal/Widgets/Cards/menu_guess_card.dart';
+import 'package:flutterglobal/Widgets/Cards/MenuGuessCard/menu_guess_card.dart';
 
 class MenuView extends StatefulWidget {
   MenuView({super.key});
@@ -54,18 +55,13 @@ class _MenuViewState extends State<MenuView>
                   MenuGuessCard(
                     title: "Tahmin Et",
                     subtitle:
-                        "Verilen ipuçlarına göre anime karakterlerini tahmin etmeye çalış. Süre sınırı yok.",
+                        "Verilen ipuçlarına göre anime karakterlerini tahmin etmeye çalış.",
                     background: ImageEnums.guess,
                     onPressed: () async {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => GuessingGamesListView(),
-                          settings: RouteSettings(name: "GuessingGamesList"),
-                        ),
-                      );
-
-                      /* Bu delayı eklemediğimizde sayfa geçişinden önce buton eski yerine tekrar dönüyor
-                            ve bu durum kullanıcıya yansıyor bundan dolayı delayi ekledik */
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GuessingGameTypesRoot()));
                     },
                   ),
                   MenuGuessCard(
@@ -88,18 +84,7 @@ class _MenuViewState extends State<MenuView>
                   //       "Anime haberlerini takip etmek için haberler bölümüne göz at.",
                   //   background: ImageEnums.drstone,
                   // ),
-                  // MenuGuessCard(
-                  //   title: "Kişilik Testleri",
-                  //   subtitle:
-                  //       "Hangi anime karakterine benzediğini öğrenmek için kişilik testlerine göz at.",
-                  //   background: ImageEnums.itachi,
-                  // ),
-                  // MenuGuessCard(
-                  //   title: "Duvar kağıtları",
-                  //   subtitle:
-                  //       "Birbirinden güzel anime duvar kağıtlarını indir ve telefonunu süsle.",
-                  //   background: ImageEnums.sao,
-                  // ),
+
                   MenuGuessCard(
                     title: "Duvar kağıtları",
                     subtitle:

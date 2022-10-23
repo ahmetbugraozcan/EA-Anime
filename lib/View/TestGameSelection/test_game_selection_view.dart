@@ -8,6 +8,7 @@ import 'package:flutterglobal/Provider/testgame/cubit/test_game_selection_cubit.
 import 'package:flutterglobal/View/TestGame/test_game_view.dart';
 import 'package:flutterglobal/Widgets/Bounce/bounce_without_hover.dart';
 import 'package:flutterglobal/Widgets/Buttons/back_button.dart';
+import 'package:flutterglobal/Widgets/Cards/StackedTextCard/stacked_text_card.dart';
 
 class TestGameSelectionView extends StatelessWidget {
   const TestGameSelectionView({super.key});
@@ -17,95 +18,57 @@ class TestGameSelectionView extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: Utils.instance.backgroundDecoration(ImageEnums.background),
-        child: SizedBox.expand(
-          child: BlocBuilder<TestGameSelectionCubit, TestGameSelectionState>(
-            bloc: context.read<TestGameSelectionCubit>(),
-            builder: (context, state) {
-              if (state.isLoading) {
-                return Center(
-                    child: CircularProgressIndicator.adaptive(
-                  backgroundColor: Colors.white,
-                ));
-              }
-              return SafeArea(
-                child: Column(
-                  children: [
-                    BackButtonWidget(),
-                    Expanded(
-                      child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemCount: state.personalityTestModels.length,
-                        itemBuilder: (context, index) {
-                          return BounceWithoutHover(
-                            duration: Duration(milliseconds: 100),
-                            onPressed: () {
-                              context
-                                  .read<TestGameSelectionCubit>()
-                                  .setSelectedIndex(index);
-                              // REKLAM İŞLEMLERİ
-                              context
-                                  .read<AdsProviderCubit>()
-                                  .state
-                                  .adForTop10
-                                  ?.show();
-                              context
-                                  .read<AdsProviderCubit>()
-                                  .getTop10TransitionAd();
+        child: SafeArea(
+          child: Column(
+            children: [
+              BackButtonWidget(),
+              BlocBuilder<TestGameSelectionCubit, TestGameSelectionState>(
+                bloc: context.read<TestGameSelectionCubit>(),
+                builder: (context, state) {
+                  if (state.isLoading) {
+                    return Center(
+                        child: CircularProgressIndicator.adaptive(
+                      backgroundColor: Colors.white,
+                    ));
+                  }
+                  return Expanded(
+                    child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemCount: state.personalityTestModels.length,
+                      itemBuilder: (context, index) {
+                        return StackedTextCard(
+                          imageUrl: state.personalityTestModels[index].testImage
+                              .toString(),
+                          onPressed: () {
+                            context
+                                .read<TestGameSelectionCubit>()
+                                .setSelectedIndex(index);
+                            // REKLAM İŞLEMLERİ
+                            context
+                                .read<AdsProviderCubit>()
+                                .state
+                                .adForTop10
+                                ?.show();
+                            context
+                                .read<AdsProviderCubit>()
+                                .getTop10TransitionAd();
 
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => TestGameView(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              height: 200,
-                              alignment: Alignment.bottomLeft,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    state.personalityTestModels[index].testImage
-                                        .toString(),
-                                  ),
-                                ),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TestGameView(),
                               ),
-                              child: Container(
-                                width: double.infinity,
-                                color: Colors.black.withOpacity(0.5),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    state.personalityTestModels[index].testTitle
-                                        .toString(),
-                                    style:
-                                        context.textTheme.headline6?.copyWith(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // child: Column(
-                            //   children: [
-                            //     Image.network(
-                            //       state.personalityTestModels[index].testImage
-                            //           .toString(),
-                            //       height: 200,
-                            //     ),
-                            //     Text(state.personalityTestModels[index].testTitle
-                            //         .toString()),
-                            //   ],
-                            // ),
-                          );
-                        },
-                      ),
+                            );
+                          },
+                          text: state.personalityTestModels[index].testTitle
+                              .toString(),
+                        );
+                      },
                     ),
-                  ],
-                ),
-              );
-            },
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),

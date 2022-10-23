@@ -25,7 +25,7 @@ class ShopView extends StatelessWidget {
           child: Column(
             children: [
               Spacer(),
-              UserAssetsInfo(),
+              IgnorePointer(ignoring: true, child: UserAssetsInfo()),
               Spacer(),
               Expanded(
                 flex: 2,

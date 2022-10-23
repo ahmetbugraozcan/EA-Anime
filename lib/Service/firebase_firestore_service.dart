@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutterglobal/Models/blog_model.dart';
 import 'package:flutterglobal/Models/guessing_model.dart';
+import 'package:flutterglobal/Models/knowledge_test_model.dart';
 import 'package:flutterglobal/Models/wallpaper_model.dart';
 
 class FirebaseFireStoreService {
@@ -41,6 +42,21 @@ class FirebaseFireStoreService {
       data.docs.forEach((element) {
         list.add(
             GuessingModel.fromJson(element.data() as Map<String, dynamic>));
+      });
+      return list;
+    }
+    return null;
+  }
+
+  Future<List<KnowledgeTestModel>?>? getKnowledgeTestModels() async {
+    CollectionReference ref = _firestore.collection("knowledgeTests");
+
+    var data = await ref.get();
+    if (data.docs.isNotEmpty) {
+      List<KnowledgeTestModel> list = [];
+      data.docs.forEach((element) {
+        list.add(KnowledgeTestModel.fromJson(
+            element.data() as Map<String, dynamic>));
       });
       return list;
     }

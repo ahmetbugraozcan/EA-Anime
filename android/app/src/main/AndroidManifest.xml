@@ -12,6 +12,7 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9258462632949376~4485712056"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -38,5 +39,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+              <service
+            android:name="com.dexterous.flutterlocalnotifications.ForegroundService"        
+            android:exported="false"
+            android:stopWithTask="false"/>
     </application>
 </manifest>

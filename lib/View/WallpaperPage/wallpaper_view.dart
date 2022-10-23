@@ -105,20 +105,6 @@ class _WallpaperViewState extends State<WallpaperView> {
                               current.wallpaperModels,
                           bloc: context.read<WallpaperCubit>(),
                           builder: (context, state) {
-                            // if (state.gridState == GridState.ONE) {
-                            //   return Expanded(
-                            //     child: buildPageViewWallpapers(state),
-                            //   );
-                            // }
-                            // if (state.gridState == GridState.TWO) {
-                            //   return Expanded(
-                            //     child: buildWallpapersGrid(state),
-                            //   );
-                            // }
-
-                            // return Expanded(
-                            //   child: buildPageViewWallpapers(state),
-                            // );
                             return Expanded(
                               child: buildWallpapersGrid(state),
                             );
@@ -127,52 +113,41 @@ class _WallpaperViewState extends State<WallpaperView> {
                       ],
                     ),
                   ),
-                  // BlocBuilder<AdsProviderCubit, AdsProviderState>(
-                  //     bloc: context.read<AdsProviderCubit>(),
-                  //     buildWhen: (previous, current) =>
-                  //         previous.bannerAd != current.bannerAd,
-                  //     builder: (context, state) {
-                  //       print(
-                  //           "ADSPROVIDER BUILDER :${context.watch<AdsProviderCubit>().state.bannerAd}");
-                  //       if (context.read<AdsProviderCubit>().state.bannerAd !=
-                  //               null &&
-                  //           context
-                  //               .read<AdsProviderCubit>()
-                  //               .state
-                  //               .isBannerAdLoaded) {
-                  //         return SizedBox(
-                  //           height: context
-                  //               .watch<AdsProviderCubit>()
-                  //               .state
-                  //               .bannerAd
-                  //               ?.size
-                  //               .height
-                  //               .toDouble(),
-                  //           width: context
-                  //               .watch<AdsProviderCubit>()
-                  //               .state
-                  //               .bannerAd
-                  //               ?.size
-                  //               .width
-                  //               .toDouble(),
-                  //           child: AdWidget(
-                  //             ad: context
-                  //                 .read<AdsProviderCubit>()
-                  //                 .state
-                  //                 .bannerAd!,
-                  //           ),
-                  //         );
-                  //       }
-                  //       return Padding(
-                  //         padding: const EdgeInsets.all(8.0),
-                  //         child: SizedBox(
-                  //           width: 20,
-                  //           height: 20,
-                  //           child: Center(
-                  //               child: CircularProgressIndicator.adaptive()),
-                  //         ),
-                  //       );
-                  //     }),
+                  BlocBuilder<AdsProviderCubit, AdsProviderState>(
+                      bloc: context.read<AdsProviderCubit>(),
+                      buildWhen: (previous, current) =>
+                          previous.bannerAd != current.bannerAd ||
+                          previous.isBannerAdLoaded != current.isBannerAdLoaded,
+                      builder: (context, state) {
+                        if (context
+                            .read<AdsProviderCubit>()
+                            .state
+                            .isBannerAdLoaded) {
+                          return SizedBox(
+                            height: context
+                                .watch<AdsProviderCubit>()
+                                .state
+                                .bannerAd
+                                ?.size
+                                .height
+                                .toDouble(),
+                            width: context
+                                .watch<AdsProviderCubit>()
+                                .state
+                                .bannerAd
+                                ?.size
+                                .width
+                                .toDouble(),
+                            child: AdWidget(
+                              ad: context
+                                  .read<AdsProviderCubit>()
+                                  .state
+                                  .bannerAd!,
+                            ),
+                          );
+                        }
+                        return SizedBox();
+                      }),
                 ],
               );
             },

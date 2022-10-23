@@ -64,16 +64,14 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
         },
         onAdFailedToLoad: (Ad ad, LoadAdError error) {
           ad.dispose();
-          log('Ad failed to load: $error');
+          log('BannerAd Ad failed to load: $error');
         },
         onAdOpened: (Ad ad) => print('Ad opened.'),
         onAdClosed: (Ad ad) => print('Ad closed.'),
       ),
     );
 
-    await myBanner.load();
-    setBannerAd(myBanner);
-    setIsBannerAdLoaded(true);
+    myBanner.load();
   }
 
   Future<void> getInitialRewardAd() async {

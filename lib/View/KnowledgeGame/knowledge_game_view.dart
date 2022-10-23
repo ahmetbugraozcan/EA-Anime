@@ -1,43 +1,51 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
-import 'package:flutterglobal/Models/personality_test_model.dart';
-import 'package:flutterglobal/Provider/testgame/cubit/test_game_selection_cubit.dart';
-import 'package:flutterglobal/View/TestGame/cubit/test_game_cubit.dart';
-import 'package:collection/collection.dart';
+import 'package:flutterglobal/Models/knowledge_test_model.dart';
+import 'package:flutterglobal/View/KnowledgeGame/cubit/knowledge_game_cubit.dart';
 import 'package:flutterglobal/Widgets/Bounce/bounce_without_hover.dart';
 
-// test classı değildir test oyunlarının bulunduğu sayfadır
-class TestGameView extends StatelessWidget {
-  TestGameView({super.key});
+class KnowledgeGameView extends StatefulWidget {
+  KnowledgeTestModel knowledgeTestModel;
+  KnowledgeGameView({super.key, required this.knowledgeTestModel});
+
+  @override
+  State<KnowledgeGameView> createState() => _KnowledgeGameViewState();
+}
+
+class _KnowledgeGameViewState extends State<KnowledgeGameView> {
+  late KnowledgeGameCubit cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit = KnowledgeGameCubit(knowledgeTestModel: widget.knowledgeTestModel);
+  }
 
   @override
   Widget build(BuildContext context) {
-    TestGameCubit cubit = TestGameCubit(
-        context.read<TestGameSelectionCubit>().state.personalityTestModels[
-            context.read<TestGameSelectionCubit>().state.selectedIndex ?? 0]);
-
     return Scaffold(
       body: Container(
         decoration: Utils.instance.backgroundDecoration(ImageEnums.background),
         child: SafeArea(
           child: Column(
             children: [
-              BlocBuilder<TestGameCubit, TestGameState>(
+              BlocBuilder<KnowledgeGameCubit, KnowledgeGameState>(
                 bloc: cubit,
                 builder: (context, state) {
-                  Tests question = state
-                      .personalityTestModel!.tests![state.currentQuestionIndex];
-
+                  var question = state.knowledgeTestModel
+                      .questions![state.currentQuestionIndex];
                   return Expanded(
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(32.0),
                         child: Builder(
                           builder: (context) {
-                            if (state.isTestEnded) {
+                            if (state.isGameEnded) {
                               return testSummaryWidget(state, context);
                             } else {
                               return testWidget(
@@ -57,8 +65,7 @@ class TestGameView extends StatelessWidget {
     );
   }
 
-  Widget testSummaryWidget(TestGameState state, BuildContext context) {
-    // puana göre sıralandığı için ilk indexteki alınabilir
+  Widget testSummaryWidget(KnowledgeGameState state, BuildContext context) {
     return Center(
       child: Container(
         clipBehavior: Clip.antiAlias,
@@ -69,58 +76,69 @@ class TestGameView extends StatelessWidget {
           color: Colors.black.withOpacity(0.8),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Center(
-          child: Column(
-            children: [
-              Image.network(
-                state.personalityTestModel?.characters![0].image ?? "",
-                height: 250,
-                fit: BoxFit.cover,
+        child: Column(
+          children: [
+            CachedNetworkImage(
+                imageUrl: state.knowledgeTestModel.quizImage.toString()),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                state.knowledgeTestModel.quizTitle.toString(),
+                style:
+                    context.textTheme.headline5!.copyWith(color: Colors.white),
+                textAlign: TextAlign.center,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  state.personalityTestModel?.characters![0].name.toString() ??
-                      "",
-                  style: context.textTheme.headline4
-                      ?.copyWith(color: Colors.white),
-                ),
+            ),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Tebrikler! ${state.knowledgeTestModel.questions?.length} soru içerisinden doğru cevap sayın: ${state.correctAnswerCount}",
+                style:
+                    context.textTheme.headline5!.copyWith(color: Colors.white),
+                textAlign: TextAlign.center,
               ),
-              Expanded(
-                flex: 10,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    state.personalityTestModel?.characters![0].description
-                            .toString() ??
-                        "",
-                    style: context.textTheme.subtitle2
-                        ?.copyWith(color: Colors.white),
+            ),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightBlue,
                   ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Bitir"),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("Bitir"),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
                   ),
+                  onPressed: () {
+                    cubit.resetGame();
+                  },
+                  child: Text("Yeniden Oyna"),
                 ),
               ),
-              Spacer(),
-            ],
-          ),
+            ),
+            SizedBox(height: 24),
+          ],
         ),
       ),
     );
   }
 
-  Container testWidget(BuildContext context, TestGameState state,
-      Tests question, TestGameCubit cubit) {
+  Container testWidget(BuildContext context, KnowledgeGameState state,
+      Questions question, KnowledgeGameCubit cubit) {
     return Container(
       width: context.width,
       height: context.height,
@@ -149,7 +167,7 @@ class TestGameView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Soru ${state.currentQuestionIndex + 1}/${state.personalityTestModel!.tests!.length}",
+                  "Soru ${state.currentQuestionIndex + 1}/${state.knowledgeTestModel.questions!.length}",
                   style: context.textTheme.subtitle1
                       ?.copyWith(color: Colors.grey.shade200),
                 ),
@@ -158,7 +176,7 @@ class TestGameView extends StatelessWidget {
                   question.imageUrl.toString(),
                   width: context.width,
                   height: context.height * 0.2,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
                 SizedBox(height: 12),
                 Text(
@@ -245,10 +263,10 @@ class TestGameView extends StatelessWidget {
                           (state.answers[state.currentQuestionIndex] ?? -1) >= 0
                               ? () {
                                   if (state.currentQuestionIndex + 1 ==
-                                      state.personalityTestModel?.tests
+                                      state.knowledgeTestModel.questions
                                           ?.length) {
                                     cubit.increaseCurrentQuestionIndex();
-                                    cubit.onEndTest();
+                                    cubit.onTestEnd();
                                     return;
                                   }
                                   cubit.increaseCurrentQuestionIndex();
@@ -256,7 +274,7 @@ class TestGameView extends StatelessWidget {
                               : null,
                       child: Text(
                         state.currentQuestionIndex + 1 ==
-                                state.personalityTestModel?.tests?.length
+                                state.knowledgeTestModel.questions?.length
                             ? "Bitir"
                             : "Sonraki",
                       ),
@@ -271,7 +289,7 @@ class TestGameView extends StatelessWidget {
     );
   }
 
-  Widget AnswerCard(BuildContext context, Tests question, int index,
+  Widget AnswerCard(BuildContext context, Questions question, int index,
       {VoidCallback? onPressed, bool isSelected = false}) {
     return Align(
       child: BounceWithoutHover(

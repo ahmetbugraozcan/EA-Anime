@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
+import 'package:flutterglobal/View/KnowledgeGameList/knowledge_game_list.dart';
 import 'package:flutterglobal/View/TestGameSelection/test_game_selection_view.dart';
 import 'package:flutterglobal/Widgets/Buttons/back_button.dart';
-import 'package:flutterglobal/Widgets/Cards/menu_guess_card.dart';
+import 'package:flutterglobal/Widgets/Cards/MenuGuessCard/menu_guess_card.dart';
 
 class TestTypeView extends StatelessWidget {
   const TestTypeView({super.key});
@@ -34,8 +35,17 @@ class TestTypeView extends StatelessWidget {
               ),
               MenuGuessCard(
                 title: "Bilgi Testleri",
-                subtitle: "ÇOK YAKINDA!",
+                subtitle: "Bilgi testleri ile anime bilginizi ölçün!",
                 background: ImageEnums.itachi,
+                isNewBannerVisible: true,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => KnowledgeGameList(),
+                    ),
+                  );
+                },
               )
             ],
           ),

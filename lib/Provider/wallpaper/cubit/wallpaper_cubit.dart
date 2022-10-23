@@ -77,11 +77,12 @@ class WallpaperCubit extends Cubit<WallpaperState> {
     }
   }
 
+// statede tutulabilir
   Future<bool> willShowAd() async {
     int downloadCount =
         _cacheManager.getIntValue(PreferencesKeys.DOWNLOAD_COUNT);
 
-    if (downloadCount >= 3) {
+    if (downloadCount >= 2) {
       // show ads
       await _cacheManager.setIntValue(PreferencesKeys.DOWNLOAD_COUNT, 0);
       return true;

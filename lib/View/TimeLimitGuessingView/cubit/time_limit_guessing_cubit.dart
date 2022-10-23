@@ -46,7 +46,7 @@ class TimeLimitGuessingCubit extends Cubit<TimeLimitGuessingState> {
   void whenUserWatchedAd() {
     emit(state.copyWith(
         isTimeOut: false,
-        timeLimit: AppConstants.instance.extraTimeForGuessingGame,
+        timeLimit: AppConstants.instance.extraTimeForGuessingGameFromAd,
         isAdShown: true));
   }
 

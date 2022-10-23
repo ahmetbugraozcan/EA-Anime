@@ -24,6 +24,7 @@ enum ImageEnums {
   blackgoku,
   naruto,
   randomAnimes,
+  onepiece,
 }
 
 enum PreferencesKeys {

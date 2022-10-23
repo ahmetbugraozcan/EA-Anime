@@ -4,24 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
+import 'package:flutterglobal/Models/wallpaper_model.dart';
 import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
 import 'package:flutterglobal/Provider/wallpaper/cubit/wallpaper_cubit.dart';
 import 'package:flutterglobal/Widgets/Buttons/wallpaper_set_button.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class WallpaperDetailView extends StatefulWidget {
+class WallpaperDetailView extends StatelessWidget {
   WallpaperDetailView({super.key});
-
-  @override
-  State<WallpaperDetailView> createState() => _WallpaperDetailViewState();
-}
-
-class _WallpaperDetailViewState extends State<WallpaperDetailView> {
-  @override
-  void initState() {
-    super.initState();
-    BlocProvider.of<AdsProviderCubit>(context).getBannerAd();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,32 +99,28 @@ class _WallpaperDetailViewState extends State<WallpaperDetailView> {
                                   }
                                   return InkWell(
                                     onTap: () async {
-                                      bool isSet = await context
+                                      if (await context
                                           .read<WallpaperCubit>()
-                                          .downloadImage(
-                                            state.selectedWallpaper?.id,
-                                            state.selectedWallpaper?.imageUrl,
-                                          );
-                                      if (isSet) {
-                                        context.showSnackbar(
-                                            title: "Başarılı",
-                                            icon: Icon(
-                                              Icons.verified,
-                                              color: Colors.green,
-                                            ),
-                                            subtitle:
-                                                "Duvar kağıdı başarıyla indirildi.",
-                                            borderColor: Colors.green);
+                                          .willShowAd()) {
+                                        print("willshow ad");
+
+                                        await context
+                                            .read<AdsProviderCubit>()
+                                            .getWallpaperRewardAd();
+                                        context
+                                            .read<AdsProviderCubit>()
+                                            .state
+                                            .adForWallpaper
+                                            ?.show(
+                                          onUserEarnedReward: (ad, reward) {
+                                            downloadImageAndShowSnackbar(
+                                                context,
+                                                state.selectedWallpaper!);
+                                          },
+                                        );
                                       } else {
-                                        context.showSnackbar(
-                                            title: "Hata",
-                                            icon: Icon(
-                                              Icons.error,
-                                              color: Colors.red,
-                                            ),
-                                            subtitle:
-                                                "Duvar kağıdı indirilirken bir hata oluştu.",
-                                            borderColor: Colors.red);
+                                        downloadImageAndShowSnackbar(
+                                            context, state.selectedWallpaper!);
                                       }
                                     },
                                     child: Icon(
@@ -268,34 +253,47 @@ class _WallpaperDetailViewState extends State<WallpaperDetailView> {
                     ],
                   ),
                 ),
-                Builder(builder: (context) {
-                  if (context.watch<AdsProviderCubit>().state.bannerAd !=
-                      null) {
-                    return SizedBox(
-                      height: context
-                          .watch<AdsProviderCubit>()
-                          .state
-                          .bannerAd
-                          ?.size
-                          .height
-                          .toDouble(),
-                      width: context
-                          .watch<AdsProviderCubit>()
-                          .state
-                          .bannerAd
-                          ?.size
-                          .width
-                          .toDouble(),
-                      child: AdWidget(
-                        ad: context.read<AdsProviderCubit>().state.bannerAd!,
-                      ),
-                    );
-                  }
-                  return SizedBox();
-                })
               ],
             ),
           )),
     );
+  }
+
+  Future<void> downloadImageAndShowSnackbar(
+      BuildContext context, WallpaperModel wallpaper) async {
+    try {
+      bool isSet = await context.read<WallpaperCubit>().downloadImage(
+            wallpaper.id,
+            wallpaper.imageUrl.toString(),
+          );
+      if (isSet) {
+        context.showSnackbar(
+            title: "Başarılı",
+            icon: Icon(
+              Icons.verified,
+              color: Colors.green,
+            ),
+            subtitle: "Duvar kağıdı başarıyla indirildi.",
+            borderColor: Colors.green);
+      } else {
+        context.showSnackbar(
+            title: "Hata",
+            icon: Icon(
+              Icons.error,
+              color: Colors.red,
+            ),
+            subtitle: "Duvar kağıdı indirilirken bir hata oluştu.",
+            borderColor: Colors.red);
+      }
+    } catch (err) {
+      context.showSnackbar(
+          title: "Hata",
+          icon: Icon(
+            Icons.error,
+            color: Colors.red,
+          ),
+          subtitle: "Duvar kağıdı indirilirken bir hata oluştu.",
+          borderColor: Colors.red);
+    }
   }
 }

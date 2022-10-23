@@ -17,7 +17,7 @@ class TestGameCubit extends Cubit<TestGameState> {
     emit(state.copyWith(
         personalityTestModel: personalityTestModel,
         answers:
-            List.generate(personalityTestModel.tests!.length, (index) => 0)));
+            List.generate(personalityTestModel.tests!.length, (index) => -1)));
   }
 
   void _switchLoading() {

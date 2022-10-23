@@ -5,6 +5,7 @@ import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Provider/cubit/app_provider_cubit.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:flutterglobal/View/Shop/shop_view.dart';
 
 class UserAssetsInfo extends StatelessWidget {
   Widget? centerWidget;
@@ -22,23 +23,33 @@ class UserAssetsInfo extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      Utils.instance.getPNGImage(
-                        ImageEnums.goldkey,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ShopView(),
                       ),
-                      width: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "${context.watch<AppProviderCubit>().state.user?.keyCount}",
-                        style: context.textTheme.subtitle2
-                            ?.copyWith(color: Colors.white),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        Utils.instance.getPNGImage(
+                          ImageEnums.goldkey,
+                        ),
+                        width: 20,
                       ),
-                    )
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "${context.watch<AppProviderCubit>().state.user?.keyCount}",
+                          style: context.textTheme.subtitle2
+                              ?.copyWith(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -50,23 +61,33 @@ class UserAssetsInfo extends StatelessWidget {
                     size: 48,
                   )
             ],
-            Row(
-              children: [
-                Image.asset(
-                  Utils.instance.getPNGImage(
-                    ImageEnums.coin,
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ShopView(),
                   ),
-                  width: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "${context.watch<AppProviderCubit>().state.user?.goldCount}",
-                    style: context.textTheme.subtitle2
-                        ?.copyWith(color: Colors.white),
+                );
+              },
+              child: Row(
+                children: [
+                  Image.asset(
+                    Utils.instance.getPNGImage(
+                      ImageEnums.coin,
+                    ),
+                    width: 20,
                   ),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "${context.watch<AppProviderCubit>().state.user?.goldCount}",
+                      style: context.textTheme.subtitle2
+                          ?.copyWith(color: Colors.white),
+                    ),
+                  )
+                ],
+              ),
             )
           ],
         ),
