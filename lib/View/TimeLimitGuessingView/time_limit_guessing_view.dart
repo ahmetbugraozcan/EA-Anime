@@ -512,8 +512,9 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
             children: [
               CircleAvatar(
                 radius: 70,
-                backgroundImage: NetworkImage(
-                    state.randomQuestions[state.questionIndex].imageUrl ?? ""),
+                backgroundImage: CachedNetworkImageProvider(
+                  state.randomQuestions[state.questionIndex].imageUrl ?? "",
+                ),
               ),
               SizedBox(
                 height: 12,

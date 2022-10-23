@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Widgets/Bounce/bounce_without_hover.dart';
@@ -21,7 +22,7 @@ class StackedTextCard extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: NetworkImage(imageUrl),
+            image: CachedNetworkImageProvider(imageUrl),
           ),
         ),
         child: Container(

@@ -26,10 +26,12 @@ class TestGameSelectionView extends StatelessWidget {
                 bloc: context.read<TestGameSelectionCubit>(),
                 builder: (context, state) {
                   if (state.isLoading) {
-                    return Center(
-                        child: CircularProgressIndicator.adaptive(
-                      backgroundColor: Colors.white,
-                    ));
+                    return Expanded(
+                      child: Center(
+                          child: CircularProgressIndicator.adaptive(
+                        backgroundColor: Colors.white,
+                      )),
+                    );
                   }
                   return Expanded(
                     child: ListView.builder(

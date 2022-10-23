@@ -413,7 +413,7 @@ class _GuessingViewState extends State<GuessingView> {
             children: [
               CircleAvatar(
                 radius: 70,
-                backgroundImage: NetworkImage(state.guessingModel
+                backgroundImage: CachedNetworkImageProvider(state.guessingModel
                         ?.questions?[state.questionIndex].imageUrl ??
                     ""),
               ),

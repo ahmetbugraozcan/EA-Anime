@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
@@ -66,7 +67,8 @@ class GuessingGamesListView extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.2,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(state.guessingGames![index].mainImage ?? ""),
+            image: CachedNetworkImageProvider(
+                state.guessingGames![index].mainImage.toString()),
             fit: BoxFit.cover,
           ),
         ),
