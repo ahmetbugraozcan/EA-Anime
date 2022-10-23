@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class KnowledgeTestModel {
   String? quizId;
   String? quizImage;
   List<Questions>? questions;
   String? quizTitle;
   String? quizDescription;
-  String? createdAt;
+  Timestamp? createdAt;
 
   KnowledgeTestModel(
       {this.quizId,
