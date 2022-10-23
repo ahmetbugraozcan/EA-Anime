@@ -25,7 +25,7 @@ class AppConstants {
 
   int get goldCountForAnswer => 500;
 
-  int get defaultTimeForGuessingGame => 60;
+  int get defaultTimeForGuessingGame => 3;
 
   int get extraTimeForGuessingGameFromAd => 30;
   int get extraTimeForGuessingGameFromCorrectAnswer => 5;
