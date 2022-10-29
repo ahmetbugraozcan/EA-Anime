@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -5,12 +7,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Init/Cache/locale_manager.dart';
 import 'package:flutterglobal/Core/Init/Language/language_manager.dart';
 import 'package:flutterglobal/Core/Init/Theme/app_theme_light.dart';
 import 'package:flutterglobal/Provider/all_providers.dart';
+import 'package:flutterglobal/Provider/language/cubit/language_provider_cubit.dart';
 import 'package:flutterglobal/Service/FirebaseNotificationService/firebase_messaging_service.dart';
+import 'package:flutterglobal/Service/PackageInfo/package_info.dart';
 import 'package:flutterglobal/View/Splash/view/splash_view.dart';
 import 'package:flutterglobal/firebase_options.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -25,6 +30,21 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeApp();
+
+  runApp(
+    EasyLocalization(
+      supportedLocales: LanguageManager.instance.supportedLocales,
+      path: AppConstants.instance.LANG_ASSET_PATH,
+      child: MultiBlocProvider(
+        providers: [...AllProviders.instance.dependItems()],
+        child: MyApp(),
+      ),
+    ),
+  );
+}
+
+Future<void> initializeApp() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -35,20 +55,7 @@ Future<void> main() async {
   await CacheManager.preferencesInit();
   await MobileAds.instance.initialize();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-  runApp(
-    EasyLocalization(
-      supportedLocales: LanguageManager.instance.supportedLocales,
-      path: AppConstants.instance.LANG_ASSET_PATH,
-      child: DevicePreview(
-        enabled: false,
-        builder: (context) => MultiBlocProvider(
-          providers: [...AllProviders.instance.dependItems()],
-          child: MyApp(),
-        ),
-      ),
-    ),
-  );
+  await PackageInfoService.init();
 }
 
 class MyApp extends StatelessWidget {
@@ -59,9 +66,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       useInheritedMediaQuery: true,
       debugShowCheckedModeBanner: false,
-      // locale: context.locale,
-
-      locale: DevicePreview.locale(context),
+      locale:
+          BlocProvider.of<LanguageProviderCubit>(context).state.currentLocale,
       builder: DevicePreview.appBuilder,
       theme: AppThemeLight.instance.themeData,
       supportedLocales: context.supportedLocales,

@@ -10,7 +10,7 @@ class AppConstants {
   AppConstants._init();
 
   String get LANG_ASSET_PATH =>
-      "${AssetEnums.assets.name}/${AssetEnums.language.name}";
+      "${AssetEnums.assets.name}/${AssetEnums.translations.name}";
 
   String get DATA_ASSET_PATH =>
       "${AssetEnums.assets.name}/${AssetEnums.data.name}/1.json";
@@ -24,6 +24,8 @@ class AppConstants {
       "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg";
 
   int get goldCountForAnswer => 500;
+
+  int get keyPrice => 250;
 
   int get defaultTimeForGuessingGame => 60;
 

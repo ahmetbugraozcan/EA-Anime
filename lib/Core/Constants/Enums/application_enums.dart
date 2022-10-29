@@ -1,4 +1,4 @@
-enum AssetEnums { assets, data, images, language, lottie }
+enum AssetEnums { assets, data, images, translations, lottie }
 
 // TODO png images ve jpg images olarak ayrılabilir
 
@@ -25,6 +25,10 @@ enum ImageEnums {
   naruto,
   randomAnimes,
   onepiece,
+  steins_gate,
+  steinsgateclock,
+  english,
+  turkey
 }
 
 enum PreferencesKeys {
@@ -38,5 +42,7 @@ enum PreferencesKeys {
   USERMODEL,
   DOWNLOAD_COUNT,
 }
+
+enum LanguageEnums { TR, EN }
 
 enum LottieEnums { angrySasuke }

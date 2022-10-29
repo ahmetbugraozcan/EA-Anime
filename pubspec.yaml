@@ -50,6 +50,7 @@ dependencies:
   flutter_html: ^2.2.1
   firebase_messaging: ^13.1.0
   flutter_local_notifications: ^12.0.2
+  package_info_plus: ^1.4.2
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +63,7 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/language/
+    - assets/translations/
     - assets/data/
     - assets/lottie/
 

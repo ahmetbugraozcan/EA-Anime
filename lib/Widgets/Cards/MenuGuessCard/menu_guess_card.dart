@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
+import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Widgets/Bounce/bounce_without_hover.dart';
 
@@ -32,7 +34,7 @@ class MenuGuessCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: isNewBannerVisible
                 ? Banner(
-                    message: "Yeni",
+                    message: LocaleKeys.general_new.tr(),
                     location: BannerLocation.topEnd,
                     color: Colors.red,
                     child: Container(

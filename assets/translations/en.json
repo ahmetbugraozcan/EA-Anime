@@ -1,0 +1,93 @@
+{
+  "general": {
+    "progressStage": "Progress Stage",
+    "new": "New",
+    "gold": "Gold",
+    "key": "Key",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "watch": "Watch",
+    "buy": "Buy",
+    "loading": "Loading",
+    "tryAgain": "Try Again",
+    "noConnectionExplained": "Your internet connection has been interrupted. Please check your connection.",
+    "congrats": "Congratulations!",
+    "continue": "Continue",
+    "next": "Next",
+    "previous": "Previoues",
+    "playAgain": "Play Again",
+    "finish": "Finish",
+    "error": "Error",
+    "success": "Success"
+  },
+  "menuPage": {
+    "guessTitle": "Guess It",
+    "guessSubtitle": "Try to guess the anime characters based on the given clues. No time limit.",
+    "wallpapers": "Wallpapers",
+    "wallpapersSubtitle": "Download beautiful anime wallpapers and decorate your phone.",
+    "top10": "Top 10",
+    "top10Subtitle": "Check out our top 10 section to see the top 10 anime and anime characters.",
+    "stickers": "Stickers",
+    "comingSoon": "Coming Soon!",
+    "settings": "Settings",
+    "settingsSubtitle": "Change preferred settings.",
+    "tests": "Tests",
+    "testsSubtitle": "Find out if you can recognize anime characters with various quizzes. No time limit."
+  },
+  "settingsPage": {
+    "preferences": "Preferences",
+    "language": "Language"
+  },
+  "guessingGameTypesRootPage": {
+    "byAnime": "Based on Anime",
+    "byAnimeSubtitle": "Try to guess the characters based on an anime. No time limit.",
+    "timeLimitMixed": "Time Limited Mixed",
+    "timeLimitMixedSubtitle": "Try to guess the characters within a given time."
+  },
+  "guessingGame": {
+    "showAnswer": "Show Answer",
+    "notEnoughGold": "Not Enough Gold",
+    "notEnoughGoldSubtitlePart1": "You don't have",
+    "notEnoughGoldSubtitlePart2": "gold to see this answer. You can earn gold by watching ads.",
+    "timesUp": "Time is up.",
+    "timesUpSubtitle": "You lost the game because your time is up. You can earn {} seconds by watching ads.",
+    "spendGoldToUnlockAnswer": "Do you want to spend {} gold to unlock the answer?",
+    "wrongAnswer": "Wrong Answer",
+    "successfullyEndedGame": "Congratulations. You have successfully completed the game.",
+    "characterUnlocked": "Character unlocked successfully.",
+    "timesUpGameOver": "You lost the game because your time is up."
+  },
+  "shop": {
+    "earnGoldSubtitle": "Earn {} gold by watching a short ad video.",
+    "buyKeySubtitle": "Buy a key by spending {} gold.",
+    "notEnoughGold": "You don't have enough gold",
+    "canEarnGold": "You can earn gold by watching ads."
+  },
+  "dialog": {
+    "unlock": "Kilit Aç",
+    "unlockSubtitle": "You will spend {} key to unlock the photo. Do you confirm?",
+    "notEnoughKey": "Not Enough Key",
+    "notEnoughKeySubtitle": "You don't have enough keys to unlock this photo. You can visit the store page to buy keys."
+  },
+  "tests": {
+    "personalityTests": "Personality Tests",
+    "personalityTestsSubtitle": "Find out which anime character you look like with personality tests!",
+    "knowledgeTests": "Knowledge Tests",
+    "knowledgeTestsSubtitle": "Measure your anime knowledge with knowledge tests!",
+    "question": "Question",
+    "countCorrectAnswers": "Correct answer count {}, Wrong answer count {}"
+  },
+  "wallpapers": {
+    "applyToHomeScreen": "Apply to Home Screen",
+    "applyToLockScreen": "Apply to Lock Screen",
+    "applyToBoth": "Apply to Both",
+    "exceptionWhenDownloading": "An error occurred while downloading the wallpaper. Please try again later.",
+    "successfullyDownloaded": "Wallpaper downloaded successfully.",
+    "successfullySetted": "Wallpaper set successfully.",
+    "exceptionWhenSetting": "An error occurred while setting the wallpaper. Please try again later."
+  },
+  "top10": {
+    "top10": "Top 10"
+  }
+}

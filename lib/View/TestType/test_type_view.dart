@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
+import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/View/KnowledgeGameList/knowledge_game_list.dart';
 import 'package:flutterglobal/View/TestGameSelection/test_game_selection_view.dart';
@@ -20,9 +22,8 @@ class TestTypeView extends StatelessWidget {
               BackButtonWidget(),
               MenuGuessCard(
                 fit: BoxFit.fill,
-                title: "Kişilik Testleri",
-                subtitle:
-                    "Kişilik testleri ile hangi anime karakterine benzediğini öğren!",
+                title: LocaleKeys.tests_personalityTests.tr(),
+                subtitle: LocaleKeys.tests_personalityTestsSubtitle.tr(),
                 background: ImageEnums.animeview,
                 onPressed: () async {
                   Navigator.push(
@@ -34,8 +35,8 @@ class TestTypeView extends StatelessWidget {
                 },
               ),
               MenuGuessCard(
-                title: "Bilgi Testleri",
-                subtitle: "Bilgi testleri ile anime bilginizi ölçün!",
+                title: LocaleKeys.tests_knowledgeTests.tr(),
+                subtitle: LocaleKeys.tests_knowledgeTestsSubtitle.tr(),
                 background: ImageEnums.itachi,
                 isNewBannerVisible: true,
                 onPressed: () {

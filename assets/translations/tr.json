@@ -1,0 +1,93 @@
+{
+  "general": {
+    "progressStage": "İlerleme Aşaması",
+    "new": "Yeni",
+    "gold": "Altın",
+    "key": "Anahtar",
+    "ok": "Tamam",
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "watch": "İzle",
+    "buy": "Satın Al",
+    "loading": "Yükleniyor",
+    "tryAgain": "Tekrar Deneyin",
+    "noConnectionExplained": "İnternet bağlantınız kesildi. Lütfen bağlantınızı kontrol edin.",
+    "congrats": "Tebrikler!",
+    "continue": "Devam",
+    "next": "Sonraki",
+    "previous": "Önceki",
+    "playAgain": "Yeniden Oyna",
+    "finish": "Bitir",
+    "error": "Hata",
+    "success": "Başarılı"
+  },
+  "menuPage": {
+    "guessTitle": "Tahmin Et",
+    "guessSubtitle": "Verilen ipuçlarına göre anime karakterlerini tahmin etmeye çalış. Süre sınırı yok.",
+    "wallpapers": "Duvar Kağıtları",
+    "wallpapersSubtitle": "Birbirinden güzel anime duvar kağıtlarını indir ve telefonunu süsle.",
+    "top10": "En İyi 10",
+    "top10Subtitle": "En iyi 10 anime ve anime karakterlerini görmek için en iyi 10 bölümüne göz at.",
+    "stickers": "Stickerlar",
+    "comingSoon": "ÇOK YAKINDA!",
+    "settings": "Ayarlar",
+    "settingsSubtitle": "Tercih edilen ayarları değiştir.",
+    "tests": "Testler",
+    "testsSubtitle": "Çeşitli testlerle anime karakterlerini tanıyıp tanımadığını öğren. Süre sınırı yok."
+  },
+  "settingsPage": {
+    "preferences": "Tercihler",
+    "language": "Dil"
+  },
+  "guessingGameTypesRootPage": {
+    "byAnime": "Animeye Göre",
+    "byAnimeSubtitle": "Bir animeye göre karakterleri tahmin etmeye çalışın. Süre sınırı yok.",
+    "timeLimitMixed": "Süre Sınırlı Karışık",
+    "timeLimitMixedSubtitle": "Belirli bir süre içerisinde karakterleri tahmin etmeye çalışın."
+  },
+  "guessingGame": {
+    "showAnswer": "Cevabı Göster",
+    "notEnoughGold": "Yetersiz Altın",
+    "notEnoughGoldSubtitlePart1": "Bu cevabı görmek için",
+    "notEnoughGoldSubtitlePart2": "altınınız bulunmamaktadır. Reklam izleyerek altın kazanabilirsiniz.",
+    "timesUp": "Süre doldu.",
+    "timesUpGameOver": "Süreniz dolduğu için oyunu kaybettiniz.",
+    "timesUpSubtitle": "Süreniz dolduğu için oyunu kaybettiniz. Reklam izleyerek {} saniye kazanabilirsiniz.",
+    "spendGoldToUnlockAnswer": "Cevabı açmak için {} altın harcamak istiyor musunuz?",
+    "wrongAnswer": "Yanlış cevap",
+    "successfullyEndedGame": "Tebrikler. Oyunu başarıyla tamamladınız.",
+    "characterUnlocked": "Karakter başarıyla açıldı."
+  },
+  "shop": {
+    "earnGoldSubtitle": "Kısa bir reklam videosu izleyerek {} altın kazan.",
+    "buyKeySubtitle": "{} altın harcayarak bir anahtar satın al.",
+    "notEnoughGold": "Yeterli altınınız bulunmamaktadır.",
+    "canEarnGold": "Reklam izleyerek altın kazanabilirsiniz."
+  },
+  "dialog": {
+    "unlock": "Kilit Aç",
+    "unlockSubtitle": "Fotoğrafın kilidini açmak için {} anahtar harcayacaksın. Onaylıyor musun?",
+    "notEnoughKey": "Yetersiz anahtar",
+    "notEnoughKeySubtitle": "Bu fotoğrafın kilidini açmak için yeterli anahtarınız yok. Anahtar satın almak için mağaza sayfasını ziyaret edebilirsiniz."
+  },
+  "tests": {
+    "personalityTests": "Kişilik Testleri",
+    "personalityTestsSubtitle": "Kişilik testleri ile hangi anime karakterine benzediğini öğren!",
+    "knowledgeTests": "Bilgi Testleri",
+    "knowledgeTestsSubtitle": "Bilgi testleri ile anime bilginizi ölçün!",
+    "question": "Soru",
+    "countCorrectAnswers": "Doğru cevap sayın {}, Yanlış Cevap Sayın: {}"
+  },
+  "wallpapers": {
+    "applyToHomeScreen": "Ana Ekrana Uygula",
+    "applyToLockScreen": "Kilitleme Ekrana Uygula",
+    "applyToBoth": "Her İkisine de Uygula",
+    "exceptionWhenDownloading": "Duvar kağıdı indirilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+    "successfullyDownloaded": "Duvar kağıdı başarıyla indirildi.",
+    "successfullySetted": "Duvar kağıdı başarıyla ayarlandı.",
+    "exceptionWhenSetting": "Duvar kağıdı ayarlanırken bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+  },
+  "top10": {
+    "top10": "En İyi 10"
+  }
+}

@@ -1,40 +1,15 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutterglobal/Models/blog_model.dart';
 import 'package:flutterglobal/Models/guessing_model.dart';
 import 'package:flutterglobal/Models/knowledge_test_model.dart';
 import 'package:flutterglobal/Models/wallpaper_model.dart';
 
-class FirebaseFireStoreService {
-  static FirebaseFireStoreService? _instance;
-
-  // DatabaseReference ref = FirebaseDatabase.instance.ref();
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  static FirebaseFireStoreService get instance {
-    return _instance ??= FirebaseFireStoreService._init();
-  }
-
-  FirebaseFireStoreService._init();
-
-  Future<List<BlogModel>?> getBlogs() async {
-    CollectionReference ref = _firestore.collection("blogs");
-
-    var data = await ref.get();
-    if (data.docs.isNotEmpty) {
-      List<BlogModel> list = [];
-      data.docs.forEach((element) {
-        list.add(BlogModel.fromJson(element.data() as Map<String, dynamic>));
-      });
-      return list;
-    }
-    return null;
-  }
+abstract class IFirebaseFirestoreService {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  Future<List<BlogModel>?> getBlogs();
 
   Future<List<GuessingModel>?> getGuessingGameData() async {
-    CollectionReference ref = _firestore.collection("guessingGames");
+    CollectionReference ref = firestore.collection("guessingGames");
 
     var data = await ref.get();
     if (data.docs.isNotEmpty) {
@@ -48,28 +23,14 @@ class FirebaseFireStoreService {
     return null;
   }
 
-  Future<List<KnowledgeTestModel>?>? getKnowledgeTestModels() async {
-    CollectionReference ref = _firestore.collection("knowledgeTests");
-
-    var data = await ref.get();
-    if (data.docs.isNotEmpty) {
-      List<KnowledgeTestModel> list = [];
-      data.docs.forEach((element) {
-        list.add(KnowledgeTestModel.fromJson(
-            element.data() as Map<String, dynamic>));
-      });
-      return list;
-    }
-    return null;
-  }
-
+  Future<List<KnowledgeTestModel>?>? getKnowledgeTestModels();
   DocumentSnapshot<WallpaperModel>? lastDocument;
 
   Future<List<WallpaperModel>?> getWallpapersLazyLoad(
       int takeCount, String? animeName,
       {bool isFirst = false}) async {
     if (animeName == null) return null;
-    CollectionReference ref = _firestore.collection("compressedWallpapers");
+    CollectionReference ref = firestore.collection("compressedWallpapers");
     QuerySnapshot<WallpaperModel?> data;
     if (isFirst) lastDocument = null;
     if (lastDocument == null) {

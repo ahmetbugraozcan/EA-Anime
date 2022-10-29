@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
+import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
-import 'package:flutterglobal/Provider/cubit/app_provider_cubit.dart';
+import 'package:flutterglobal/Provider/cubit/user_provider_cubit.dart';
 import 'package:flutterglobal/Provider/guessingGames/guessing_games_cubit.dart';
 import 'package:flutterglobal/View/Guessing/guessing_view.dart';
 import 'package:flutterglobal/Widgets/Buttons/back_button.dart';
@@ -80,7 +82,7 @@ class GuessingGamesListView extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.topRight,
                   child: Text(
-                    "İlerleme aşaması : %${calculateProgress(context.watch<AppProviderCubit>().state.user?.levels.firstWhereOrNull((e) => e.levelId == state.guessingGames![index].id)?.questionIndex, state.guessingGames![index].questions?.length)}",
+                    "${LocaleKeys.general_progressStage.tr()} : %${calculateProgress(context.watch<UserProviderCubit>().state.user?.levels.firstWhereOrNull((e) => e.levelId == state.guessingGames![index].id)?.questionIndex, state.guessingGames![index].questions?.length)}",
                     style: context.textTheme.subtitle2?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

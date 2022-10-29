@@ -1,24 +1,27 @@
-part of 'app_provider_cubit.dart';
+part of 'user_provider_cubit.dart';
 
-class AppProviderState extends Equatable {
+class UserProviderState extends Equatable {
   UserModel? user;
   bool isLoading;
 
-  AppProviderState({
+  UserProviderState({
     this.user,
     this.isLoading = false,
   });
 
-  AppProviderState copyWith({
+  UserProviderState copyWith({
     UserModel? user,
     bool? isLoading,
   }) {
-    return AppProviderState(
+    return UserProviderState(
       user: user ?? this.user,
       isLoading: isLoading ?? this.isLoading,
     );
   }
 
   @override
-  List<Object?> get props => [user, isLoading];
+  List<Object?> get props => [
+        user,
+        isLoading,
+      ];
 }

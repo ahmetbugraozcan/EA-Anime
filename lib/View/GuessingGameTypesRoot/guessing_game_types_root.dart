@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
+import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Provider/guessingGames/guessing_games_cubit.dart';
 import 'package:flutterglobal/View/GuessingGamesList/guessing_games_list_view.dart';
@@ -36,9 +38,11 @@ class GuessingGameTypesRoot extends StatelessWidget {
                   return Column(
                     children: [
                       MenuGuessCard(
-                        title: "Animeye Göre",
-                        subtitle:
-                            "Bir animeye göre karakterleri tahmin etmeye çalışın. Süre sınırı yok.",
+                        title:
+                            LocaleKeys.guessingGameTypesRootPage_byAnime.tr(),
+                        subtitle: LocaleKeys
+                            .guessingGameTypesRootPage_byAnimeSubtitle
+                            .tr(),
                         background: ImageEnums.blackgoku,
                         onPressed: () async {
                           Navigator.of(context).push(
@@ -51,10 +55,13 @@ class GuessingGameTypesRoot extends StatelessWidget {
                         },
                       ),
                       MenuGuessCard(
-                        title: "Süre Sınırlı Karışık",
+                        title: LocaleKeys
+                            .guessingGameTypesRootPage_timeLimitMixed
+                            .tr(),
                         isNewBannerVisible: true,
-                        subtitle:
-                            "Belirli bir süre içerisinde karakterleri tahmin etmeye çalışın.",
+                        subtitle: LocaleKeys
+                            .guessingGameTypesRootPage_timeLimitMixedSubtitle
+                            .tr(),
                         background: ImageEnums.randomAnimes,
                         onPressed: () async {
                           Navigator.push(
