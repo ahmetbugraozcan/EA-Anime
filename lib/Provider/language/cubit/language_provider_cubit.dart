@@ -19,6 +19,7 @@ class LanguageProviderCubit extends Cubit<LanguageProviderState> {
   Future<void> getLanguage() async {
     _switchLoading();
     String language = _cacheManager.getStringValue(PreferencesKeys.LANGUAGE);
+    print("FIRST LANGUAGE :$language");
     if (language.isNotEmpty) {
       await setLanguage(
         LanguageEnums.values

@@ -69,7 +69,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     context.read<LanguageProviderCubit>().getLanguage().then((value) => context
         .setLocale(context.read<LanguageProviderCubit>().state.currentLocale!));
@@ -80,8 +79,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       useInheritedMediaQuery: true,
       debugShowCheckedModeBanner: false,
-      locale:
-          BlocProvider.of<LanguageProviderCubit>(context).state.currentLocale,
+      locale: context.locale,
       builder: DevicePreview.appBuilder,
       theme: AppThemeLight.instance.themeData,
       supportedLocales: context.supportedLocales,

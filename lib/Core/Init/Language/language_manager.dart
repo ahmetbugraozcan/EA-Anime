@@ -15,7 +15,7 @@ class LanguageManager {
   final enLocale = Locale('en');
   final trLocale = Locale('tr');
 
-  List<Locale> get supportedLocales => [trLocale, enLocale];
+  List<Locale> get supportedLocales => [enLocale, trLocale];
 
   Locale getLocale(LanguageEnums language) {
     switch (language) {
