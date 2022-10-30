@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutterglobal/Models/blog_model.dart';
 import 'package:flutterglobal/Models/guessing_model.dart';
 import 'package:flutterglobal/Models/knowledge_test_model.dart';
+import 'package:flutterglobal/Models/sticker_pack_model.dart';
 import 'package:flutterglobal/Models/wallpaper_model.dart';
 
 abstract class IFirebaseFirestoreService {
@@ -69,6 +70,20 @@ abstract class IFirebaseFirestoreService {
       return list;
     }
 
+    return null;
+  }
+
+  Future<List<StickerPackModel>?> getStickerPacks() async {
+    CollectionReference ref = firestore.collection("stickers");
+    var data = await ref.get();
+    if (data.docs.isNotEmpty) {
+      List<StickerPackModel> list = [];
+      data.docs.forEach((element) {
+        list.add(
+            StickerPackModel.fromJson(element.data() as Map<String, dynamic>));
+      });
+      return list;
+    }
     return null;
   }
 }

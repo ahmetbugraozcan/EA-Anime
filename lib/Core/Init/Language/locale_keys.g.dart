@@ -42,6 +42,7 @@ abstract class  LocaleKeys {
   static const guessingGameTypesRootPage_byAnimeSubtitle = 'guessingGameTypesRootPage.byAnimeSubtitle';
   static const guessingGameTypesRootPage_timeLimitMixed = 'guessingGameTypesRootPage.timeLimitMixed';
   static const guessingGameTypesRootPage_timeLimitMixedSubtitle = 'guessingGameTypesRootPage.timeLimitMixedSubtitle';
+  static const guessingGameTypesRootPage_timeLimitHighScore = 'guessingGameTypesRootPage.timeLimitHighScore';
   static const guessingGameTypesRootPage = 'guessingGameTypesRootPage';
   static const guessingGame_showAnswer = 'guessingGame.showAnswer';
   static const guessingGame_notEnoughGold = 'guessingGame.notEnoughGold';

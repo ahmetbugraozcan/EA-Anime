@@ -18,7 +18,6 @@ class LanguageManager {
   List<Locale> get supportedLocales => [trLocale, enLocale];
 
   Locale getLocale(LanguageEnums language) {
-    log("GETLOCALE : $language");
     switch (language) {
       case LanguageEnums.TR:
         return trLocale;

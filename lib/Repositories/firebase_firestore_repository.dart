@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutterglobal/Core/Init/Cache/locale_manager.dart';
 import 'package:flutterglobal/Models/knowledge_test_model.dart';
 import 'package:flutterglobal/Models/blog_model.dart';
@@ -21,7 +23,7 @@ class FirebaseFirestoreRepository extends IFirebaseFirestoreService {
     if ((int.tryParse(
                 PackageInfoService.instance.packageInfo?.buildNumber ?? "0") ??
             0) <
-        12) {
+        13) {
       return await FirebaseFireStoreService.instance.getBlogs();
     } else {
       return await FirebaseFirestoreI18.instance.getBlogs();
@@ -30,10 +32,13 @@ class FirebaseFirestoreRepository extends IFirebaseFirestoreService {
 
   @override
   Future<List<KnowledgeTestModel>?>? getKnowledgeTestModels() async {
+    log(int.tryParse(
+            PackageInfoService.instance.packageInfo?.buildNumber ?? "0")
+        .toString());
     if ((int.tryParse(
                 PackageInfoService.instance.packageInfo?.buildNumber ?? "0") ??
             0) <
-        10) {
+        13) {
       return await FirebaseFireStoreService.instance.getKnowledgeTestModels();
     } else {
       return await FirebaseFirestoreI18.instance.getKnowledgeTestModels();

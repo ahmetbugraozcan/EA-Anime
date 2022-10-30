@@ -28,7 +28,8 @@ enum ImageEnums {
   steins_gate,
   steinsgateclock,
   english,
-  turkey
+  turkey,
+  datealive
 }
 
 enum PreferencesKeys {

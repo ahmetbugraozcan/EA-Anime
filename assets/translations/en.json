@@ -43,7 +43,8 @@
     "byAnime": "Based on Anime",
     "byAnimeSubtitle": "Try to guess the characters based on an anime. No time limit.",
     "timeLimitMixed": "Time Limited Mixed",
-    "timeLimitMixedSubtitle": "Try to guess the characters within a given time."
+    "timeLimitMixedSubtitle": "Try to guess the characters within a given time.",
+    "timeLimitHighScore": "Your High Score: {}"
   },
   "guessingGame": {
     "showAnswer": "Show Answer",

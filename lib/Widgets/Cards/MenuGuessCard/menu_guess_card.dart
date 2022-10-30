@@ -13,12 +13,16 @@ class MenuGuessCard extends StatelessWidget {
   VoidCallback? onPressed;
   BoxFit fit;
   bool isNewBannerVisible;
+
+  String? bottomCenterText;
+
   MenuGuessCard(
       {super.key,
       required this.title,
       required this.subtitle,
       this.onPressed,
       this.isNewBannerVisible = false,
+      this.bottomCenterText,
       this.fit = BoxFit.cover,
       this.background});
 
@@ -85,6 +89,26 @@ class MenuGuessCard extends StatelessWidget {
                                   ]),
                               textAlign: TextAlign.center,
                             ),
+                            if (bottomCenterText != null) ...[
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                bottomCenterText!,
+                                style: context.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey.shade300,
+                                    shadows: [
+                                      Shadow(
+                                          blurRadius: 10, color: Colors.black),
+                                      Shadow(
+                                          blurRadius: 10, color: Colors.black),
+                                      Shadow(
+                                          blurRadius: 10, color: Colors.black),
+                                    ]),
+                                textAlign: TextAlign.center,
+                              ),
+                            ]
                           ],
                         ),
                       ),

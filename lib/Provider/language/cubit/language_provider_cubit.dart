@@ -19,7 +19,6 @@ class LanguageProviderCubit extends Cubit<LanguageProviderState> {
   Future<void> getLanguage() async {
     _switchLoading();
     String language = _cacheManager.getStringValue(PreferencesKeys.LANGUAGE);
-    log("LANGUAGE : $language");
     if (language.isNotEmpty) {
       await setLanguage(
         LanguageEnums.values
@@ -35,7 +34,6 @@ class LanguageProviderCubit extends Cubit<LanguageProviderState> {
   }
 
   Future<void> setLanguage(LanguageEnums language) async {
-    log("Setting language to $language");
     emit(
       state.copyWith(
         currentLanguage: language,
@@ -43,7 +41,6 @@ class LanguageProviderCubit extends Cubit<LanguageProviderState> {
       ),
     );
     await _cacheManager.setStringValue(PreferencesKeys.LANGUAGE, language.name);
-    log("LOCALE : ${LanguageManager.instance.getLocale(language)}");
   }
 
   void _switchLoading() {

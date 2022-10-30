@@ -9,6 +9,7 @@ import 'package:flutterglobal/Provider/language/cubit/language_provider_cubit.da
 import 'package:flutterglobal/View/Blogs/blogs_view.dart';
 import 'package:flutterglobal/View/GuessingGameTypesRoot/guessing_game_types_root.dart';
 import 'package:flutterglobal/View/Settings/settings_view.dart';
+import 'package:flutterglobal/View/Stickers/stickers_view.dart';
 import 'package:flutterglobal/View/TestType/test_type_view.dart';
 import 'package:flutterglobal/View/WallpaperRootPage/wallpaper_root_view.dart';
 import 'package:flutterglobal/Widgets/Cards/MenuGuessCard/menu_guess_card.dart';
@@ -48,92 +49,105 @@ class _MenuViewState extends State<MenuView>
         height: context.height,
         width: context.width,
         decoration: Utils.instance.backgroundDecoration(ImageEnums.background),
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  MenuGuessCard(
-                    title: LocaleKeys.menuPage_guessTitle.tr(),
-                    subtitle: LocaleKeys.menuPage_guessSubtitle.tr(),
-                    background: ImageEnums.guess,
-                    onPressed: () async {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => GuessingGameTypesRoot(),
-                          settings:
-                              RouteSettings(name: "GuessingGameTypesRoot"),
-                        ),
-                      );
-                    },
-                  ),
-                  MenuGuessCard(
-                    title: LocaleKeys.menuPage_tests.tr(),
-                    subtitle: LocaleKeys.menuPage_testsSubtitle.tr(),
-                    background: ImageEnums.drstone,
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TestTypeView(),
-                        ),
-                      );
-                    },
-                  ),
-                  // MenuGuessCard(
-                  //   title: "Haberler",
-                  //   subtitle:
-                  //       "Anime haberlerini takip etmek için haberler bölümüne göz at.",
-                  //   background: ImageEnums.drstone,
-                  // ),
+        child: RawScrollbar(
+          thumbVisibility: true,
+          trackColor: Colors.white,
+          radius: Radius.circular(10),
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    MenuGuessCard(
+                      title: LocaleKeys.menuPage_guessTitle.tr(),
+                      subtitle: LocaleKeys.menuPage_guessSubtitle.tr(),
+                      background: ImageEnums.guess,
+                      onPressed: () async {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => GuessingGameTypesRoot(),
+                            settings:
+                                RouteSettings(name: "GuessingGameTypesRoot"),
+                          ),
+                        );
+                      },
+                    ),
+                    MenuGuessCard(
+                      title: LocaleKeys.menuPage_tests.tr(),
+                      subtitle: LocaleKeys.menuPage_testsSubtitle.tr(),
+                      background: ImageEnums.drstone,
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TestTypeView(),
+                          ),
+                        );
+                      },
+                    ),
+                    // MenuGuessCard(
+                    //   title: "Haberler",
+                    //   subtitle:
+                    //       "Anime haberlerini takip etmek için haberler bölümüne göz at.",
+                    //   background: ImageEnums.drstone,
+                    // ),
 
-                  MenuGuessCard(
-                    title: LocaleKeys.menuPage_wallpapers.tr(),
-                    subtitle: LocaleKeys.menuPage_wallpapersSubtitle.tr(),
-                    background: ImageEnums.sao,
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => WallpaperRootView(),
-                        ),
-                      );
-                    },
-                  ),
-                  MenuGuessCard(
-                    title: LocaleKeys.menuPage_top10.tr(),
-                    subtitle: LocaleKeys.menuPage_top10Subtitle.tr(),
-                    background: ImageEnums.naruto,
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BlogsView(),
-                        ),
-                      );
-                    },
-                  ),
-                  MenuGuessCard(
-                    title: LocaleKeys.menuPage_stickers.tr(),
-                    subtitle: LocaleKeys.menuPage_comingSoon.tr(),
-                    background: ImageEnums.megumin,
-                  ),
-                  MenuGuessCard(
-                    title: LocaleKeys.menuPage_settings.tr(),
-                    subtitle: LocaleKeys.menuPage_settingsSubtitle.tr(),
-                    background: ImageEnums.steinsgateclock,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SettingsView(),
-                        ),
-                      );
-                    },
-                  )
-                ],
+                    MenuGuessCard(
+                      title: LocaleKeys.menuPage_wallpapers.tr(),
+                      subtitle: LocaleKeys.menuPage_wallpapersSubtitle.tr(),
+                      background: ImageEnums.sao,
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WallpaperRootView(),
+                          ),
+                        );
+                      },
+                    ),
+                    MenuGuessCard(
+                      title: LocaleKeys.menuPage_top10.tr(),
+                      subtitle: LocaleKeys.menuPage_top10Subtitle.tr(),
+                      background: ImageEnums.naruto,
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BlogsView(),
+                          ),
+                        );
+                      },
+                    ),
+                    MenuGuessCard(
+                      title: LocaleKeys.menuPage_stickers.tr(),
+                      subtitle: LocaleKeys.menuPage_comingSoon.tr(),
+                      background: ImageEnums.megumin,
+                      // onPressed: () {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => StickersView(),
+                      //     ),
+                      //   );
+                      // },
+                    ),
+                    MenuGuessCard(
+                      title: LocaleKeys.menuPage_settings.tr(),
+                      subtitle: LocaleKeys.menuPage_settingsSubtitle.tr(),
+                      background: ImageEnums.datealive,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SettingsView(),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
           ),

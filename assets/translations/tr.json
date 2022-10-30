@@ -43,7 +43,8 @@
     "byAnime": "Animeye Göre",
     "byAnimeSubtitle": "Bir animeye göre karakterleri tahmin etmeye çalışın. Süre sınırı yok.",
     "timeLimitMixed": "Süre Sınırlı Karışık",
-    "timeLimitMixedSubtitle": "Belirli bir süre içerisinde karakterleri tahmin etmeye çalışın."
+    "timeLimitMixedSubtitle": "Belirli bir süre içerisinde karakterleri tahmin etmeye çalışın.",
+    "timeLimitHighScore": "En Yüksek Skorun: {}"
   },
   "guessingGame": {
     "showAnswer": "Cevabı Göster",

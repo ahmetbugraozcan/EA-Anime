@@ -81,6 +81,13 @@ class UserProviderCubit extends Cubit<UserProviderState> {
     // emit(state.copyWith(user: userModel));
   }
 
+  Future<void> updateTimeLimitHighScore(int value) async {
+    if (value > state.user!.timelimitHighScore) {
+      UserModel? userModel = state.user?.copyWith(timelimitHighScore: value);
+      setUser(userModel);
+    }
+  }
+
   Future<void> updateLevelValue(String id, int value) async {
     List<Level>? levels = List.from(state.user?.levels ?? []);
     if (levels.firstWhereOrNull((element) => element.levelId == id) != null) {

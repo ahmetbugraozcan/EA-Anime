@@ -425,7 +425,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
               cubit.removeGuessingWord(state.userGuessedWords[index]);
             },
             child: Container(
-              padding: EdgeInsets.all(12),
+              padding: EdgeInsets.symmetric(vertical: 12),
               margin: EdgeInsets.all(4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
@@ -548,8 +548,9 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                   cubit.setTimeLimit(state.timeLimit +
                       AppConstants
                           .instance.extraTimeForGuessingGameFromCorrectAnswer);
-                  // context.read<AppProviderCubit>().updateLevelValue(
-                  //     widget.guessingModel.id!, state.questionIndex + 1);
+                  context
+                      .read<UserProviderCubit>()
+                      .updateTimeLimitHighScore(state.questionIndex + 1);
                 },
                 child: Text(LocaleKeys.general_continue.tr()),
               )

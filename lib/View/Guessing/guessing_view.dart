@@ -328,7 +328,7 @@ class _GuessingViewState extends State<GuessingView> {
               cubit.removeGuessingWord(state.userGuessedWords[index]);
             },
             child: Container(
-              padding: EdgeInsets.all(12),
+              padding: EdgeInsets.symmetric(vertical: 12),
               margin: EdgeInsets.all(4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
