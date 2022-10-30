@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
+import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Models/knowledge_test_model.dart';
 import 'package:flutterglobal/View/KnowledgeGame/cubit/knowledge_game_cubit.dart';
@@ -93,7 +95,10 @@ class _KnowledgeGameViewState extends State<KnowledgeGameView> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Tebrikler! ${state.knowledgeTestModel.questions?.length} soru içerisinden doğru cevap sayın: ${state.correctAnswerCount}",
+                LocaleKeys.tests_countCorrectAnswers.tr(args: [
+                  state.correctAnswerCount.toString(),
+                  (10 - state.correctAnswerCount).toString()
+                ]),
                 style:
                     context.textTheme.headline5!.copyWith(color: Colors.white),
                 textAlign: TextAlign.center,
@@ -111,7 +116,7 @@ class _KnowledgeGameViewState extends State<KnowledgeGameView> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text("Bitir"),
+                  child: Text(LocaleKeys.general_finish.tr()),
                 ),
               ),
             ),
@@ -126,7 +131,7 @@ class _KnowledgeGameViewState extends State<KnowledgeGameView> {
                   onPressed: () {
                     cubit.resetGame();
                   },
-                  child: Text("Yeniden Oyna"),
+                  child: Text(LocaleKeys.general_playAgain.tr()),
                 ),
               ),
             ),
@@ -167,7 +172,7 @@ class _KnowledgeGameViewState extends State<KnowledgeGameView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Soru ${state.currentQuestionIndex + 1}/${state.knowledgeTestModel.questions!.length}",
+                  "${LocaleKeys.tests_question.tr()} ${state.currentQuestionIndex + 1}/${state.knowledgeTestModel.questions!.length}",
                   style: context.textTheme.subtitle1
                       ?.copyWith(color: Colors.grey.shade200),
                 ),
@@ -227,7 +232,6 @@ class _KnowledgeGameViewState extends State<KnowledgeGameView> {
                 children: [
                   Builder(
                     builder: (context) {
-                      // buna bastığımızda verdiğimiz puanları geri alırız devam ederken geri ekleriz falan filan
                       if (state.currentQuestionIndex > 0) {
                         return SizedBox(
                           width: 120,
@@ -242,7 +246,7 @@ class _KnowledgeGameViewState extends State<KnowledgeGameView> {
                             onPressed: () {
                               cubit.decreaseCurrentQuestionIndex();
                             },
-                            child: Text("Önceki Soru"),
+                            child: Text(LocaleKeys.general_previous.tr()),
                           ),
                         );
                       }
@@ -275,8 +279,8 @@ class _KnowledgeGameViewState extends State<KnowledgeGameView> {
                       child: Text(
                         state.currentQuestionIndex + 1 ==
                                 state.knowledgeTestModel.questions?.length
-                            ? "Bitir"
-                            : "Sonraki",
+                            ? LocaleKeys.general_finish.tr()
+                            : LocaleKeys.general_next.tr(),
                       ),
                     ),
                   )

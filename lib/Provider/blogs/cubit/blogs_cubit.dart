@@ -1,13 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutterglobal/Models/blog_model.dart';
-import 'package:flutterglobal/Service/firebase_firestore_service.dart';
+import 'package:flutterglobal/Repositories/firebase_firestore_repository.dart';
+import 'package:flutterglobal/Service/FirebaseFirestore/i_firebase_firestore.dart';
 
 part 'blogs_state.dart';
 
 class BlogsCubit extends Cubit<BlogsState> {
-  FirebaseFireStoreService _fireStoreService =
-      FirebaseFireStoreService.instance;
+  IFirebaseFirestoreService _fireStoreService =
+      FirebaseFirestoreRepository.instance;
+
   BlogsCubit() : super(BlogsState()) {
     getBlogs();
   }

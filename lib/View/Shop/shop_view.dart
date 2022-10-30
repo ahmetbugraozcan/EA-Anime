@@ -1,13 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
+import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
-import 'package:flutterglobal/Provider/cubit/app_provider_cubit.dart';
+import 'package:flutterglobal/Provider/cubit/user_provider_cubit.dart';
 import 'package:flutterglobal/View/Shop/cubit/shop_cubit.dart';
-import 'package:flutterglobal/Widgets/Bounce/bounce_without_hover.dart';
 import 'package:flutterglobal/Widgets/Cards/shop_card.dart';
 import 'package:flutterglobal/Widgets/Game/user_assets_info.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -66,21 +67,20 @@ class ShopView extends StatelessWidget {
                     children: [
                       ShopCard(
                           title:
-                              "${AppConstants.instance.goldCountForAnswer} Altın",
+                              "${AppConstants.instance.goldCountForAnswer} ${LocaleKeys.general_gold.tr()}",
                           isloading: context
                               .watch<AdsProviderCubit>()
                               .state
                               .isAdLoading,
-                          subtitle:
-                              "Kısa bir reklam videosu izleyerek ${AppConstants.instance.goldCountForAnswer} altın kazan.",
+                          subtitle: LocaleKeys.shop_earnGoldSubtitle.tr(args: [
+                            AppConstants.instance.goldCountForAnswer.toString()
+                          ]),
                           image: ImageEnums.coin,
                           onTap: () {
-                            print(context.read<AdsProviderCubit>().state.ad ??
-                                "ad null");
                             context.read<AdsProviderCubit>().state.ad?.show(
                                 onUserEarnedReward:
                                     (AdWithoutView ad, RewardItem rewardItem) {
-                              context.read<AppProviderCubit>().addGold(
+                              context.read<UserProviderCubit>().addGold(
                                   AppConstants.instance.goldCountForAnswer);
                               context
                                   .read<AdsProviderCubit>()
@@ -88,25 +88,25 @@ class ShopView extends StatelessWidget {
                             });
                           }),
                       ShopCard(
-                        title: "1 Anahtar",
-                        subtitle: "250 altın harcayarak bir anahtar satın al.",
+                        title: "1 ${LocaleKeys.general_key.tr()}",
+                        subtitle: LocaleKeys.shop_buyKeySubtitle
+                            .tr(args: ["${AppConstants.instance.keyPrice}"]),
                         image: ImageEnums.goldkey,
                         onTap: () {
                           if ((context
-                                      .read<AppProviderCubit>()
+                                      .read<UserProviderCubit>()
                                       .state
                                       .user
                                       ?.goldCount ??
                                   0) >=
-                              250) {
-                            context.read<AppProviderCubit>().buyKey();
+                              AppConstants.instance.keyPrice) {
+                            context.read<UserProviderCubit>().buyKey();
                           } else {
                             context.showSnackbar(
-                              title: "Yeterli altınınız bulunmamaktadır.",
+                              title: LocaleKeys.shop_notEnoughGold.tr(),
                               icon: Icon(Icons.error),
                               borderColor: Colors.red,
-                              subtitle:
-                                  "Reklam izleyerek altın kazanabilirsiniz.",
+                              subtitle: LocaleKeys.shop_canEarnGold.tr(),
                             );
                           }
                         },

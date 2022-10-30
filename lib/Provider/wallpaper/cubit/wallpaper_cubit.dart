@@ -4,8 +4,10 @@ import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Init/Cache/locale_manager.dart';
 import 'package:flutterglobal/Models/anime_name_model.dart';
 import 'package:flutterglobal/Models/wallpaper_model.dart';
-import 'package:flutterglobal/Service/firebase_firestore_service.dart';
-import 'package:flutterglobal/Service/firebase_realtime_db_service.dart';
+import 'package:flutterglobal/Repositories/firebase_firestore_repository.dart';
+import 'package:flutterglobal/Repositories/realtime_db_repository.dart';
+import 'package:flutterglobal/Service/FirebaseFirestore/i_firebase_firestore.dart';
+import 'package:flutterglobal/Service/FirebaseRealtimeRb/i_firebase_realtime_db_service.dart';
 import 'package:flutterglobal/Service/image_downloader_service.dart';
 import 'package:flutterglobal/Service/wallpaper_manager_service.dart';
 
@@ -14,10 +16,10 @@ part 'wallpaper_state.dart';
 class WallpaperCubit extends Cubit<WallpaperState> {
   CacheManager _cacheManager = CacheManager.instance;
 
-  FirebaseFireStoreService _fireStoreService =
-      FirebaseFireStoreService.instance;
-  FirebaseRealtimeDBService _realtimeDBService =
-      FirebaseRealtimeDBService.instance;
+  IFirebaseFirestoreService _fireStoreService =
+      FirebaseFirestoreRepository.instance;
+
+  IFirebaseRealtimeDBService _realtimeDBService = RealtimeDBRepository.instance;
 
   ImageDownloaderService _imageDownloaderService =
       ImageDownloaderService.instance;

@@ -1,14 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
+import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Models/guess_card_model.dart';
 import 'package:flutterglobal/Models/guessing_model.dart';
 import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
-import 'package:flutterglobal/Provider/cubit/app_provider_cubit.dart';
+import 'package:flutterglobal/Provider/cubit/user_provider_cubit.dart';
 import 'package:flutterglobal/Provider/guessingGames/guessing_games_cubit.dart';
 import 'package:flutterglobal/Provider/network/cubit/network_provider_cubit.dart';
 import 'package:flutterglobal/View/Shop/shop_view.dart';
@@ -79,9 +81,9 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                             onWillPop: () async => false,
                             child: DialogWithBackground(
                               dialogType: DialogEnums.ERROR,
-                              title: "Süre doldu.",
+                              title: LocaleKeys.guessingGame_timesUp.tr(),
                               contentText:
-                                  "Süreniz dolduğu için oyunu kaybettiniz.",
+                                  LocaleKeys.guessingGame_timesUpGameOver.tr(),
                               onConfirm: () {
                                 Navigator.popUntil(
                                   context,
@@ -102,15 +104,20 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                             onWillPop: () async => false,
                             child: DialogWithBackground(
                               dialogType: DialogEnums.INTERACTIVE,
-                              title: "Süre doldu.",
+                              title: LocaleKeys.guessingGame_timesUp.tr(),
                               confirmText: context
                                       .watch<AdsProviderCubit>()
                                       .state
                                       .isAdLoading
-                                  ? "Yükleniyor"
-                                  : "İzle",
-                              contentText:
-                                  "Süreniz dolduğu için oyunu kaybettiniz. Reklam izleyerek ${AppConstants.instance.extraTimeForGuessingGameFromAd} saniye kazanabilirsiniz.",
+                                  ? LocaleKeys.general_loading.tr()
+                                  : LocaleKeys.general_watch.tr(),
+                              contentText: LocaleKeys
+                                  .guessingGame_timesUpSubtitle
+                                  .tr(args: [
+                                AppConstants
+                                    .instance.extraTimeForGuessingGameFromAd
+                                    .toString()
+                              ]),
                               onCancel: () {
                                 Navigator.popUntil(
                                   context,
@@ -118,7 +125,6 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                                 );
                               },
                               onConfirm: () async {
-                                print("onConfirm");
                                 await context
                                     .read<AdsProviderCubit>()
                                     .getInitialRewardAd();
@@ -129,32 +135,22 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                                 await ad?.show(
                                   onUserEarnedReward:
                                       (rewardedAd, reward) async {
-                                    print("onAdUserEarnedReward TRIGGERED");
                                     cubit.whenUserWatchedAd();
                                     await Future.delayed(Duration.zero);
                                     ad.fullScreenContentCallback =
                                         FullScreenContentCallback(
-                                      onAdImpression: (ad) {
-                                        print("onAdImpression");
-                                      },
-                                      onAdShowedFullScreenContent: (ad) {
-                                        print("onAdShowedFullScreenContent");
-                                      },
+                                      onAdImpression: (ad) {},
+                                      onAdShowedFullScreenContent: (ad) {},
                                       onAdDismissedFullScreenContent:
                                           (ad) async {
                                         Navigator.pop(context);
                                         cubit.restartTimer();
                                       },
                                       onAdFailedToShowFullScreenContent:
-                                          (ad, error) {
-                                        print(
-                                            "onAdFailedToShowFullScreenContent");
-                                      },
+                                          (ad, error) {},
                                     );
                                   },
                                 );
-
-                                // reklam izle eğer reklam izlediyse süreyi 30 saniye arttır ve oyuna devam ettir iptal eder ise 2 kere nav.pop yap
                               },
                             ),
                           );
@@ -163,8 +159,8 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                     }
                     if (state.isAnsweredWrong) {
                       context.showSnackbar(
-                        title: "Yanlış Cevap",
-                        subtitle: "Tekrar Deneyin",
+                        title: LocaleKeys.guessingGame_wrongAnswer.tr(),
+                        subtitle: LocaleKeys.general_tryAgain.tr(),
                         icon: Icon(Icons.close, color: Colors.red),
                         borderColor: Colors.red,
                       );
@@ -255,7 +251,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "İnternet bağlantınız kesildi. Lütfen bağlantınızı kontrol edin.",
+          LocaleKeys.general_noConnectionExplained.tr(),
           style: context.textTheme.headline6?.copyWith(color: Colors.white),
           textAlign: TextAlign.center,
         ),
@@ -294,7 +290,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                 onPressed: () {
                   if (!state.isAnimeTitleActive) {
                     if ((context
-                                .read<AppProviderCubit>()
+                                .read<UserProviderCubit>()
                                 .state
                                 .user
                                 ?.goldCount ??
@@ -305,12 +301,13 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                         builder: (context) {
                           return DialogWithBackground(
                               dialogType: DialogEnums.INTERACTIVE,
-                              title: "Kilit Aç",
-                              contentText:
-                                  "Cevabı açmak için ${AppConstants.instance.goldCountForAnswer} altın harcamak istiyor musunuz?",
+                              title: LocaleKeys.dialog_unlock.tr(),
+                              contentText: LocaleKeys
+                                  .guessingGame_spendGoldToUnlockAnswer
+                                  .tr(),
                               onConfirm: () {
                                 cubit.changeAnimeTitleVisibility(true);
-                                context.read<AppProviderCubit>().decrementGold(
+                                context.read<UserProviderCubit>().decrementGold(
                                     AppConstants.instance.goldCountForAnswer);
                                 Navigator.pop(context);
                               });
@@ -325,9 +322,9 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                               Navigator.pop(context);
                             },
                             dialogType: DialogEnums.ERROR,
-                            title: "Yetersiz Altın",
+                            title: LocaleKeys.guessingGame_notEnoughGold.tr(),
                             contentText:
-                                "Cevabı açmak için ${AppConstants.instance.goldCountForAnswer} altınınız bulunmamaktadır. Reklam izleyerek altın sayınızı artırabilirsiniz.",
+                                "${LocaleKeys.guessingGame_notEnoughGoldSubtitlePart1.tr()} ${AppConstants.instance.goldCountForAnswer} ${LocaleKeys.guessingGame_notEnoughGoldSubtitlePart2.tr()}",
                           );
                         },
                       );
@@ -336,7 +333,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                 },
                 child: Text(state.isAnimeTitleActive
                     ? "${state.randomQuestions[state.questionIndex].guessingWord}"
-                    : "Cevabı Göster"),
+                    : LocaleKeys.guessingGame_showAnswer.tr()),
               ),
             ),
             CircleAvatar(
@@ -428,7 +425,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
               cubit.removeGuessingWord(state.userGuessedWords[index]);
             },
             child: Container(
-              padding: EdgeInsets.all(12),
+              padding: EdgeInsets.symmetric(vertical: 12),
               margin: EdgeInsets.all(4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
@@ -529,7 +526,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                 height: 12,
               ),
               Text(
-                "${state.questionIndex + 1}. karakter başarıyla açıldı.",
+                LocaleKeys.guessingGame_characterUnlocked.tr(),
                 style: context.textTheme.subtitle2
                     ?.copyWith(color: Colors.grey.shade200),
               ),
@@ -539,8 +536,9 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                   if (state.questionIndex + 1 == state.randomQuestions.length) {
                     Navigator.pop(context);
                     context.showSnackbar(
-                      title: "Tebrikler!",
-                      subtitle: "Tebrikler. Testi başarıyla tamamladınız.",
+                      title: LocaleKeys.general_congrats.tr(),
+                      subtitle:
+                          LocaleKeys.guessingGame_successfullyEndedGame.tr(),
                       icon: Icon(Icons.verified, color: Colors.green),
                       borderColor: Colors.green,
                     );
@@ -550,10 +548,11 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                   cubit.setTimeLimit(state.timeLimit +
                       AppConstants
                           .instance.extraTimeForGuessingGameFromCorrectAnswer);
-                  // context.read<AppProviderCubit>().updateLevelValue(
-                  //     widget.guessingModel.id!, state.questionIndex + 1);
+                  context
+                      .read<UserProviderCubit>()
+                      .updateTimeLimitHighScore(state.questionIndex + 1);
                 },
-                child: Text("Devam"),
+                child: Text(LocaleKeys.general_continue.tr()),
               )
             ],
           ),
@@ -604,21 +603,6 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                // Image.network(
-                //   image.url.toString(),
-                //   fit: BoxFit.fill,
-                //   loadingBuilder: (context, child, loadingProgress) {
-                //     if (loadingProgress == null) return child;
-                //     return Center(
-                //       child: CircularProgressIndicator.adaptive(
-                //         value: loadingProgress.expectedTotalBytes != null
-                //             ? loadingProgress.cumulativeBytesLoaded /
-                //                 loadingProgress.expectedTotalBytes!
-                //             : null,
-                //       ),
-                //     );
-                //   },
-                // ),
                 CachedNetworkImage(
                   imageUrl: image.url.toString(),
                   fit: BoxFit.fill,
@@ -628,7 +612,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                 ),
                 image.isLocked ?? true
                     ? ((context
-                                        .watch<AppProviderCubit>()
+                                        .watch<UserProviderCubit>()
                                         .state
                                         .user
                                         ?.keyCount ??
@@ -642,13 +626,14 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                                 builder: (context) {
                                   return DialogWithBackground(
                                       dialogType: DialogEnums.INTERACTIVE,
-                                      title: "Kilit Aç",
-                                      contentText:
-                                          "Fotoğrafın kilidini açmak için ${keyCount} anahtar harcayacaksın. Onaylıyor musun?",
+                                      title: LocaleKeys.dialog_unlock.tr(),
+                                      contentText: LocaleKeys
+                                          .dialog_unlockSubtitle
+                                          .tr(args: ["${keyCount}"]),
                                       onConfirm: () {
                                         cubit.unlockImage(image);
                                         context
-                                            .read<AppProviderCubit>()
+                                            .read<UserProviderCubit>()
                                             .decrementKey(keyCount);
                                         Navigator.pop(context);
                                       });
@@ -672,13 +657,14 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                                 context: context,
                                 builder: (context) {
                                   return DialogWithBackground(
-                                    title: "Yetersiz anahtar",
+                                    title: LocaleKeys.dialog_notEnoughKey.tr(),
                                     dialogType: DialogEnums.ERROR,
                                     onConfirm: () {
                                       Navigator.pop(context);
                                     },
-                                    contentText:
-                                        "Fotoğrafın kilidini açmak için yeterli anahtarınız yok. Anahtar satın almak için mağaza sayfasını ziyaret edebilirsiniz.",
+                                    contentText: LocaleKeys
+                                        .dialog_notEnoughKeySubtitle
+                                        .tr(),
                                   );
                                 },
                               );

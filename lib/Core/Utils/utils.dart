@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Constants/app_constants.dart';
+import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Service/wallpaper_manager_service.dart';
 
 class Utils {
@@ -71,13 +73,24 @@ class Utils {
   String getWallpaperTypeString(WallpaperType wallpaperType) {
     switch (wallpaperType) {
       case WallpaperType.BOTH_SCREENS:
-        return "Her ikisi";
+        return LocaleKeys.wallpapers_applyToBoth.tr();
       case WallpaperType.HOME_SCREEN:
-        return "Ana Ekran";
+        return LocaleKeys.wallpapers_applyToHomeScreen.tr();
       case WallpaperType.LOCK_SCREEN:
-        return "Kilit Ekranı";
+        return LocaleKeys.wallpapers_applyToLockScreen.tr();
       default:
-        return "Photo";
+        return "";
+    }
+  }
+
+  String getLanguageString(LanguageEnums? language) {
+    switch (language) {
+      case LanguageEnums.EN:
+        return "English";
+      case LanguageEnums.TR:
+        return "Türkçe";
+      default:
+        return "English";
     }
   }
 }

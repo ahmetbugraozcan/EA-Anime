@@ -10,7 +10,7 @@ class AppConstants {
   AppConstants._init();
 
   String get LANG_ASSET_PATH =>
-      "${AssetEnums.assets.name}/${AssetEnums.language.name}";
+      "${AssetEnums.assets.name}/${AssetEnums.translations.name}";
 
   String get DATA_ASSET_PATH =>
       "${AssetEnums.assets.name}/${AssetEnums.data.name}/1.json";
@@ -25,7 +25,9 @@ class AppConstants {
 
   int get goldCountForAnswer => 500;
 
-  int get defaultTimeForGuessingGame => 3;
+  int get keyPrice => 250;
+
+  int get defaultTimeForGuessingGame => 60;
 
   int get extraTimeForGuessingGameFromAd => 30;
   int get extraTimeForGuessingGameFromCorrectAnswer => 5;

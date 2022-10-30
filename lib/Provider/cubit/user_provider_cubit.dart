@@ -4,16 +4,17 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
+import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Init/Cache/locale_manager.dart';
 import 'package:flutterglobal/Models/level_model.dart';
 import 'package:flutterglobal/Models/user_model.dart';
 import 'package:collection/collection.dart';
 
-part 'app_provider_state.dart';
+part 'user_provider_state.dart';
 
-class AppProviderCubit extends Cubit<AppProviderState> {
+class UserProviderCubit extends Cubit<UserProviderState> {
   CacheManager _cacheManager = CacheManager.instance;
-  AppProviderCubit() : super(AppProviderState()) {
+  UserProviderCubit() : super(UserProviderState()) {
     _getUser();
   }
 
@@ -35,7 +36,7 @@ class AppProviderCubit extends Cubit<AppProviderState> {
   Future<void> buyKey() async {
     UserModel? userModel = state.user?.copyWith(
         keyCount: state.user!.keyCount + 1,
-        goldCount: state.user!.goldCount - 250);
+        goldCount: state.user!.goldCount - AppConstants.instance.keyPrice);
 
     await setUser(userModel);
   }
@@ -80,6 +81,13 @@ class AppProviderCubit extends Cubit<AppProviderState> {
     // emit(state.copyWith(user: userModel));
   }
 
+  Future<void> updateTimeLimitHighScore(int value) async {
+    if (value > state.user!.timelimitHighScore) {
+      UserModel? userModel = state.user?.copyWith(timelimitHighScore: value);
+      setUser(userModel);
+    }
+  }
+
   Future<void> updateLevelValue(String id, int value) async {
     List<Level>? levels = List.from(state.user?.levels ?? []);
     if (levels.firstWhereOrNull((element) => element.levelId == id) != null) {
@@ -106,7 +114,6 @@ class AppProviderCubit extends Cubit<AppProviderState> {
   }
 
   void _switchLoading() {
-    log("SWITCHED LOADING TO ${!state.isLoading}");
     bool isLoading = !state.isLoading;
     emit(state.copyWith(isLoading: isLoading));
   }

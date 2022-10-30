@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutterglobal/Models/personality_test_model.dart';
-import 'package:flutterglobal/Service/firebase_realtime_db_service.dart';
+import 'package:flutterglobal/Service/FirebaseRealtimeRb/firebase_realtime_db_service.dart';
 
 part 'test_game_state.dart';
 

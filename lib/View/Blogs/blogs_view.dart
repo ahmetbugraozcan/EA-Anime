@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
+import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
 import 'package:flutterglobal/Provider/blogs/cubit/blogs_cubit.dart';
@@ -33,7 +35,7 @@ class BlogsView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "En iyi 10",
+                            LocaleKeys.top10_top10.tr(),
                             style: context.textTheme.headlineSmall
                                 ?.copyWith(color: Colors.white),
                           ),

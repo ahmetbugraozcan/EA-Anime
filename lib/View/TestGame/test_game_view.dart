@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
+import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Models/personality_test_model.dart';
 import 'package:flutterglobal/Provider/testgame/cubit/test_game_selection_cubit.dart';
@@ -149,7 +151,7 @@ class TestGameView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Soru ${state.currentQuestionIndex + 1}/${state.personalityTestModel!.tests!.length}",
+                  "${LocaleKeys.tests_question.tr()} ${state.currentQuestionIndex + 1}/${state.personalityTestModel!.tests!.length}",
                   style: context.textTheme.subtitle1
                       ?.copyWith(color: Colors.grey.shade200),
                 ),
@@ -209,7 +211,6 @@ class TestGameView extends StatelessWidget {
                 children: [
                   Builder(
                     builder: (context) {
-                      // buna bastığımızda verdiğimiz puanları geri alırız devam ederken geri ekleriz falan filan
                       if (state.currentQuestionIndex > 0) {
                         return SizedBox(
                           width: 120,
@@ -224,7 +225,7 @@ class TestGameView extends StatelessWidget {
                             onPressed: () {
                               cubit.decreaseCurrentQuestionIndex();
                             },
-                            child: Text("Önceki Soru"),
+                            child: Text(LocaleKeys.general_previous.tr()),
                           ),
                         );
                       }
@@ -257,8 +258,8 @@ class TestGameView extends StatelessWidget {
                       child: Text(
                         state.currentQuestionIndex + 1 ==
                                 state.personalityTestModel?.tests?.length
-                            ? "Bitir"
-                            : "Sonraki",
+                            ? LocaleKeys.general_finish.tr()
+                            : LocaleKeys.general_next.tr(),
                       ),
                     ),
                   )

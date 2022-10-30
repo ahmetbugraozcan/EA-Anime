@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
+import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Widgets/Dialog/dialog_color.scheme.dart';
 
 class DialogWithBackground extends StatelessWidget {
@@ -83,7 +85,7 @@ class DialogWithBackground extends StatelessWidget {
                             ),
                             onPressed: onConfirm,
                             child: Text(
-                              "Tamam",
+                              LocaleKeys.general_ok.tr(),
                               style: context.textTheme.caption?.copyWith(
                                   color: colorScheme.cancelButtonTextColor),
                               maxLines: 1,
@@ -111,7 +113,7 @@ class DialogWithBackground extends StatelessWidget {
                                       Navigator.pop(context);
                                     },
                                 child: Text(
-                                  "Vazgeç",
+                                  LocaleKeys.general_cancel.tr(),
                                   style: context.textTheme.caption?.copyWith(
                                       color: colorScheme.cancelButtonTextColor),
                                   maxLines: 1,
@@ -134,7 +136,8 @@ class DialogWithBackground extends StatelessWidget {
                                 ),
                                 onPressed: onConfirm,
                                 child: Text(
-                                  confirmText ?? "Onayla",
+                                  confirmText ??
+                                      LocaleKeys.general_confirm.tr(),
                                   style: context.textTheme.caption?.copyWith(
                                       color:
                                           colorScheme.approvalButtonTextColor),

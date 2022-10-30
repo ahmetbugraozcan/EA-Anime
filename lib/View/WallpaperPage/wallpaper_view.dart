@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
+import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Models/wallpaper_model.dart';
 import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
@@ -325,8 +327,6 @@ class _WallpaperViewState extends State<WallpaperView> {
                               if (await context
                                   .read<WallpaperCubit>()
                                   .willShowAd()) {
-                                print("willshow ad");
-
                                 await context
                                     .read<AdsProviderCubit>()
                                     .getWallpaperRewardAd();
@@ -385,16 +385,20 @@ class _WallpaperViewState extends State<WallpaperView> {
                                       Icons.verified,
                                       color: Colors.green,
                                     ),
-                                    subtitle: "Duvar kağıdı başarıyla eklendi.",
+                                    subtitle: LocaleKeys
+                                        .wallpapers_successfullySetted
+                                        .tr(),
                                     borderColor: Colors.green);
                               } else {
                                 context.showSnackbar(
-                                    title: "Hata",
+                                    title: LocaleKeys.general_error.tr(),
                                     icon: Icon(
                                       Icons.error,
                                       color: Colors.red,
                                     ),
-                                    subtitle: "Duvar kağıdı eklenemedi.",
+                                    subtitle: LocaleKeys
+                                        .wallpapers_exceptionWhenSetting
+                                        .tr(),
                                     borderColor: Colors.red);
                               }
                             },
@@ -421,46 +425,38 @@ class _WallpaperViewState extends State<WallpaperView> {
           );
       if (isSet) {
         context.showSnackbar(
-            title: "Başarılı",
+            title: LocaleKeys.general_success.tr(),
             icon: Icon(
               Icons.verified,
               color: Colors.green,
             ),
-            subtitle: "Duvar kağıdı başarıyla indirildi.",
+            subtitle: LocaleKeys.wallpapers_successfullyDownloaded.tr(),
             borderColor: Colors.green);
       } else {
         context.showSnackbar(
-            title: "Hata",
+            title: LocaleKeys.general_error.tr(),
             icon: Icon(
               Icons.error,
               color: Colors.red,
             ),
-            subtitle: "Duvar kağıdı indirilirken bir hata oluştu.",
+            subtitle: LocaleKeys.wallpapers_exceptionWhenDownloading.tr(),
             borderColor: Colors.red);
       }
     } catch (err) {
       context.showSnackbar(
-          title: "Hata",
+          title: LocaleKeys.general_error.tr(),
           icon: Icon(
             Icons.error,
             color: Colors.red,
           ),
-          subtitle: "Duvar kağıdı indirilirken bir hata oluştu.",
+          subtitle: LocaleKeys.wallpapers_exceptionWhenDownloading.tr(),
           borderColor: Colors.red);
     }
   }
 
   void _scrollListener() {
     if (controller.position.extentAfter < 500) {
-      print("controller.position ${controller.position.extentAfter}");
       context.read<WallpaperCubit>().onPagination();
-      print(context
-              .read<WallpaperCubit>()
-              .state
-              .wallpaperModels
-              .length
-              .toString() +
-          " asdsa");
     }
   }
 }
