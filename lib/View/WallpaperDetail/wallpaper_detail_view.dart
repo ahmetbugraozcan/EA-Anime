@@ -104,9 +104,6 @@ class WallpaperDetailView extends StatelessWidget {
                                       if (await context
                                           .read<WallpaperCubit>()
                                           .willShowAd()) {
-                                        await context
-                                            .read<AdsProviderCubit>()
-                                            .getWallpaperRewardAd();
                                         context
                                             .read<AdsProviderCubit>()
                                             .state
@@ -116,6 +113,9 @@ class WallpaperDetailView extends StatelessWidget {
                                             downloadImageAndShowSnackbar(
                                                 context,
                                                 state.selectedWallpaper!);
+                                            context
+                                                .read<AdsProviderCubit>()
+                                                .getWallpaperRewardAd();
                                           },
                                         );
                                       } else {

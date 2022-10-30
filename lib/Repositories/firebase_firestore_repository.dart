@@ -32,9 +32,6 @@ class FirebaseFirestoreRepository extends IFirebaseFirestoreService {
 
   @override
   Future<List<KnowledgeTestModel>?>? getKnowledgeTestModels() async {
-    log(int.tryParse(
-            PackageInfoService.instance.packageInfo?.buildNumber ?? "0")
-        .toString());
     if ((int.tryParse(
                 PackageInfoService.instance.packageInfo?.buildNumber ?? "0") ??
             0) <

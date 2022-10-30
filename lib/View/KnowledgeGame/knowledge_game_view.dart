@@ -8,6 +8,7 @@ import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Models/knowledge_test_model.dart';
+import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
 import 'package:flutterglobal/View/KnowledgeGame/cubit/knowledge_game_cubit.dart';
 import 'package:flutterglobal/Widgets/Bounce/bounce_without_hover.dart';
 
@@ -114,6 +115,8 @@ class _KnowledgeGameViewState extends State<KnowledgeGameView> {
                     backgroundColor: Colors.lightBlue,
                   ),
                   onPressed: () {
+                    context.read<AdsProviderCubit>().state.adForTop10?.show();
+                    context.read<AdsProviderCubit>().getTop10TransitionAd();
                     Navigator.pop(context);
                   },
                   child: Text(LocaleKeys.general_finish.tr()),
@@ -129,6 +132,8 @@ class _KnowledgeGameViewState extends State<KnowledgeGameView> {
                     backgroundColor: Colors.red,
                   ),
                   onPressed: () {
+                    context.read<AdsProviderCubit>().state.adForTop10?.show();
+                    context.read<AdsProviderCubit>().getTop10TransitionAd();
                     cubit.resetGame();
                   },
                   child: Text(LocaleKeys.general_playAgain.tr()),

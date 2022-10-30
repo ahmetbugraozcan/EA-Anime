@@ -8,7 +8,7 @@ class AdsProviderState {
   bool isBannerAdLoaded;
   BannerAd? bannerAd;
 
-  RewardedAd? adForWallpaper;
+  RewardedInterstitialAd? adForWallpaper;
   AdsProviderState({
     this.ad,
     this.isAdLoading = false,
@@ -24,7 +24,7 @@ class AdsProviderState {
     RewardedAd? ad,
     bool? isAdLoading,
     BannerAd? bannerAd,
-    RewardedAd? adForWallpaper,
+    RewardedInterstitialAd? adForWallpaper,
     InterstitialAd? adForTop10,
     bool? isBannerAdLoaded,
   }) {

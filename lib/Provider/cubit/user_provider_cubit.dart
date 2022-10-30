@@ -42,7 +42,6 @@ class UserProviderCubit extends Cubit<UserProviderState> {
   }
 
   Future<void> decrementKey(int keyCount) async {
-    log("decrementKey user key count ${state.user?.keyCount ?? "null"}");
     UserModel? userModel =
         state.user?.copyWith(keyCount: (state.user?.keyCount ?? 0) - keyCount);
 

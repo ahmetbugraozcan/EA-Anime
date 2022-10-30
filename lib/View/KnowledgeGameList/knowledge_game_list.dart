@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
-import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/View/KnowledgeGame/knowledge_game_view.dart';
 import 'package:flutterglobal/View/KnowledgeGameList/cubit/knowledge_game_list_cubit.dart';
@@ -25,7 +22,8 @@ class KnowledgeGameList extends StatelessWidget {
               BlocBuilder<KnowledgeGameListCubit, KnowledgeGameListState>(
                 bloc: cubit,
                 buildWhen: (previous, current) =>
-                    previous.isLoading != current.isLoading,
+                    previous.isLoading != current.isLoading &&
+                    previous.knowledgeGameList != current.knowledgeGameList,
                 builder: (context, state) {
                   if (state.isLoading) {
                     return Expanded(

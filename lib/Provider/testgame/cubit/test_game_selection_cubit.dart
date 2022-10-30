@@ -10,10 +10,7 @@ part 'test_game_selection_state.dart';
 class TestGameSelectionCubit extends Cubit<TestGameSelectionState> {
   RealtimeDBRepository repository = RealtimeDBRepository.instance;
 
-  TestGameSelectionCubit() : super(TestGameSelectionState()) {
-    getQuestionsFromJson();
-  }
-
+  TestGameSelectionCubit() : super(TestGameSelectionState());
   Future<void> getQuestionsFromJson() async {
     _switchLoading();
 

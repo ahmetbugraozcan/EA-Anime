@@ -39,7 +39,6 @@ class WallpaperAnimeNamesView extends StatelessWidget {
                           .setSelectedAnimeWallpapersName(
                             state.animeNames[index].animeName.toString(),
                           );
-                      print("animename: ${state.animeNames[index].animeName}");
                       Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -10,6 +10,7 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
     getInitialRewardAd();
     getBannerAd();
     getTop10TransitionAd();
+    getWallpaperRewardAd();
   }
 
   setIsBannerAdLoaded(bool value) {
@@ -24,7 +25,7 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
     emit(state.copyWith(adForTop10: ad));
   }
 
-  void setWallpaperAd(RewardedAd ad) {
+  void setWallpaperAd(RewardedInterstitialAd ad) {
     emit(state.copyWith(adForWallpaper: ad));
   }
 
@@ -135,12 +136,12 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
       adId = 'ca-app-pub-3940256099942544/5224354917';
     }
     // gerçek id : ca-app-pub-9258462632949376/8719075308
-    await RewardedAd.load(
+    await RewardedInterstitialAd.load(
         request: AdRequest(),
         // test reklam id 'ca-app-pub-3940256099942544/5224354917'
         adUnitId: adId,
-        rewardedAdLoadCallback: RewardedAdLoadCallback(
-          onAdLoaded: (RewardedAd ad) {
+        rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
+          onAdLoaded: (RewardedInterstitialAd ad) {
             setWallpaperAd(ad);
           },
           onAdFailedToLoad: (LoadAdError error) {

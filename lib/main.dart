@@ -53,6 +53,7 @@ Future<void> initializeApp() async {
   await FirebaseMessagingService.instance.initLocalNotifications();
   await EasyLocalization.ensureInitialized();
   await CacheManager.preferencesInit();
+  await CacheManager.instance.setIntValue(PreferencesKeys.DOWNLOAD_COUNT, 2);
   await MobileAds.instance.initialize();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await PackageInfoService.init();

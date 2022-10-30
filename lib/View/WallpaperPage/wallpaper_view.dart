@@ -327,9 +327,6 @@ class _WallpaperViewState extends State<WallpaperView> {
                               if (await context
                                   .read<WallpaperCubit>()
                                   .willShowAd()) {
-                                await context
-                                    .read<AdsProviderCubit>()
-                                    .getWallpaperRewardAd();
                                 context
                                     .read<AdsProviderCubit>()
                                     .state

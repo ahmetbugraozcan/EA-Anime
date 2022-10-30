@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
-import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
 import 'package:flutterglobal/Provider/testgame/cubit/test_game_selection_cubit.dart';
 import 'package:flutterglobal/View/TestGame/test_game_view.dart';
-import 'package:flutterglobal/Widgets/Bounce/bounce_without_hover.dart';
 import 'package:flutterglobal/Widgets/Buttons/back_button.dart';
 import 'package:flutterglobal/Widgets/Cards/StackedTextCard/stacked_text_card.dart';
 
-class TestGameSelectionView extends StatelessWidget {
+class TestGameSelectionView extends StatefulWidget {
   const TestGameSelectionView({super.key});
+
+  @override
+  State<TestGameSelectionView> createState() => _TestGameSelectionViewState();
+}
+
+class _TestGameSelectionViewState extends State<TestGameSelectionView> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<TestGameSelectionCubit>().getQuestionsFromJson();
+  }
 
   @override
   Widget build(BuildContext context) {

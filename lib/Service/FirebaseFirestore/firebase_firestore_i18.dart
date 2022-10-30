@@ -34,7 +34,6 @@ class FirebaseFirestoreI18 extends IFirebaseFirestoreService {
 
   @override
   Future<List<KnowledgeTestModel>?>? getKnowledgeTestModels() async {
-    log(CacheManager.instance.getStringValue(PreferencesKeys.LANGUAGE));
     CollectionReference ref =
         CacheManager.instance.getStringValue(PreferencesKeys.LANGUAGE) ==
                 LanguageEnums.EN.name
