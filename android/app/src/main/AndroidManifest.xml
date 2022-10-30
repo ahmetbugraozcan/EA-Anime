@@ -7,7 +7,7 @@ xmlns:tools="http://schemas.android.com/tools"
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
    <application
-        android:label="Her Şey Anime"
+        android:label="EA Anime"
         android:requestLegacyExternalStorage="true"
         android:name="${applicationName}"
         tools:replace="android:name,android:allowBackup"
