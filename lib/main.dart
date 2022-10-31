@@ -54,6 +54,7 @@ Future<void> initializeApp() async {
   await EasyLocalization.ensureInitialized();
   await CacheManager.preferencesInit();
   await CacheManager.instance.setIntValue(PreferencesKeys.DOWNLOAD_COUNT, 2);
+
   await MobileAds.instance.initialize();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await PackageInfoService.init();
@@ -70,6 +71,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     context.read<LanguageProviderCubit>().getLanguage().then((value) => context
         .setLocale(context.read<LanguageProviderCubit>().state.currentLocale!));
   }

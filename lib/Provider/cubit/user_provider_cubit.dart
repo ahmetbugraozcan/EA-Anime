@@ -22,9 +22,7 @@ class UserProviderCubit extends Cubit<UserProviderState> {
     _switchLoading();
     String userModel = _cacheManager.getStringValue(PreferencesKeys.USERMODEL);
     if (userModel.isNotEmpty) {
-      await setUser(UserModel.fromJson(
-        jsonDecode(userModel),
-      ));
+      await setUser(UserModel.fromJson(jsonDecode(userModel)));
     } else {
       await setUser(UserModel());
     }

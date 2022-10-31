@@ -206,12 +206,14 @@ class _GuessingViewState extends State<GuessingView> {
                               title: LocaleKeys.dialog_unlock.tr(),
                               contentText: LocaleKeys
                                   .guessingGame_spendGoldToUnlockAnswer
-                                  .tr(),
+                                  .tr(args: [
+                                AppConstants.instance.goldCountForAnswer
+                                    .toString()
+                              ]),
                               onConfirm: () {
                                 cubit.changeAnimeTitleVisibility(true);
-                                context
-                                    .read<UserProviderCubit>()
-                                    .decrementGold(500);
+                                context.read<UserProviderCubit>().decrementGold(
+                                    AppConstants.instance.goldCountForAnswer);
                                 Navigator.pop(context);
                               });
                         },

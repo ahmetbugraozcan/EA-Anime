@@ -304,7 +304,10 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                               title: LocaleKeys.dialog_unlock.tr(),
                               contentText: LocaleKeys
                                   .guessingGame_spendGoldToUnlockAnswer
-                                  .tr(),
+                                  .tr(args: [
+                                AppConstants.instance.goldCountForAnswer
+                                    .toString()
+                              ]),
                               onConfirm: () {
                                 cubit.changeAnimeTitleVisibility(true);
                                 context.read<UserProviderCubit>().decrementGold(
