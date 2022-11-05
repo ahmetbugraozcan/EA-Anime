@@ -76,7 +76,7 @@ class ShopView extends StatelessWidget {
                             AppConstants.instance.goldCountForAnswer.toString()
                           ]),
                           image: ImageEnums.coin,
-                          onTap: () {
+                          onTap: () async {
                             context.read<AdsProviderCubit>().state.ad?.show(
                                 onUserEarnedReward:
                                     (AdWithoutView ad, RewardItem rewardItem) {

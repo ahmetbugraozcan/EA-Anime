@@ -124,14 +124,14 @@ class _MenuViewState extends State<MenuView>
                       title: LocaleKeys.menuPage_stickers.tr(),
                       subtitle: LocaleKeys.menuPage_comingSoon.tr(),
                       background: ImageEnums.megumin,
-                      // onPressed: () {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => StickersView(),
-                      //     ),
-                      //   );
-                      // },
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => StickersView(),
+                          ),
+                        );
+                      },
                     ),
                     MenuGuessCard(
                       title: LocaleKeys.menuPage_settings.tr(),

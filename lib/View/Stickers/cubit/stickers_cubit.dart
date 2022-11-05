@@ -7,7 +7,7 @@ import 'package:flutterglobal/Service/Stickers/stickers_service.dart';
 part 'stickers_state.dart';
 
 class StickersCubit extends Cubit<StickersState> {
-  // StickersService stickersService = StickersService.instance;
+  StickersService stickersService = StickersService.instance;
   var firestoreRepository = FirebaseFirestoreRepository.instance;
   StickersCubit() : super(StickersState()) {
     getStickerPacks();
@@ -37,10 +37,7 @@ class StickersCubit extends Cubit<StickersState> {
     emit(state.copyWith(isLoading: value));
   }
 
-  // downloadStickers() async {
-  //   _setLoading(true);
-  //   await stickersService
-  //       .installFromRemote(state.stickerPacks!.first.stickerUrls!);
-  //   _setLoading(false);
-  // }
+  downloadStickers(StickerPackModel stickerPackModel) async {
+    await stickersService.installFromRemote(stickerPackModel);
+  }
 }

@@ -48,6 +48,7 @@ Future<void> initializeApp() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await FirebaseMessagingService.instance.initService();
   await FirebaseMessagingService.instance.initLocalNotifications();

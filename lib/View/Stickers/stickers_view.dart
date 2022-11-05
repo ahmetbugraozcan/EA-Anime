@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
+import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 
 import 'cubit/stickers_cubit.dart';
@@ -30,19 +31,52 @@ class StickersView extends StatelessWidget {
                 ));
               } else {
                 return ListView.builder(
+                  physics: BouncingScrollPhysics(),
                   itemCount: state.stickerPacks?.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () {
-                        // cubit.downloadStickers();
-                      },
-                      title: Text(
-                        state.stickerPacks?[index].animeName ?? "",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      subtitle: Text(
-                        state.stickerPacks?[index].stickerUrls.toString() ?? "",
-                        style: TextStyle(color: Colors.white),
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () {
+                          cubit.downloadStickers(state.stickerPacks![index]);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(.4),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GridView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: state
+                                    .stickerPacks![index].stickerUrls!.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        mainAxisExtent: 80, crossAxisCount: 3),
+                                itemBuilder: (context, i) {
+                                  return Center(
+                                    child: Image.network(
+                                      state
+                                          .stickerPacks![index].stickerUrls![i],
+                                      fit: BoxFit.cover,
+                                    ),
+                                  );
+                                },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Text(state.stickerPacks![index].name!,
+                                    style: context.textTheme.headlineSmall
+                                        ?.copyWith(
+                                            color: Colors.grey.shade300)),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },

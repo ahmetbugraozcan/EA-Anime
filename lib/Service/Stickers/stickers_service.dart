@@ -1,86 +1,99 @@
-// import 'dart:developer';
-// import 'dart:io';
+import 'dart:developer';
+import 'dart:io';
 
-// import 'package:dio/dio.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'package:whatsapp_stickers_plus/exceptions.dart';
-// import 'package:whatsapp_stickers_plus/whatsapp_stickers.dart';
+import 'package:dio/dio.dart';
+import 'package:flutterglobal/Models/sticker_pack_model.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:whatsapp_stickers_plus/exceptions.dart';
+import 'package:whatsapp_stickers_plus/whatsapp_stickers.dart';
 
-// class StickersService {
-//   static StickersService? _instance;
+class StickersService {
+  static StickersService? _instance;
 
-//   static StickersService get instance => _instance ?? StickersService._init();
+  static StickersService get instance => _instance ?? StickersService._init();
 
-//   StickersService._init();
+  StickersService._init();
 
-//   Future installFromRemote(List<String> stickerUrls) async {
-//     const stickers = {
-//       '01_Cuppy_smile.webp': ['☕', '🙂'],
-//       '02_Cuppy_lol.webp': ['😄', '😀'],
-//       '03_Cuppy_rofl.webp': ['😆', '😂'],
-//       '04_Cuppy_sad.webp': ['😃', '😍'],
-//       '05_Cuppy_cry.webp': ['😭', '💧'],
-//       '06_Cuppy_love.webp': ['😍', '♥'],
-//       '07_Cuppy_hate.webp': ['💔', '👎'],
-//       '08_Cuppy_lovewithmug.webp': ['😍', '💑'],
-//       '09_Cuppy_lovewithcookie.webp': ['😘', '🍪'],
-//       '10_Cuppy_hmm.webp': ['🤔', '😐'],
-//       '11_Cuppy_upset.webp': ['😱', '😵'],
-//       '12_Cuppy_angry.webp': ['😡', '😠'],
-//       '13_Cuppy_curious.webp': ['❓', '🤔'],
-//       '14_Cuppy_weird.webp': ['🌈', '😜'],
-//       '15_Cuppy_bluescreen.webp': ['💻', '😩'],
-//       '16_Cuppy_angry.webp': ['😡', '😤'],
-//       '17_Cuppy_tired.webp': ['😩', '😨'],
-//       '18_Cuppy_workhard.webp': ['😔', '😨'],
-//       '19_Cuppy_shine.webp': ['🎉', '✨'],
-//       '20_Cuppy_disgusting.webp': ['🤮', '👎'],
-//       '21_Cuppy_hi.webp': ['🖐', '🙋'],
-//       '22_Cuppy_bye.webp': ['🖐', '👋'],
-//     };
+  Future installFromRemote(StickerPackModel stickerPackModel) async {
+    if (stickerPackModel.stickerUrls == null) return;
 
-//     var applicationDocumentsDirectory =
-//         await getApplicationDocumentsDirectory();
-//     log(applicationDocumentsDirectory.toString());
+    const stickers = {
+      '01_Cuppy_smile.webp': ['☕', '🙂'],
+      '02_Cuppy_lol.webp': ['😄', '😀'],
+      '03_Cuppy_rofl.webp': ['😆', '😂'],
+      '04_Cuppy_sad.webp': ['😃', '😍'],
+      '05_Cuppy_cry.webp': ['😭', '💧'],
+      '06_Cuppy_love.webp': ['😍', '♥'],
+      '07_Cuppy_hate.webp': ['💔', '👎'],
+      '08_Cuppy_lovewithmug.webp': ['😍', '💑'],
+      '09_Cuppy_lovewithcookie.webp': ['😘', '🍪'],
+      '10_Cuppy_hmm.webp': ['🤔', '😐'],
+      '11_Cuppy_upset.webp': ['😱', '😵'],
+      '12_Cuppy_angry.webp': ['😡', '😠'],
+      '13_Cuppy_curious.webp': ['❓', '🤔'],
+      '14_Cuppy_weird.webp': ['🌈', '😜'],
+      '15_Cuppy_bluescreen.webp': ['💻', '😩'],
+      '16_Cuppy_angry.webp': ['😡', '😤'],
+      '17_Cuppy_tired.webp': ['😩', '😨'],
+      '18_Cuppy_workhard.webp': ['😔', '😨'],
+      '19_Cuppy_shine.webp': ['🎉', '✨'],
+      '20_Cuppy_disgusting.webp': ['🤮', '👎'],
+      '21_Cuppy_hi.webp': ['🖐', '🙋'],
+      '22_Cuppy_bye.webp': ['🖐', '👋'],
+    };
 
-//     var stickersDirectory =
-//         Directory('${applicationDocumentsDirectory.path}/stickers');
-//     await stickersDirectory.create(recursive: true);
+    var applicationDocumentsDirectory =
+        await getApplicationDocumentsDirectory();
 
-//     final dio = Dio();
-//     final downloads = <Future>[];
+    var stickersDirectory =
+        Directory('${applicationDocumentsDirectory.path}/stickers');
+    await stickersDirectory.create(recursive: true);
 
-//     stickerUrls.forEach((sticker) {
-//       downloads.add(
-//         dio.download(
-//           sticker,
-//           '${stickersDirectory.path}/$sticker',
-//         ),
-//       );
-//     });
+    print(stickersDirectory.path);
 
-//     await Future.wait(downloads);
+    final dio = Dio();
+    final downloads = <Future>[];
 
-//     var stickerPack = WhatsappStickers(
-//       identifier: 'cuppyFlutterWhatsAppStickers',
-//       name: 'Cuppy Flutter WhatsApp Stickers',
-//       publisher: 'John Doe',
-//       trayImageFileName: WhatsappStickerImage.fromAsset('assets/images/10.jpg'),
-//       publisherWebsite: '',
-//       privacyPolicyWebsite: '',
-//       licenseAgreementWebsite: '',
-//     );
+    stickerPackModel.stickerUrls!.forEach((sticker) {
+      int index = stickerPackModel.stickerUrls!.indexOf(sticker);
+      downloads.add(
+        dio.download(
+          sticker,
+          '${stickersDirectory.path}/$index.webp',
+        ),
+      );
+    });
 
-//     stickers.forEach((sticker, emojis) {
-//       stickerPack.addSticker(
-//           WhatsappStickerImage.fromFile('${stickersDirectory.path}/$sticker'),
-//           emojis);
-//     });
+    await Future.wait(downloads);
 
-//     try {
-//       await stickerPack.sendToWhatsApp();
-//     } on WhatsappStickersException catch (e) {
-//       print(e.cause);
-//     }
-//   }
-// }
+    var stickerPack = WhatsappStickers(
+      identifier: stickerPackModel.uuid!,
+      name: 'EA Anime Stickers - ${stickerPackModel.name}',
+      publisher: 'EA Anime',
+      trayImageFileName:
+          WhatsappStickerImage.fromAsset('assets/images/tray_Cuppy.png'),
+      publisherWebsite: '',
+      privacyPolicyWebsite: '',
+      licenseAgreementWebsite: '',
+    );
+
+    stickerPackModel.stickerUrls!.forEach(
+      (sticker) {
+        int index = stickerPackModel.stickerUrls!.indexOf(sticker);
+        stickerPack.addSticker(
+          WhatsappStickerImage.fromFile(
+              '${stickersDirectory.path}/$index.webp'),
+          ['🖐', '👋'],
+        );
+      },
+    );
+
+    try {
+      await stickerPack.sendToWhatsApp();
+    } on WhatsappStickersException catch (e) {
+      print("ERROR ${e.cause}");
+    } catch (e) {
+      print("ERROR WHATSAPP STICKER : " + e.toString());
+    }
+  }
+}
