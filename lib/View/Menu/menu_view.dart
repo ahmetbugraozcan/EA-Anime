@@ -122,7 +122,7 @@ class _MenuViewState extends State<MenuView>
                     ),
                     MenuGuessCard(
                       title: LocaleKeys.menuPage_stickers.tr(),
-                      subtitle: LocaleKeys.menuPage_comingSoon.tr(),
+                      subtitle: LocaleKeys.menuPage_stickersSubtitle.tr(),
                       background: ImageEnums.megumin,
                       onPressed: () {
                         Navigator.push(

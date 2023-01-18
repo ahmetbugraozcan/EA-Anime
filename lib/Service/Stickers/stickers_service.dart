@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutterglobal/Core/Exceptions/simple_exception.dart';
 import 'package:flutterglobal/Models/sticker_pack_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:whatsapp_stickers_plus/exceptions.dart';
@@ -14,8 +15,10 @@ class StickersService {
 
   StickersService._init();
 
-  Future installFromRemote(StickerPackModel stickerPackModel) async {
-    if (stickerPackModel.stickerUrls == null) return;
+  Future installFromRemote(StickerPackModel? stickerPackModel) async {
+    if (stickerPackModel == null ||
+        stickerPackModel.stickerUrls == null ||
+        stickerPackModel.mainPhoto == null) return;
 
     const stickers = {
       '01_Cuppy_smile.webp': ['☕', '🙂'],
@@ -49,8 +52,6 @@ class StickersService {
         Directory('${applicationDocumentsDirectory.path}/stickers');
     await stickersDirectory.create(recursive: true);
 
-    print(stickersDirectory.path);
-
     final dio = Dio();
     final downloads = <Future>[];
 
@@ -66,10 +67,17 @@ class StickersService {
 
     await Future.wait(downloads);
 
+    await dio.download(
+      stickerPackModel.mainPhoto!,
+      '${stickersDirectory.path}/mainPhoto.webp',
+    );
+
     var stickerPack = WhatsappStickers(
       identifier: stickerPackModel.uuid!,
       name: 'EA Anime Stickers - ${stickerPackModel.name}',
       publisher: 'EA Anime',
+      // trayImageFileName: WhatsappStickerImage.fromFile(
+      //     '${stickersDirectory.path}/mainPhoto.webp'),
       trayImageFileName:
           WhatsappStickerImage.fromAsset('assets/images/tray_Cuppy.png'),
       publisherWebsite: '',
@@ -80,6 +88,7 @@ class StickersService {
     stickerPackModel.stickerUrls!.forEach(
       (sticker) {
         int index = stickerPackModel.stickerUrls!.indexOf(sticker);
+
         stickerPack.addSticker(
           WhatsappStickerImage.fromFile(
               '${stickersDirectory.path}/$index.webp'),
@@ -92,6 +101,7 @@ class StickersService {
       await stickerPack.sendToWhatsApp();
     } on WhatsappStickersException catch (e) {
       print("ERROR ${e.cause}");
+      throw SimpleException(message: e.cause);
     } catch (e) {
       print("ERROR WHATSAPP STICKER : " + e.toString());
     }

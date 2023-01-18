@@ -11,6 +11,7 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
     getBannerAd();
     getTop10TransitionAd();
     getWallpaperRewardAd();
+    getStickerRewardAd();
   }
 
   setIsBannerAdLoaded(bool value) {
@@ -27,6 +28,10 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
 
   void setWallpaperAd(RewardedInterstitialAd ad) {
     emit(state.copyWith(adForWallpaper: ad));
+  }
+
+  void setStickersAd(RewardedInterstitialAd ad) {
+    emit(state.copyWith(adForStickers: ad));
   }
 
   void setBannerAd(BannerAd? ad) {
@@ -146,6 +151,30 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
           },
           onAdFailedToLoad: (LoadAdError error) {
             print('RewardedAd failed to load: $error');
+          },
+        ));
+  }
+
+  Future<void> getStickerRewardAd() async {
+    state.adForWallpaper?.dispose();
+    String adId;
+    if (Platform.isAndroid) {
+      adId = "ca-app-pub-9258462632949376/9645567568";
+    } else if (Platform.isIOS) {
+      adId = "ca-app-pub-9258462632949376/8440791948";
+    } else {
+      adId = 'ca-app-pub-3940256099942544/5224354917';
+    }
+
+    await RewardedInterstitialAd.load(
+        request: AdRequest(),
+        adUnitId: adId,
+        rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
+          onAdLoaded: (RewardedInterstitialAd ad) {
+            setStickersAd(ad);
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            print('getStickerRewardAd RewardedAd failed to load: $error');
           },
         ));
   }

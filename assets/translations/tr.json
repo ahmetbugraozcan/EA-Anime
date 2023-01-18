@@ -29,6 +29,7 @@
     "top10": "En İyi 10",
     "top10Subtitle": "En iyi 10 anime ve anime karakterlerini görmek için en iyi 10 bölümüne göz at.",
     "stickers": "Stickerlar",
+    "stickersSubtitle": "WhatsApp mesajlarını süsleyebileceğin yüzlerce anime stickerlarına göz at.",
     "comingSoon": "ÇOK YAKINDA!",
     "settings": "Ayarlar",
     "settingsSubtitle": "Tercih edilen ayarları değiştir.",
@@ -90,5 +91,8 @@
   },
   "top10": {
     "top10": "En İyi 10"
+  },
+  "stickersPage": {
+    "addToWhattsap": "WhatsApp'a Ekle"
   }
 }

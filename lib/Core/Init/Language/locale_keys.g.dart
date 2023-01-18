@@ -29,6 +29,7 @@ abstract class  LocaleKeys {
   static const menuPage_top10 = 'menuPage.top10';
   static const menuPage_top10Subtitle = 'menuPage.top10Subtitle';
   static const menuPage_stickers = 'menuPage.stickers';
+  static const menuPage_stickersSubtitle = 'menuPage.stickersSubtitle';
   static const menuPage_comingSoon = 'menuPage.comingSoon';
   static const menuPage_settings = 'menuPage.settings';
   static const menuPage_settingsSubtitle = 'menuPage.settingsSubtitle';
@@ -83,5 +84,7 @@ abstract class  LocaleKeys {
   static const wallpapers = 'wallpapers';
   static const top10_top10 = 'top10.top10';
   static const top10 = 'top10';
+  static const stickersPage_addToWhattsap = 'stickersPage.addToWhattsap';
+  static const stickersPage = 'stickersPage';
 
 }

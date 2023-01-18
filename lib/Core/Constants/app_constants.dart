@@ -31,4 +31,6 @@ class AppConstants {
 
   int get extraTimeForGuessingGameFromAd => 30;
   int get extraTimeForGuessingGameFromCorrectAnswer => 5;
+
+  int get stickerPaginationLimit => 20;
 }

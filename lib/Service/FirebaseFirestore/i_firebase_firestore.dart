@@ -73,17 +73,56 @@ abstract class IFirebaseFirestoreService {
     return null;
   }
 
-  Future<List<StickerPackModel>?> getStickerPacks() async {
+  DocumentSnapshot<StickerPackModel>? lastStickerDocument;
+  Future<List<StickerPackModel>?> getStickerPacks(int takeCount,
+      {bool isFirst = false}) async {
     CollectionReference ref = firestore.collection("stickers");
-    var data = await ref.get();
+    if (isFirst) lastStickerDocument = null;
+    QuerySnapshot<StickerPackModel?> data;
+    if (lastStickerDocument == null) {
+      data = await ref
+          .orderBy("createDate", descending: true)
+          .limit(takeCount)
+          .withConverter<StickerPackModel>(
+              fromFirestore: (snapshot, options) =>
+                  StickerPackModel.fromJson(snapshot.data()),
+              toFirestore: (model, options) => model.toJson())
+          .get();
+    } else {
+      data = await ref
+          .orderBy("createDate", descending: true)
+          .startAfterDocument(lastStickerDocument!)
+          .limit(takeCount)
+          .withConverter<StickerPackModel>(
+              fromFirestore: (snapshot, options) =>
+                  StickerPackModel.fromJson(snapshot.data()),
+              toFirestore: (model, options) => model.toJson())
+          .get();
+    }
+
     if (data.docs.isNotEmpty) {
       List<StickerPackModel> list = [];
-      data.docs.forEach((element) {
-        list.add(
-            StickerPackModel.fromJson(element.data() as Map<String, dynamic>));
-      });
+      for (var element in data.docs) {
+        if (element.data() != null) {
+          list.add(element.data()!);
+        }
+      }
+
+      lastStickerDocument =
+          data.docs.last as DocumentSnapshot<StickerPackModel>;
+
       return list;
     }
     return null;
+    // var data = await ref.orderBy("createDate", descending: true).get();
+    // if (data.docs.isNotEmpty) {
+    //   List<StickerPackModel> list = [];
+    //   data.docs.forEach((element) {
+    //     list.add(
+    //         StickerPackModel.fromJson(element.data() as Map<String, dynamic>));
+    //   });
+    //   return list;
+    // }
+    // return null;
   }
 }

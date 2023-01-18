@@ -12,6 +12,7 @@ xmlns:tools="http://schemas.android.com/tools"
    <application
         android:label="EA Anime"
         android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true"
         android:name="${applicationName}"
         tools:replace="android:name,android:allowBackup"
         android:allowBackup = "true"

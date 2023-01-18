@@ -29,7 +29,8 @@
     "top10": "Top 10",
     "top10Subtitle": "Check out our top 10 section to see the top 10 anime and anime characters.",
     "stickers": "Stickers",
-    "comingSoon": "Coming Soon!",
+    "stickersSubtitle": "Download beautiful Whatsapp anime stickers and decorate your chats.",
+    "comingSoon": "Coming Soon",
     "settings": "Settings",
     "settingsSubtitle": "Change preferred settings.",
     "tests": "Tests",
@@ -90,5 +91,8 @@
   },
   "top10": {
     "top10": "Top 10"
+  },
+  "stickersPage": {
+    "addToWhattsap": "Add to WhatsApp"
   }
 }
