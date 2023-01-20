@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterglobal/Models/anime.dart';
 import 'package:flutterglobal/Models/blog_model.dart';
 import 'package:flutterglobal/Models/knowledge_test_model.dart';
 import 'package:flutterglobal/Service/FirebaseFirestore/i_firebase_firestore.dart';
@@ -40,5 +41,20 @@ class FirebaseFireStoreService extends IFirebaseFirestoreService {
       return list;
     }
     return null;
+  }
+
+  Future<void> getAnimeList() async {
+    CollectionReference ref = firestore.collection("animes");
+
+    var data = await ref.get();
+
+    if (data.docs.isNotEmpty) {
+      List<Anime> list = [];
+      data.docs.forEach((element) {
+        print(element.data());
+        list.add(Anime.fromJson(element.data() as Map<String, dynamic>));
+      });
+      // return list;
+    }
   }
 }

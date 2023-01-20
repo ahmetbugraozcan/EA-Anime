@@ -1,6 +1,9 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class  LocaleKeys {
+  static const watchAnime_watchAnime = 'watchAnime.watchAnime';
+  static const watchAnime_watchAnimeSubtitle = 'watchAnime.watchAnimeSubtitle';
+  static const watchAnime = 'watchAnime';
   static const general_progressStage = 'general.progressStage';
   static const general_new = 'general.new';
   static const general_gold = 'general.gold';
@@ -50,12 +53,12 @@ abstract class  LocaleKeys {
   static const guessingGame_notEnoughGoldSubtitlePart1 = 'guessingGame.notEnoughGoldSubtitlePart1';
   static const guessingGame_notEnoughGoldSubtitlePart2 = 'guessingGame.notEnoughGoldSubtitlePart2';
   static const guessingGame_timesUp = 'guessingGame.timesUp';
+  static const guessingGame_timesUpGameOver = 'guessingGame.timesUpGameOver';
   static const guessingGame_timesUpSubtitle = 'guessingGame.timesUpSubtitle';
   static const guessingGame_spendGoldToUnlockAnswer = 'guessingGame.spendGoldToUnlockAnswer';
   static const guessingGame_wrongAnswer = 'guessingGame.wrongAnswer';
   static const guessingGame_successfullyEndedGame = 'guessingGame.successfullyEndedGame';
   static const guessingGame_characterUnlocked = 'guessingGame.characterUnlocked';
-  static const guessingGame_timesUpGameOver = 'guessingGame.timesUpGameOver';
   static const guessingGame = 'guessingGame';
   static const shop_earnGoldSubtitle = 'shop.earnGoldSubtitle';
   static const shop_buyKeySubtitle = 'shop.buyKeySubtitle';

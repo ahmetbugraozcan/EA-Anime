@@ -12,6 +12,7 @@ import 'package:flutterglobal/View/Settings/settings_view.dart';
 import 'package:flutterglobal/View/Stickers/stickers_view.dart';
 import 'package:flutterglobal/View/TestType/test_type_view.dart';
 import 'package:flutterglobal/View/WallpaperRootPage/wallpaper_root_view.dart';
+import 'package:flutterglobal/View/WatchAnime/watch_anime_view.dart';
 import 'package:flutterglobal/Widgets/Cards/MenuGuessCard/menu_guess_card.dart';
 
 class MenuView extends StatefulWidget {
@@ -60,6 +61,19 @@ class _MenuViewState extends State<MenuView>
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
+                    MenuGuessCard(
+                      title: LocaleKeys.watchAnime_watchAnime.tr(),
+                      subtitle: LocaleKeys.watchAnime_watchAnime.tr(),
+                      background: ImageEnums.datealive,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WatchAnimeView(),
+                          ),
+                        );
+                      },
+                    ),
                     MenuGuessCard(
                       title: LocaleKeys.menuPage_guessTitle.tr(),
                       subtitle: LocaleKeys.menuPage_guessSubtitle.tr(),
@@ -145,7 +159,7 @@ class _MenuViewState extends State<MenuView>
                           ),
                         );
                       },
-                    )
+                    ),
                   ],
                 ),
               ),

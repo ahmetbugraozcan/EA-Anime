@@ -11,6 +11,7 @@ class AppThemeLight implements IAppTheme {
   @override
   ThemeData? themeData = ThemeData.light().copyWith(
     textTheme: GoogleFonts.ubuntuTextTheme(),
+    useMaterial3: true,
     primaryColor: Color(0xff2e3192),
     primaryColorDark: Color(0xff2e3192),
     elevatedButtonTheme: ElevatedButtonThemeData(

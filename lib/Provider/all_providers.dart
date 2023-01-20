@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Provider/ads/cubit/ads_provider_cubit.dart';
+import 'package:flutterglobal/Provider/anime/watch_anime_cubit.dart';
 import 'package:flutterglobal/Provider/cubit/user_provider_cubit.dart';
 import 'package:flutterglobal/Provider/guessingGames/guessing_games_cubit.dart';
 import 'package:flutterglobal/Provider/language/cubit/language_provider_cubit.dart';
@@ -41,6 +42,9 @@ class AllProviders {
         ),
         BlocProvider<LanguageProviderCubit>(
           create: (context) => LanguageProviderCubit(),
+        ),
+        BlocProvider<WatchAnimeCubit>(
+          create: (context) => WatchAnimeCubit(),
         ),
       ];
 }
