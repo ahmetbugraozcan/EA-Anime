@@ -9,7 +9,9 @@ class WatchAnimeCubit extends Cubit<WatchAnimeState> {
 
   void getAnimeList() async {
     emit(state.copyWith(isLoading: true));
-    await FirebaseFireStoreService.instance.getAnimeList();
-    emit(state.copyWith(isLoading: false));
+    var animelist = await FirebaseFireStoreService.instance.getAnimeList();
+    var anime = await FirebaseFireStoreService.instance
+        .getAnimeEpisodes(animelist[1].id);
+    emit(state.copyWith(animeList: animelist, isLoading: false));
   }
 }

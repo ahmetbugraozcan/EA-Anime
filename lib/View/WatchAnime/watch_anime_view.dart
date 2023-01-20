@@ -15,6 +15,7 @@ class WatchAnimeView extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        foregroundColor: Colors.white,
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text("Anime izle"),

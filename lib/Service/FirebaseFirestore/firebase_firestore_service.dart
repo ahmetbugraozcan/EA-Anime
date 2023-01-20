@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutterglobal/Models/anime.dart';
+import 'package:flutterglobal/Models/anime_episode.dart';
 import 'package:flutterglobal/Models/blog_model.dart';
 import 'package:flutterglobal/Models/knowledge_test_model.dart';
 import 'package:flutterglobal/Service/FirebaseFirestore/i_firebase_firestore.dart';
@@ -43,7 +46,7 @@ class FirebaseFireStoreService extends IFirebaseFirestoreService {
     return null;
   }
 
-  Future<void> getAnimeList() async {
+  Future<List<Anime>> getAnimeList() async {
     CollectionReference ref = firestore.collection("animes");
 
     var data = await ref.get();
@@ -51,10 +54,27 @@ class FirebaseFireStoreService extends IFirebaseFirestoreService {
     if (data.docs.isNotEmpty) {
       List<Anime> list = [];
       data.docs.forEach((element) {
-        print(element.data());
         list.add(Anime.fromJson(element.data() as Map<String, dynamic>));
       });
-      // return list;
+      return list;
     }
+    return [];
+  }
+
+  Future<List<AnimeEpisode>> getAnimeEpisodes(String? id) async {
+    if (id == null) return [];
+    var ref =
+        firestore.collection("animeEpisodes").where("animeId", isEqualTo: id);
+
+    var data = await ref.get();
+
+    if (data.docs.isNotEmpty) {
+      List<AnimeEpisode> list = [];
+      data.docs.forEach((element) {
+        list.add(AnimeEpisode.fromJson(element.data()));
+      });
+      return list;
+    }
+    return [];
   }
 }
