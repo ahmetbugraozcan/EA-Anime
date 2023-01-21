@@ -54,6 +54,7 @@ dependencies:
   whatsapp_stickers_plus: ^1.0.0
   path_provider: ^2.0.11
   dio: ^4.0.6
+  video_player: ^2.5.1
 
 # kaldırılacak tüm paketler güncellenip
   # firebase_core_platform_interface: ^4.5.2

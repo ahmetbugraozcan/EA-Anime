@@ -6,6 +6,7 @@ import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Core/Utils/utils.dart';
 import 'package:flutterglobal/Provider/anime/watch_anime_cubit.dart';
 import 'package:flutterglobal/Provider/anime/watch_anime_state.dart';
+import 'package:flutterglobal/View/WatchAnimeDetails/cubit/watch_anime_details_cubit.dart';
 import 'package:flutterglobal/View/WatchAnimeDetails/watch_anime_details_view.dart';
 
 class WatchAnimeView extends StatelessWidget {
@@ -50,11 +51,21 @@ class WatchAnimeView extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
                         onTap: () {
+                          // context
+                          //     .read<WatchAnimeCubit>()
+                          //     .setSelectedAnimeEpisode(
+                          //         state.animeEpisodeList[index]);
+
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      WatchAnimeDetailsView()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WatchAnimeDetailsView(
+                                cubit: WatchAnimeDetailsCubit(
+                                    animeEpisode:
+                                        state.animeEpisodeList[index]),
+                              ),
+                            ),
+                          );
                         },
                         child: Card(
                           clipBehavior: Clip.antiAlias,
