@@ -61,7 +61,21 @@ class FirebaseFireStoreService extends IFirebaseFirestoreService {
     return [];
   }
 
-  Future<List<AnimeEpisode>> getAnimeEpisodes(String? id) async {
+  Future<List<AnimeEpisode>> getAnimeEpisodes() async {
+    var ref = firestore.collection("animeEpisodes");
+
+    var data = await ref.get();
+
+    if (data.docs.isEmpty) return [];
+
+    List<AnimeEpisode> list = [];
+    data.docs.forEach((element) {
+      list.add(AnimeEpisode.fromJson(element.data()));
+    });
+    return list;
+  }
+
+  Future<List<AnimeEpisode>> getAnimeEpisodesForAnime(String? id) async {
     if (id == null) return [];
     var ref =
         firestore.collection("animeEpisodes").where("animeId", isEqualTo: id);
