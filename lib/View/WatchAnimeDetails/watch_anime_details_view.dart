@@ -31,6 +31,7 @@ class WatchAnimeDetailsView extends StatelessWidget {
           bloc: cubit,
           builder: (context, state) {
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   padding: EdgeInsets.all(8),
@@ -77,6 +78,40 @@ class WatchAnimeDetailsView extends StatelessWidget {
                                 '<html><body><iframe width="${window.physicalSize.width}" height="100%" src="${cubit.animeEpisode.links?.first.url}" frameborder="0" scrolling="no" allowfullscreen></iframe></body></html>',
                                 mimeType: 'text/html'))),
                     ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.blueAccent.shade100,
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text("Önceki Bölüm"),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text("Sonraki Bölüm"),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Text("Bölüm Açıklaması",
+                      style: context.textTheme.headlineSmall),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Text(
+                    state.animeEpisode.description ?? " Açıklama mevcut değil.",
                   ),
                 ),
               ],

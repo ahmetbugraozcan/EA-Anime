@@ -16,7 +16,7 @@ class AppThemeLight implements IAppTheme {
     primaryColorDark: Color(0xff2e3192),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xff2e3192),
+        // backgroundColor: Color(0xff2e3192),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
