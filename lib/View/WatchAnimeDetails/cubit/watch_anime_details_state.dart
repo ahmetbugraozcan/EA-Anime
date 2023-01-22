@@ -3,26 +3,27 @@ import 'package:equatable/equatable.dart';
 import 'package:flutterglobal/Models/anime_episode.dart';
 
 class WatchAnimeDetailsState extends Equatable {
-  final bool isVideoLoading;
+  final bool isWebViewLoading;
   final AnimeEpisode animeEpisode;
   final Links? selectedOption;
+
   WatchAnimeDetailsState({
-    this.isVideoLoading = false,
+    this.isWebViewLoading = true,
     required this.animeEpisode,
     required this.selectedOption,
   });
 
   @override
   // TODO: implement props
-  List<Object?> get props => [isVideoLoading, animeEpisode];
+  List<Object?> get props => [isWebViewLoading, animeEpisode];
 
   WatchAnimeDetailsState copyWith({
-    bool? isVideoLoading,
+    bool? isWebViewLoading,
     AnimeEpisode? animeEpisode,
     Links? selectedOption,
   }) {
     return WatchAnimeDetailsState(
-      isVideoLoading: isVideoLoading ?? this.isVideoLoading,
+      isWebViewLoading: isWebViewLoading ?? this.isWebViewLoading,
       animeEpisode: animeEpisode ?? this.animeEpisode,
       selectedOption: selectedOption ?? this.selectedOption,
     );

@@ -9,5 +9,9 @@ class WatchAnimeDetailsCubit extends Cubit<WatchAnimeDetailsState> {
   WatchAnimeDetailsCubit({required this.animeEpisode})
       : super(WatchAnimeDetailsState(
             animeEpisode: animeEpisode,
-            selectedOption: animeEpisode.links?.first)) {}
+            selectedOption: animeEpisode.links?.first));
+
+  void setIsWebViewLoading(bool value) {
+    emit(state.copyWith(isWebViewLoading: value));
+  }
 }

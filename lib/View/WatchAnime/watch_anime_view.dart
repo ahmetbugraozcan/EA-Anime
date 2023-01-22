@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
-import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
-import 'package:flutterglobal/Core/Utils/utils.dart';
+
 import 'package:flutterglobal/Provider/anime/watch_anime_cubit.dart';
 import 'package:flutterglobal/Provider/anime/watch_anime_state.dart';
 import 'package:flutterglobal/View/WatchAnimeDetails/cubit/watch_anime_details_cubit.dart';
