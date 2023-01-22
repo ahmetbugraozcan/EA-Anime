@@ -5,18 +5,9 @@ import 'package:video_player/video_player.dart';
 
 class WatchAnimeDetailsCubit extends Cubit<WatchAnimeDetailsState> {
   AnimeEpisode animeEpisode;
-  late VideoPlayerController controller;
 
   WatchAnimeDetailsCubit({required this.animeEpisode})
-      : super(WatchAnimeDetailsState(animeEpisode: animeEpisode)) {
-    controller = VideoPlayerController.network(
-        "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4" ??
-            "");
-
-    controller.initialize().then((value) {
-      controller.play();
-      print("play started");
-      emit(state.copyWith(isVideoLoading: false));
-    });
-  }
+      : super(WatchAnimeDetailsState(
+            animeEpisode: animeEpisode,
+            selectedOption: animeEpisode.links?.first)) {}
 }

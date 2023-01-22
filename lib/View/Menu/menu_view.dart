@@ -13,6 +13,7 @@ import 'package:flutterglobal/View/Stickers/stickers_view.dart';
 import 'package:flutterglobal/View/TestType/test_type_view.dart';
 import 'package:flutterglobal/View/WallpaperRootPage/wallpaper_root_view.dart';
 import 'package:flutterglobal/View/WatchAnime/watch_anime_view.dart';
+import 'package:flutterglobal/View/WatchAnimeTabs/watch_tabs.dart';
 import 'package:flutterglobal/Widgets/Cards/MenuGuessCard/menu_guess_card.dart';
 
 class MenuView extends StatefulWidget {
@@ -69,7 +70,7 @@ class _MenuViewState extends State<MenuView>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => WatchAnimeView(),
+                            builder: (context) => WatchAnimeTabs(),
                           ),
                         );
                       },

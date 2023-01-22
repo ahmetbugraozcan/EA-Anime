@@ -5,10 +5,11 @@ import 'package:flutterglobal/Models/anime_episode.dart';
 class WatchAnimeDetailsState extends Equatable {
   final bool isVideoLoading;
   final AnimeEpisode animeEpisode;
-
+  final Links? selectedOption;
   WatchAnimeDetailsState({
     this.isVideoLoading = false,
     required this.animeEpisode,
+    required this.selectedOption,
   });
 
   @override
@@ -18,10 +19,12 @@ class WatchAnimeDetailsState extends Equatable {
   WatchAnimeDetailsState copyWith({
     bool? isVideoLoading,
     AnimeEpisode? animeEpisode,
+    Links? selectedOption,
   }) {
     return WatchAnimeDetailsState(
       isVideoLoading: isVideoLoading ?? this.isVideoLoading,
       animeEpisode: animeEpisode ?? this.animeEpisode,
+      selectedOption: selectedOption ?? this.selectedOption,
     );
   }
 }

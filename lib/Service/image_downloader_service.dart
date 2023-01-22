@@ -22,10 +22,6 @@ class ImageDownloaderService {
       var size = await ImageDownloader.findByteSize(imageId);
       var mimeType = await ImageDownloader.findMimeType(imageId);
 
-      print('fileName: $fileName');
-      print('path: $path');
-      print('size: $size');
-      print('mimeType: $mimeType');
       return true;
     } catch (error) {
       print(error);
