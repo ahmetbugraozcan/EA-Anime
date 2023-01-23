@@ -64,7 +64,6 @@ class AdsProviderCubit extends Cubit<AdsProviderState> {
       request: AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (Ad ad) {
-          print('Ad loaded.');
           setBannerAd(ad as BannerAd);
           setIsBannerAdLoaded(true);
         },

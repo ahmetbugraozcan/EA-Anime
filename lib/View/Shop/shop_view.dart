@@ -37,15 +37,13 @@ class ShopView extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CircleAvatar(
-                          child: IconButton(
+                        ElevatedButton(
+                            style:
+                                ElevatedButton.styleFrom(shape: CircleBorder()),
                             onPressed: () {
                               Navigator.pop(context);
-                              // todo save game state
                             },
-                            icon: Icon(Icons.arrow_back),
-                          ),
-                        ),
+                            child: Icon(Icons.arrow_back_ios_new)),
                         // CircleAvatar(
                         //   child: IconButton(
                         //     onPressed: () {},

@@ -72,9 +72,7 @@ class TestGameCubit extends Cubit<TestGameState> {
 
     personalityTestModel.characters
         ?.sort((a, b) => b.point!.compareTo(a.point!));
-    personalityTestModel.characters?.forEach((element) {
-      print(element.name! + " " + element.point.toString());
-    });
+
     emit(state.copyWith(isTestEnded: true));
   }
 

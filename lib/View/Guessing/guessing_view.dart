@@ -173,19 +173,12 @@ class _GuessingViewState extends State<GuessingView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CircleAvatar(
-              backgroundColor: Color(0xff2e3192),
-              child: IconButton(
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(shape: CircleBorder()),
                 onPressed: () {
                   Navigator.pop(context);
-                  // todo save game state
                 },
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+                child: Icon(Icons.arrow_back_ios_new)),
             Container(
               width: 200,
               child: ElevatedButton(
@@ -241,8 +234,8 @@ class _GuessingViewState extends State<GuessingView> {
                     : LocaleKeys.guessingGame_showAnswer.tr()),
               ),
             ),
-            CircleAvatar(
-              child: IconButton(
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(shape: CircleBorder()),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -252,9 +245,7 @@ class _GuessingViewState extends State<GuessingView> {
                     ),
                   );
                 },
-                icon: Icon(Icons.shop),
-              ),
-            ),
+                child: Icon(Icons.shop)),
           ],
         ),
       ),

@@ -14,8 +14,17 @@ class WatchAnimeDetailsCubit extends Cubit<WatchAnimeDetailsState> {
         VideoPlayerController.network(animeEpisode.links?.first.url ?? "");
     emit(state.copyWith(controller: controller));
     state.controller?.initialize().then((_) {
+      state.controller?.play();
       setIsVideoLoading(false);
     });
+
+    void playVideo() {
+      state.controller?.play();
+    }
+
+    void pauseVideo() {
+      state.controller?.pause();
+    }
 
     // ..initialize().then((_) {
     //   controller.play();

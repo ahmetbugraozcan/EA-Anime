@@ -17,6 +17,13 @@ class WatchAnimeDetailsView extends StatefulWidget {
 
 class _WatchAnimeDetailsViewState extends State<WatchAnimeDetailsView> {
   @override
+  void dispose() {
+    // TODO: implement dispose
+    widget.cubit.state.controller?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -40,9 +47,18 @@ class _WatchAnimeDetailsViewState extends State<WatchAnimeDetailsView> {
                         state.controller!.value.isInitialized
                     ? Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: AspectRatio(
-                          aspectRatio: state.controller!.value.aspectRatio,
-                          child: VideoPlayer(state.controller!),
+                        child: InkWell(
+                          onTap: () {
+                            if (state.controller!.value.isPlaying) {
+                              state.controller!.pause();
+                            } else {
+                              state.controller!.play();
+                            }
+                          },
+                          child: AspectRatio(
+                            aspectRatio: state.controller!.value.aspectRatio,
+                            child: VideoPlayer(state.controller!),
+                          ),
                         ),
                       )
                     : Container(
@@ -89,6 +105,14 @@ class _WatchAnimeDetailsViewState extends State<WatchAnimeDetailsView> {
                     state.animeEpisode.description ?? " Açıklama mevcut değil.",
                   ),
                 ),
+                Container(
+                  width: context.width,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white),
+                      onPressed: () {},
+                      child: Text("Animeye git")),
+                )
               ],
             );
           },

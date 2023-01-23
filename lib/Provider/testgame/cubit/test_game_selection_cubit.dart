@@ -16,7 +16,7 @@ class TestGameSelectionCubit extends Cubit<TestGameSelectionState> {
 
     List<PersonalityTestModel>? model =
         await repository.getPersonalityQuestionsData();
-    print(model);
+
     if (model != null) {
       emit(state.copyWith(personalityTestModels: List.from(model)));
     }

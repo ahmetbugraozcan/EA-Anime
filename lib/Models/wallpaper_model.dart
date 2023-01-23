@@ -8,7 +8,7 @@ class WallpaperModel {
 
   WallpaperModel.fromJson(Map<String, dynamic>? json) {
     if (json == null) return;
-    print(json);
+
     animeName = json['animeName'];
     tags = json['tags'] == null ? [] : json['tags'].cast<String>();
     imageUrl = json['imageUrl'];

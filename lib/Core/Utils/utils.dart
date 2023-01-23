@@ -61,12 +61,6 @@ class Utils {
 
     list.shuffle();
 
-    String a = "";
-    list.forEach((element) {
-      a += element;
-    });
-
-    print(a);
     return list;
   }
 

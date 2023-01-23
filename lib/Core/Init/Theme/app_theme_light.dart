@@ -12,15 +12,15 @@ class AppThemeLight implements IAppTheme {
   ThemeData? themeData = ThemeData.light().copyWith(
     textTheme: GoogleFonts.ubuntuTextTheme(),
     useMaterial3: true,
-    primaryColor: Color(0xff2e3192),
-    primaryColorDark: Color(0xff2e3192),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xff2e3192),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    ),
+    // primaryColor: Color(0xff2e3192),
+    // primaryColorDark: Color(0xff2e3192),
+    // elevatedButtonTheme: ElevatedButtonThemeData(
+    //   style: ElevatedButton.styleFrom(
+    //     backgroundColor: Color(0xff2e3192),
+    //     shape: RoundedRectangleBorder(
+    //       borderRadius: BorderRadius.circular(10),
+    //     ),
+    //   ),
+    // ),
   );
 }

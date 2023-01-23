@@ -271,18 +271,12 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CircleAvatar(
-              backgroundColor: Color(0xff2e3192),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  // todo save game state
-                },
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-              ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(shape: CircleBorder()),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.arrow_back_ios_new),
             ),
             Container(
               width: 200,
@@ -339,8 +333,8 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                     : LocaleKeys.guessingGame_showAnswer.tr()),
               ),
             ),
-            CircleAvatar(
-              child: IconButton(
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(shape: CircleBorder()),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -350,9 +344,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
                     ),
                   );
                 },
-                icon: Icon(Icons.shop),
-              ),
-            ),
+                child: Icon(Icons.shop)),
           ],
         ),
       ),
@@ -594,7 +586,7 @@ class _TimeLimitGuessingViewState extends State<TimeLimitGuessingView> {
   Widget guessContainer(Answers? image, BuildContext context,
       {int keyCount = 1}) {
     if (image == null) return Spacer();
-    print(image.isLocked);
+
     return Expanded(
       child: Stack(
         fit: StackFit.expand,

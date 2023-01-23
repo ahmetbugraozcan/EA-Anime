@@ -41,7 +41,7 @@ class WallpaperManagerService {
       return true;
     } on PlatformException {
       result = 'Failed to get wallpaper.';
-      print(result);
+
       return false;
     }
   }
