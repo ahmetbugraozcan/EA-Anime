@@ -9,9 +9,26 @@ class WatchAnimeDetailsCubit extends Cubit<WatchAnimeDetailsState> {
   WatchAnimeDetailsCubit({required this.animeEpisode})
       : super(WatchAnimeDetailsState(
             animeEpisode: animeEpisode,
-            selectedOption: animeEpisode.links?.first));
+            selectedOption: animeEpisode.links?.first)) {
+    var controller =
+        VideoPlayerController.network(animeEpisode.links?.first.url ?? "");
+    emit(state.copyWith(controller: controller));
+    state.controller?.initialize().then((_) {
+      setIsVideoLoading(false);
+    });
 
-  void setIsWebViewLoading(bool value) {
-    emit(state.copyWith(isWebViewLoading: value));
+    // ..initialize().then((_) {
+    //   controller.play();
+    //   setIsVideoLoading(false);
+    //   // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+    // });
+  }
+
+  void setController(VideoPlayerController value) {
+    emit(state.copyWith(controller: value));
+  }
+
+  void setIsVideoLoading(bool value) {
+    emit(state.copyWith(isVideoLoading: value));
   }
 }

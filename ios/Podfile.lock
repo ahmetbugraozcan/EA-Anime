@@ -180,6 +180,8 @@ PODS:
     - FMDB (>= 2.7.5)
   - video_player_avfoundation (0.0.1):
     - Flutter
+  - webview_flutter_wkwebview (0.0.1):
+    - Flutter
   - whatsapp_stickers_plus (1.0.0):
     - Flutter
     - SDWebImageWebPCoder
@@ -203,6 +205,7 @@ DEPENDENCIES:
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
+  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
   - whatsapp_stickers_plus (from `.symlinks/plugins/whatsapp_stickers_plus/ios`)
 
 SPEC REPOS:
@@ -266,6 +269,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   video_player_avfoundation:
     :path: ".symlinks/plugins/video_player_avfoundation/ios"
+  webview_flutter_wkwebview:
+    :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
   whatsapp_stickers_plus:
     :path: ".symlinks/plugins/whatsapp_stickers_plus/ios"
 
@@ -315,6 +320,7 @@ SPEC CHECKSUMS:
   shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
+  webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
   whatsapp_stickers_plus: 8e16bf2dae5b11db8fd09ad38275364ca3ec3ef8
 
 PODFILE CHECKSUM: b676d09bc638db587b20d50fc49e1cf3cc602a80
