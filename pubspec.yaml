@@ -54,8 +54,8 @@ dependencies:
   whatsapp_stickers_plus: ^1.0.0
   path_provider: ^2.0.11
   dio: ^4.0.6
-  video_player: ^2.5.1
-  webview_flutter: ^4.0.2
+
+  flutter_inappwebview: ^5.7.2+3
 
 
 dev_dependencies:

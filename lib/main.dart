@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,7 +5,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Init/Cache/locale_manager.dart';
 import 'package:flutterglobal/Core/Init/Language/language_manager.dart';
@@ -57,7 +54,11 @@ Future<void> initializeApp() async {
   // await CacheManager.instance.setIntValue(PreferencesKeys.DOWNLOAD_COUNT, 2);
 
   await MobileAds.instance.initialize();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.landscapeRight,
+    DeviceOrientation.landscapeLeft
+  ]);
   await PackageInfoService.init();
 }
 
