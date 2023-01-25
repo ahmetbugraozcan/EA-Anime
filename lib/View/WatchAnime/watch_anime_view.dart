@@ -69,6 +69,8 @@ class WatchAnimeView extends StatelessWidget {
                                       ),
                                   imageUrl:
                                       state.animeEpisodeList[index].thumbnail ??
+                                          state.animeEpisodeList[index]
+                                              .animeImage ??
                                           ""),
                               // child: Image.network(
                               //   state.animeEpisodeList[index].thumbnail ?? "",
@@ -78,8 +80,9 @@ class WatchAnimeView extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8.0, vertical: 3.0),
-                              child: Text(
-                                  state.animeEpisodeList[index].title ?? ""),
+                              child: Text(state.animeEpisodeList[index]
+                                      .episodeDescription ??
+                                  ""),
                             ),
                           ],
                         ),

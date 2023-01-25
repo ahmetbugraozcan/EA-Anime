@@ -27,62 +27,84 @@ class WatchAnimeDetailsView extends StatelessWidget {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: AspectRatio(
-                aspectRatio: 4 / 3,
-                child:
-                    BlocBuilder<WatchAnimeDetailsCubit, WatchAnimeDetailsState>(
-                  bloc: cubit,
-                  buildWhen: (previous, current) =>
-                      previous.isVideoLoading != current.isVideoLoading ||
-                      previous.selectedOption != current.selectedOption,
-                  builder: (context, state) => Stack(
-                    children: [
-                      state.isVideoLoading
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Container(),
-                      Container(
-                        child: InAppWebView(
-                          onWebViewCreated: (controller) {
-                            cubit.webViewController = controller;
-                          },
-                          shouldOverrideUrlLoading:
-                              (controller, navigationAction) async {
-                            bool canNavigate = false;
-                            state.animeEpisode.links!.forEach((element) {
-                              if (navigationAction.request.url.toString() ==
-                                  element.url) {
-                                canNavigate = true;
+            AspectRatio(
+              aspectRatio: 4 / 3,
+              child:
+                  BlocBuilder<WatchAnimeDetailsCubit, WatchAnimeDetailsState>(
+                bloc: cubit,
+                buildWhen: (previous, current) =>
+                    previous.isVideoLoading != current.isVideoLoading ||
+                    previous.selectedOption != current.selectedOption,
+                builder: (context, state) => Stack(
+                  children: [
+                    state.isVideoLoading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Container(),
+                    Column(
+                      children: [
+                        ElevatedButton(onPressed: () {}, child: Text("sad")),
+                        Container(
+                          child: InAppWebView(
+                            onWebViewCreated: (controller) {
+                              cubit.webViewController = controller;
+                            },
+                            onLoadStop: ((controller, url) {
+                              // set video width 100% and height auto
+                              controller.evaluateJavascript(
+                                  source:
+                                      "document.getElementsByTagName('video')[0].style.width = '100%';");
+                              controller.evaluateJavascript(
+                                  source:
+                                      "document.getElementsByTagName('video')[0].style.height = 'auto';");
+
+                              // videojs kullanan playerlar için küçük butonları büyütme
+                              controller.injectCSSCode(
+                                  source:
+                                      ".vjs-control-bar { font-size: 250% }");
+                              // mute the video
+                              // controller.evaluateJavascript(
+                              //     source:
+                              //         "document.getElementsByTagName('video')[0].muted = true;");
+
+                              // // set video minute to 2.00
+                              // controller.evaluateJavascript(
+                              //     source:
+                              //         "document.getElementsByTagName('video')[0].currentTime = 120;");
+                            }),
+                            shouldOverrideUrlLoading:
+                                (controller, navigationAction) async {
+                              bool canNavigate = false;
+                              state.animeEpisode.links!.forEach((element) {
+                                if (navigationAction.request.url.toString() ==
+                                    element.url) {
+                                  canNavigate = true;
+                                }
+                              });
+                              if (canNavigate) {
+                                return NavigationActionPolicy.ALLOW;
                               }
-                            });
-                            if (canNavigate) {
-                              return NavigationActionPolicy.ALLOW;
-                            }
-                            return NavigationActionPolicy.CANCEL;
-                          },
-                          initialUrlRequest: URLRequest(
-                              url: Uri.parse(state.selectedOption!.url!)),
-                          initialOptions: InAppWebViewGroupOptions(
-                              crossPlatform: InAppWebViewOptions(
-                                mediaPlaybackRequiresUserGesture: false,
-                                useShouldOverrideUrlLoading: true,
-                              ),
-                              android: AndroidInAppWebViewOptions(
-                                  // useHybridComposition: true,
-                                  ),
-                              ios: IOSInAppWebViewOptions(
-                                allowsInlineMediaPlayback: true,
-                              )),
+                              return NavigationActionPolicy.CANCEL;
+                            },
+                            initialUrlRequest: URLRequest(
+                                url: Uri.parse(state.selectedOption!.url!)),
+                            initialOptions: InAppWebViewGroupOptions(
+                                crossPlatform: InAppWebViewOptions(
+                                  mediaPlaybackRequiresUserGesture: false,
+                                  useShouldOverrideUrlLoading: true,
+                                ),
+                                android: AndroidInAppWebViewOptions(
+                                    // useHybridComposition: true,
+                                    ),
+                                ios: IOSInAppWebViewOptions(
+                                  allowsInlineMediaPlayback: true,
+                                )),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
