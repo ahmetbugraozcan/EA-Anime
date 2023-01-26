@@ -20,7 +20,7 @@ class WatchAnimeDetailsView extends StatelessWidget {
             bloc: cubit,
             builder: (context, state) {
               return Text(
-                  "${state.animeEpisode.title} - ${state.animeEpisode.episodeNumber}. Bölüm");
+                  "${state.animeEpisode.animeName} - ${state.animeEpisode.episodeNumber}. Bölüm");
             },
           ),
         ),
@@ -42,61 +42,59 @@ class WatchAnimeDetailsView extends StatelessWidget {
                             child: CircularProgressIndicator(),
                           )
                         : Container(),
-                    Flexible(
-                      child: InAppWebView(
-                        onWebViewCreated: (controller) {
-                          cubit.webViewController = controller;
-                        },
-                        onLoadStop: ((controller, url) {
-                          // set video width 100% and height auto
-                          controller.evaluateJavascript(
-                              source:
-                                  "document.getElementsByTagName('video')[0].style.width = '100%';");
-                          controller.evaluateJavascript(
-                              source:
-                                  "document.getElementsByTagName('video')[0].style.height = 'auto';");
+                    InAppWebView(
+                      onWebViewCreated: (controller) {
+                        cubit.webViewController = controller;
+                      },
+                      onLoadStop: ((controller, url) {
+                        // set video width 100% and height auto
+                        controller.evaluateJavascript(
+                            source:
+                                "document.getElementsByTagName('video')[0].style.width = '100%';");
+                        controller.evaluateJavascript(
+                            source:
+                                "document.getElementsByTagName('video')[0].style.height = 'auto';");
 
-                          // videojs kullanan playerlar için küçük butonları büyütme
-                          controller.injectCSSCode(
-                              source: ".vjs-control-bar { font-size: 250% }");
-                          // mute the video
-                          // controller.evaluateJavascript(
-                          //     source:
-                          //         "document.getElementsByTagName('video')[0].muted = true;");
+                        // videojs kullanan playerlar için küçük butonları büyütme
+                        controller.injectCSSCode(
+                            source: ".vjs-control-bar { font-size: 250% }");
+                        // mute the video
+                        // controller.evaluateJavascript(
+                        //     source:
+                        //         "document.getElementsByTagName('video')[0].muted = true;");
 
-                          // // set video minute to 2.00
-                          // controller.evaluateJavascript(
-                          //     source:
-                          //         "document.getElementsByTagName('video')[0].currentTime = 120;");
-                        }),
-                        shouldOverrideUrlLoading:
-                            (controller, navigationAction) async {
-                          bool canNavigate = false;
-                          state.animeEpisode.links!.forEach((element) {
-                            if (navigationAction.request.url.toString() ==
-                                element.url) {
-                              canNavigate = true;
-                            }
-                          });
-                          if (canNavigate) {
-                            return NavigationActionPolicy.ALLOW;
+                        // // set video minute to 2.00
+                        // controller.evaluateJavascript(
+                        //     source:
+                        //         "document.getElementsByTagName('video')[0].currentTime = 120;");
+                      }),
+                      shouldOverrideUrlLoading:
+                          (controller, navigationAction) async {
+                        bool canNavigate = false;
+                        state.animeEpisode.links!.forEach((element) {
+                          if (navigationAction.request.url.toString() ==
+                              element.url) {
+                            canNavigate = true;
                           }
-                          return NavigationActionPolicy.CANCEL;
-                        },
-                        initialUrlRequest: URLRequest(
-                            url: Uri.parse(state.selectedOption!.url!)),
-                        initialOptions: InAppWebViewGroupOptions(
-                            crossPlatform: InAppWebViewOptions(
-                              mediaPlaybackRequiresUserGesture: false,
-                              useShouldOverrideUrlLoading: true,
-                            ),
-                            android: AndroidInAppWebViewOptions(
-                                // useHybridComposition: true,
-                                ),
-                            ios: IOSInAppWebViewOptions(
-                              allowsInlineMediaPlayback: true,
-                            )),
-                      ),
+                        });
+                        if (canNavigate) {
+                          return NavigationActionPolicy.ALLOW;
+                        }
+                        return NavigationActionPolicy.CANCEL;
+                      },
+                      initialUrlRequest: URLRequest(
+                          url: Uri.parse(state.selectedOption!.url!)),
+                      initialOptions: InAppWebViewGroupOptions(
+                          crossPlatform: InAppWebViewOptions(
+                            mediaPlaybackRequiresUserGesture: false,
+                            useShouldOverrideUrlLoading: true,
+                          ),
+                          android: AndroidInAppWebViewOptions(
+                              // useHybridComposition: true,
+                              ),
+                          ios: IOSInAppWebViewOptions(
+                            allowsInlineMediaPlayback: true,
+                          )),
                     ),
                   ],
                 ),
