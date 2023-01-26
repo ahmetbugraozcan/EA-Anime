@@ -1,40 +1,60 @@
 class Anime {
-  String? thumbnail;
-  List<String>? relatedAnimes;
   String? id;
+  String? description;
+  List<String>? studios;
+  String? myAnimeListScore;
+  List<String>? relatedAnimes;
   String? title;
   int? episodesCount;
-  String? description;
-  String? genre;
+  String? rankingType;
+  List<String>? genres;
+  String? thumbnail;
+  String? createdAt;
+  String? minimumAge;
 
   Anime(
-      {this.thumbnail,
+      {this.id,
+      this.description,
+      this.studios,
+      this.myAnimeListScore,
       this.relatedAnimes,
-      this.id,
       this.title,
       this.episodesCount,
-      this.description,
-      this.genre});
+      this.rankingType,
+      this.genres,
+      this.thumbnail,
+      this.createdAt,
+      this.minimumAge});
 
   Anime.fromJson(Map<String, dynamic> json) {
-    thumbnail = json['thumbnail'];
-    relatedAnimes = json['relatedAnimes'].cast<String>();
     id = json['id'];
+    description = json['description'];
+    studios = json['studios'].cast<String>();
+    myAnimeListScore = json['myAnimeListScore'];
+    relatedAnimes = json['relatedAnimes'].cast<String>();
     title = json['title'];
     episodesCount = json['episodesCount'];
-    description = json['description'];
-    genre = json['genre'];
+    rankingType = json['rankingType'];
+    genres = json['genres'].cast<String>();
+    thumbnail = json['thumbnail'];
+    createdAt = json['createdAt'];
+    minimumAge = json['minimumAge'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['thumbnail'] = this.thumbnail;
-    data['relatedAnimes'] = this.relatedAnimes;
     data['id'] = this.id;
+    data['description'] = this.description;
+    data['studios'] = this.studios;
+    data['myAnimeListScore'] = this.myAnimeListScore;
+    data['relatedAnimes'] = this.relatedAnimes;
     data['title'] = this.title;
     data['episodesCount'] = this.episodesCount;
-    data['description'] = this.description;
-    data['genre'] = this.genre;
+    data['rankingType'] = this.rankingType;
+    data['genres'] = this.genres;
+    data['thumbnail'] = this.thumbnail;
+    data['createdAt'] = this.createdAt;
+    data['minimumAge'] = this.minimumAge;
     return data;
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutterglobal/Models/anime.dart';
@@ -54,6 +55,7 @@ class FirebaseFireStoreService extends IFirebaseFirestoreService {
     if (data.docs.isNotEmpty) {
       List<Anime> list = [];
       data.docs.forEach((element) {
+        log(jsonEncode(element.data()));
         list.add(Anime.fromJson(element.data() as Map<String, dynamic>));
       });
       return list;

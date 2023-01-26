@@ -30,7 +30,6 @@ class WatchAnimeView extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(8.0),
               height: context.height / 3,
-              color: Colors.red,
               child: BlocBuilder<WatchAnimeCubit, WatchAnimeState>(
                 buildWhen: (previous, current) =>
                     previous.isLoading != current.isLoading ||
@@ -99,6 +98,55 @@ class WatchAnimeView extends StatelessWidget {
               padding: EdgeInsets.only(top: 12.0, left: 12.0),
               child: Text("Son Eklenen Animeler",
                   style: context.textTheme.headlineSmall),
+            ),
+            Container(
+              padding: EdgeInsets.all(8.0),
+              height: context.height / 3,
+              child: BlocBuilder<WatchAnimeCubit, WatchAnimeState>(
+                buildWhen: (previous, current) =>
+                    previous.isAnimeListLoading != current.isAnimeListLoading ||
+                    previous.animeList != current.animeList,
+                bloc: context.read<WatchAnimeCubit>(),
+                builder: (context, state) {
+                  if (state.isAnimeListLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (state.animeList.isEmpty) {
+                    return Center(child: Text("Anime listesi boş"));
+                  }
+                  return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state.animeList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            clipBehavior: Clip.antiAlias,
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: CachedNetworkImage(
+                                      placeholder: (context, url) => Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                      imageUrl:
+                                          state.animeList[index].thumbnail ??
+                                              ""),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 3.0),
+                                  child:
+                                      Text(state.animeList[index].title ?? ""),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                },
+              ),
             )
           ],
         ),
