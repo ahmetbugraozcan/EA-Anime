@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Anime {
   String? id;
   String? description;
@@ -9,7 +11,7 @@ class Anime {
   String? rankingType;
   List<String>? genres;
   String? thumbnail;
-  String? createdAt;
+  Timestamp? createdAt;
   String? minimumAge;
 
   Anime(
