@@ -48,7 +48,8 @@ class FirebaseFireStoreService extends IFirebaseFirestoreService {
   }
 
   Future<List<Anime>> getAnimeList() async {
-    var ref = firestore.collection("animes");
+    var ref =
+        firestore.collection("animes").orderBy("createdAt", descending: true);
 
     var data = await ref.get();
 
@@ -63,7 +64,10 @@ class FirebaseFireStoreService extends IFirebaseFirestoreService {
   }
 
   Future<List<AnimeEpisode>> getAnimeEpisodes() async {
-    var ref = firestore.collection("animeEpisodes");
+    var ref = firestore
+        .collection("animeEpisodes")
+        .orderBy("createdAt", descending: true)
+        .limit(30);
 
     var data = await ref.get();
 

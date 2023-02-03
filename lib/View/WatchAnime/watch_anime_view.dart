@@ -7,6 +7,7 @@ import 'package:flutterglobal/Provider/anime/watch_anime_cubit.dart';
 import 'package:flutterglobal/Provider/anime/watch_anime_state.dart';
 import 'package:flutterglobal/View/WatchAnimeDetails/cubit/watch_anime_details_cubit.dart';
 import 'package:flutterglobal/View/WatchAnimeDetails/watch_anime_details_view.dart';
+import 'package:flutterglobal/Widgets/Cards/AnimeCards/anime_card.dart';
 
 class WatchAnimeView extends StatelessWidget {
   WatchAnimeView({super.key});
@@ -46,49 +47,23 @@ class WatchAnimeView extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemCount: state.animeEpisodeList.length,
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => WatchAnimeDetailsView(
-                                    cubit: WatchAnimeDetailsCubit(
-                                        animeEpisode:
-                                            state.animeEpisodeList[index]),
-                                  ),
+                        return AnimeCard(
+                          title:
+                              state.animeEpisodeList[index].episodeDescription,
+                          imageUrl: state.animeEpisodeList[index].thumbnail ??
+                              state.animeEpisodeList[index].animeImage,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WatchAnimeDetailsView(
+                                  cubit: WatchAnimeDetailsCubit(
+                                      animeEpisode:
+                                          state.animeEpisodeList[index]),
                                 ),
-                              );
-                            },
-                            child: Card(
-                              clipBehavior: Clip.antiAlias,
-                              color: Colors.white,
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: CachedNetworkImage(
-                                        placeholder: (context, url) => Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            ),
-                                        imageUrl: state.animeEpisodeList[index]
-                                                .thumbnail ??
-                                            state.animeEpisodeList[index]
-                                                .animeImage ??
-                                            ""),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0, vertical: 3.0),
-                                    child: Text(state.animeEpisodeList[index]
-                                            .episodeDescription ??
-                                        ""),
-                                  ),
-                                ],
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         );
                       });
                 },
@@ -118,31 +93,10 @@ class WatchAnimeView extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemCount: state.animeList.length,
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Card(
-                            clipBehavior: Clip.antiAlias,
-                            color: Colors.white,
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: CachedNetworkImage(
-                                      placeholder: (context, url) => Center(
-                                            child: CircularProgressIndicator(),
-                                          ),
-                                      imageUrl:
-                                          state.animeList[index].thumbnail ??
-                                              ""),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 3.0),
-                                  child:
-                                      Text(state.animeList[index].title ?? ""),
-                                ),
-                              ],
-                            ),
-                          ),
+                        return AnimeCard(
+                          title: state.animeList[index].title,
+                          imageUrl: state.animeList[index].thumbnail,
+                          onTap: () {},
                         );
                       });
                 },
