@@ -12,6 +12,7 @@ class WatchAnimeDetailsCubit extends Cubit<WatchAnimeDetailsState> {
             animeEpisode: animeEpisode,
             selectedOption: animeEpisode.links?.first)) {
     getAnimeEpisodes();
+    setSelectedOption(animeEpisode.links?.first);
   }
 
   Future<void> getAnimeEpisodes() async {
@@ -21,11 +22,43 @@ class WatchAnimeDetailsCubit extends Cubit<WatchAnimeDetailsState> {
     emit(state.copyWith(animeEpisodes: animeEpisodes));
   }
 
-  void setSelectedOption(Links? value) {
+  void getPreviousEpisode() async {
+    int index = state.animeEpisodes.indexWhere((element) =>
+        element?.episodeNumber == state.animeEpisode.episodeNumber);
+
+    if (index == 0) return;
+    AnimeEpisode? animeEpisode = state.animeEpisodes[index - 1];
+    if (animeEpisode == null) return;
+
+    emit(state.copyWith(animeEpisode: animeEpisode));
+    await Future.delayed(Duration.zero);
+    // reset webview and video webview controller
+    setSelectedOption(animeEpisode.links?.first);
+  }
+
+  Future<void> getNextEpisode() async {
+    int index = state.animeEpisodes.indexWhere((element) =>
+        element?.episodeNumber == state.animeEpisode.episodeNumber);
+    if (index == state.animeEpisodes.length - 1) return;
+    AnimeEpisode? animeEpisode = state.animeEpisodes[index + 1];
+    if (animeEpisode == null) return;
+
+    emit(state.copyWith(animeEpisode: animeEpisode));
+    await Future.delayed(Duration.zero);
+
+    setSelectedOption(animeEpisode.links?.first);
+  }
+
+  Future<void> setSelectedOption(Links? value) async {
     if (value == null) return;
+
     emit(state.copyWith(selectedOption: value));
-    webViewController?.loadUrl(
-        urlRequest: URLRequest(url: Uri.parse(value.url!)));
+    await Future.delayed(Duration.zero);
+    setIsVideoLoading(true);
+    await Future.delayed(Duration(milliseconds: 500));
+    // await webViewController?.loadUrl(
+    //     urlRequest: URLRequest(url: Uri.parse(value.url!)));
+    setIsVideoLoading(false);
   }
 
   void setIsVideoLoading(bool value) {

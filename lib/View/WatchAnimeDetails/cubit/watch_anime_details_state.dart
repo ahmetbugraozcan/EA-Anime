@@ -5,6 +5,7 @@ import 'package:flutterglobal/Models/anime_episode.dart';
 class WatchAnimeDetailsState extends Equatable {
   final bool isVideoLoading;
   final AnimeEpisode animeEpisode;
+
   final Links? selectedOption;
   final List<AnimeEpisode?> animeEpisodes;
 

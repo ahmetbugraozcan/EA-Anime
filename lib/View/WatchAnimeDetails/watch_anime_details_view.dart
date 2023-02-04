@@ -36,72 +36,57 @@ class WatchAnimeDetailsView extends StatelessWidget {
                 bloc: cubit,
                 buildWhen: (previous, current) =>
                     previous.isVideoLoading != current.isVideoLoading ||
-                    previous.selectedOption != current.selectedOption,
+                    previous.selectedOption != current.selectedOption ||
+                    previous.animeEpisode != current.animeEpisode,
                 builder: (context, state) => Stack(
                   children: [
                     state.isVideoLoading
                         ? Center(
                             child: CircularProgressIndicator(),
                           )
-                        : Container(),
-                    InAppWebView(
-                      onWebViewCreated: (controller) {
-                        cubit.webViewController = controller;
-                      },
-                      onLoadStop: ((controller, url) {
-                        // set video width 100% and height auto
-                        // controller.evaluateJavascript(
-                        //     source:
-                        //         "document.getElementsByTagName('video')[0].style.width = '100%';");
-                        // controller.evaluateJavascript(
-                        //     source:
-                        //         "document.getElementsByTagName('video')[0].style.height = 'auto';");
-
-                        // // videojs kullanan playerlar için küçük butonları büyütme
-                        // controller.injectCSSCode(
-                        //     source: ".vjs-control-bar { font-size: 250% }");
-                        // // mute the video
-
-                        // controller.evaluateJavascript(
-                        //     source:
-                        //         "document.getElementsByTagName('video')[0].muted = true;");
-
-                        // // set video minute to 2.00
-                        // controller.evaluateJavascript(
-                        //     source:
-                        //         "document.getElementsByTagName('video')[0].currentTime = 120;");
-                      }),
-                      shouldOverrideUrlLoading:
-                          (controller, navigationAction) async {
-                        bool canNavigate = false;
-                        state.animeEpisode.links!.forEach((element) {
-                          if (navigationAction.request.url.toString() ==
-                              element.url) {
-                            canNavigate = true;
-                          }
-                        });
-                        if (canNavigate) {
-                          return NavigationActionPolicy.ALLOW;
-                        }
-                        return NavigationActionPolicy.CANCEL;
-                      },
-                      // initialUrlRequest: URLRequest(
-                      //     url: Uri.parse(state.selectedOption!.url!)),
-                      initialData: InAppWebViewInitialData(
-                        data: state.selectedOption!.url!,
-                      ),
-                      initialOptions: InAppWebViewGroupOptions(
-                          crossPlatform: InAppWebViewOptions(
-                            mediaPlaybackRequiresUserGesture: false,
-                            useShouldOverrideUrlLoading: true,
+                        : InAppWebView(
+                            onWebViewCreated: (controller) {
+                              cubit.webViewController = controller;
+                            },
+                            shouldOverrideUrlLoading:
+                                (controller, navigationAction) async {
+                              print("shouldoverride worked" +
+                                  navigationAction.request.url.toString());
+                              print("shouldoverride " +
+                                  state.animeEpisode.episodeNumber.toString());
+                              bool canNavigate = false;
+                              state.animeEpisode.links!.forEach((element) {
+                                if (navigationAction.request.url.toString() ==
+                                    element.url) {
+                                  canNavigate = true;
+                                }
+                              });
+                              if (canNavigate) {
+                                return await NavigationActionPolicy.ALLOW;
+                              }
+                              return await NavigationActionPolicy.CANCEL;
+                            },
+                            onUpdateVisitedHistory:
+                                (controller, url, androidIsReload) {
+                              print("onUpdateVisitedHistory worked" +
+                                  url.toString());
+                              print("anime ep. is " +
+                                  state.animeEpisode.episodeNumber.toString());
+                            },
+                            initialUrlRequest: URLRequest(
+                                url: Uri.parse(state.selectedOption!.url!)),
+                            initialOptions: InAppWebViewGroupOptions(
+                                crossPlatform: InAppWebViewOptions(
+                                  mediaPlaybackRequiresUserGesture: false,
+                                  useShouldOverrideUrlLoading: true,
+                                ),
+                                android: AndroidInAppWebViewOptions(
+                                  useHybridComposition: true,
+                                ),
+                                ios: IOSInAppWebViewOptions(
+                                  allowsInlineMediaPlayback: true,
+                                )),
                           ),
-                          android: AndroidInAppWebViewOptions(
-                            useHybridComposition: true,
-                          ),
-                          ios: IOSInAppWebViewOptions(
-                            allowsInlineMediaPlayback: true,
-                          )),
-                    ),
                   ],
                 ),
               ),
@@ -158,13 +143,17 @@ class WatchAnimeDetailsView extends StatelessWidget {
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.white),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    cubit.getPreviousEpisode();
+                                  },
                                   child: Text("Önceki Bölüm"),
                                 ),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.white),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    cubit.getNextEpisode();
+                                  },
                                   child: Text("Sonraki Bölüm"),
                                 ),
                               ],
@@ -181,7 +170,7 @@ class WatchAnimeDetailsView extends StatelessWidget {
                                 horizontal: 16, vertical: 12),
                             child: Text(
                               state.animeEpisode.description ??
-                                  " Açıklama mevcut değil.",
+                                  state.animeEpisode.episodeNumber.toString(),
                             ),
                           ),
                           Container(

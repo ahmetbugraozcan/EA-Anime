@@ -97,7 +97,6 @@ class FirebaseFireStoreService extends IFirebaseFirestoreService {
       list.add(anime);
     }
 
-    print("list is $list");
     return list;
   }
 
