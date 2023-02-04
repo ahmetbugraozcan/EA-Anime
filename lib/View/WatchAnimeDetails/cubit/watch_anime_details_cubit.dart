@@ -13,14 +13,25 @@ class WatchAnimeDetailsCubit extends Cubit<WatchAnimeDetailsState> {
             animeEpisode: animeEpisode,
             selectedOption: animeEpisode.links?.first)) {
     getAnimeEpisodes();
+    getParentAnime();
     setSelectedOption(animeEpisode.links?.first);
   }
 
+  Future<void> getParentAnime() async {
+    if (animeEpisode.animeId == null) return;
+    emit(state.copyWith(isParentAnimeLoading: true));
+    Anime? anime =
+        await FirebaseFireStoreService.instance.getAnime(animeEpisode.animeId!);
+    emit(state.copyWith(parentAnime: anime, isParentAnimeLoading: false));
+  }
+
   Future<void> getAnimeEpisodes() async {
+    emit(state.copyWith(isAnimeEpisodesLoading: true));
     List<AnimeEpisode?> animeEpisodes = await FirebaseFireStoreService.instance
         .getAnimeEpisodesForAnime(animeEpisode.animeId!);
 
-    emit(state.copyWith(animeEpisodes: animeEpisodes));
+    emit(state.copyWith(
+        animeEpisodes: animeEpisodes, isAnimeEpisodesLoading: false));
   }
 
   void getPreviousEpisode() async {
@@ -37,6 +48,8 @@ class WatchAnimeDetailsCubit extends Cubit<WatchAnimeDetailsState> {
     setSelectedOption(animeEpisode.links?.first);
   }
 
+// pagination eklendiğinde kontroller de eklenecek. örneğin parent anime sayısı episode sayısından fazla ise next episode butonu aktif olacak.
+// ayrıca örneğin pagination count 20 iken bölüm 20 ise ve episode sayısı da 20 ise next butonuna basıldığında diğer 20 bölümlük kısım daha yüklenecek
   Future<void> getNextEpisode() async {
     int index = state.animeEpisodes.indexWhere((element) =>
         element?.episodeNumber == state.animeEpisode.episodeNumber);

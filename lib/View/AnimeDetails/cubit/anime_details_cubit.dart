@@ -4,17 +4,32 @@ import 'package:flutterglobal/Service/FirebaseFirestore/firebase_firestore_servi
 import 'package:flutterglobal/View/AnimeDetails/cubit/anime_details_state.dart';
 
 class AnimeDetailsCubit extends Cubit<AnimeDetailsState> {
-  Anime selectedAnime;
-  AnimeDetailsCubit({required this.selectedAnime})
-      : super(AnimeDetailsState(selectedAnime: selectedAnime)) {
-    getRelatedAnimes();
-    getAnimeEpisodes();
+  // eğer anime varsa direk göndericez
+  Anime? selectedAnime;
+
+  // eğer anime yoksa id ile getiricez
+  String? animeID;
+  AnimeDetailsCubit({this.selectedAnime, this.animeID})
+      : super(AnimeDetailsState(selectedAnime: selectedAnime ?? null)) {
+    if (state.selectedAnime != null) {
+      getRelatedAnimes();
+      getAnimeEpisodes();
+    } else if (animeID != null) {
+      emit(state.copyWith(isAnimeLoading: true));
+      FirebaseFireStoreService.instance.getAnime(animeID!).then((value) {
+        selectedAnime = value;
+        emit(state.copyWith(
+            selectedAnime: selectedAnime, isAnimeLoading: false));
+        getRelatedAnimes();
+        getAnimeEpisodes();
+      });
+    }
   }
 
   void getAnimeEpisodes() async {
     emit(state.copyWith(isAnimeEpisodesLoading: true));
     var animeEpisodes = await FirebaseFireStoreService.instance
-        .getAnimeEpisodesForAnime(selectedAnime.id);
+        .getAnimeEpisodesForAnime(selectedAnime?.id);
 
     emit(state.copyWith(
         isAnimeEpisodesLoading: false, animeEpisodes: animeEpisodes));
@@ -23,7 +38,7 @@ class AnimeDetailsCubit extends Cubit<AnimeDetailsState> {
   void getRelatedAnimes() async {
     emit(state.copyWith(isRelatedAnimesLoading: true));
     var relatedAnimes = await FirebaseFireStoreService.instance
-        .getRelatedAnimes(selectedAnime.relatedAnimes);
+        .getRelatedAnimes(selectedAnime?.relatedAnimes);
     emit(state.copyWith(
         isRelatedAnimesLoading: false, relatedAnimes: relatedAnimes));
   }

@@ -21,211 +21,228 @@ class AnimeDetails extends StatelessWidget {
       appBar: AppBar(
         title: Text("Anime Detay"),
       ),
-      body: Builder(builder: (context) {
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 32),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Container(
-                      clipBehavior: Clip.antiAlias,
-                      width: context.width * 0.4,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: CachedNetworkImage(
-                        imageUrl: cubit.selectedAnime.thumbnail ?? "",
-                        fit: BoxFit.fill,
+      body: BlocBuilder<AnimeDetailsCubit, AnimeDetailsState>(
+        bloc: cubit,
+        builder: (context, state) {
+          if (state.selectedAnime == null) return SizedBox();
+          if (state.isAnimeLoading)
+            return Center(child: CircularProgressIndicator());
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 32),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Container(
+                        clipBehavior: Clip.antiAlias,
+                        width: context.width * 0.4,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: CachedNetworkImage(
+                          imageUrl: state.selectedAnime?.thumbnail ?? "",
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            cubit.selectedAnime.title ?? "-",
-                            style: context.textTheme.titleLarge,
-                          ),
-                          Text(
-                            "${cubit.selectedAnime.episodesCount ?? "-"} Bölüm",
-                            style: context.textTheme.bodySmall,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  cubit.selectedAnime.myAnimeListScore == null
-                                      ? "-"
-                                      : cubit.selectedAnime.myAnimeListScore
-                                              .toString() +
-                                          "/10",
-                                ),
-                                Icon(Icons.star, color: Colors.yellow),
-                              ],
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              state.selectedAnime?.title ?? "-",
+                              style: context.textTheme.titleLarge,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              "${state.selectedAnime?.episodesCount ?? "-"} Bölüm",
+                              style: context.textTheme.bodySmall,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    state.selectedAnime?.myAnimeListScore ==
+                                            null
+                                        ? "-"
+                                        : state.selectedAnime?.myAnimeListScore
+                                                .toString() ??
+                                            "-" + "/10",
+                                  ),
+                                  Icon(Icons.star, color: Colors.yellow),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 12),
+                  child: Builder(builder: (context) {
+                    if (state.selectedAnime?.genres == null) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return Wrap(
+                      children: List.generate(
+                        state.selectedAnime?.genres!.length ?? 0,
+                        (index) => Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Chip(
+                            backgroundColor: Colors.primaries[index % 16],
+                            label: Text(
+                              state.selectedAnime?.genres![index] ?? "-",
+                              style: context.textTheme.bodyMedium
+                                  ?.copyWith(color: Colors.white),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
-                child: Builder(builder: (context) {
-                  if (cubit.selectedAnime.genres == null) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  return Wrap(
-                    children: List.generate(
-                      cubit.selectedAnime.genres!.length,
-                      (index) => Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Chip(
-                          backgroundColor: Colors.primaries[index % 16],
-                          label: Text(
-                            cubit.selectedAnime.genres![index],
-                            style: context.textTheme.bodySmall
-                                ?.copyWith(color: Colors.white),
-                          ),
                         ),
                       ),
-                    ),
-                  );
-                }),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Text(
-                  cubit.selectedAnime.description ?? "-",
-                  style: context.textTheme.titleSmall,
+                    );
+                  }),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 12.0),
+                  child: Text(
+                    "Açıklama",
+                    style: context.textTheme.headlineSmall,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Text(
+                    state.selectedAnime?.description ?? "-",
+                    style: context.textTheme.titleSmall,
+                  ),
+                ),
 
-              // related animes
-              BlocBuilder<AnimeDetailsCubit, AnimeDetailsState>(
-                bloc: cubit,
-                buildWhen: (previous, current) =>
-                    previous.isRelatedAnimesLoading !=
-                    current.isRelatedAnimesLoading,
-                builder: (context, state) {
-                  if (state.isRelatedAnimesLoading) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (state.relatedAnimes.isEmpty) {
-                    return Container();
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("İlgili Animeler"),
-                      Container(
-                        height: 300,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: state.relatedAnimes.length,
-                          itemBuilder: (context, index) => AnimeCard(
-                            imageUrl: state.relatedAnimes[index].thumbnail,
-                            onTap: () {
-                              // cubit.setSelectedAnime(state.relatedAnimes[index]);
-                            },
-                            title: state.relatedAnimes[index].title,
+                // related animes
+                BlocBuilder<AnimeDetailsCubit, AnimeDetailsState>(
+                  bloc: cubit,
+                  buildWhen: (previous, current) =>
+                      previous.isRelatedAnimesLoading !=
+                      current.isRelatedAnimesLoading,
+                  builder: (context, state) {
+                    if (state.isRelatedAnimesLoading) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (state.relatedAnimes.isEmpty) {
+                      return Container();
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("İlgili Animeler"),
+                        Container(
+                          height: 300,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: state.relatedAnimes.length,
+                            itemBuilder: (context, index) => AnimeCard(
+                              imageUrl: state.relatedAnimes[index].thumbnail,
+                              onTap: () {
+                                // cubit.setSelectedAnime(state.relatedAnimes[index]);
+                              },
+                              title: state.relatedAnimes[index].title,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-              // episodes
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 12.0, horizontal: 12.0),
-                child: BlocBuilder<AnimeDetailsCubit, AnimeDetailsState>(
-                    bloc: cubit,
-                    buildWhen: (previous, current) =>
-                        previous.animeEpisodes != current.animeEpisodes,
-                    builder: (context, state) {
-                      if (state.selectedAnime.studios == null) {
-                        return Container();
-                      }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Bölümler",
-                              style: context.textTheme.headlineSmall),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: state.animeEpisodes.length,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return AnimeEpisodeCard(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            WatchAnimeDetailsView(
-                                          cubit: WatchAnimeDetailsCubit(
-                                              animeEpisode:
-                                                  state.animeEpisodes[index]),
+                      ],
+                    );
+                  },
+                ),
+                // episodes
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 12.0),
+                  child: BlocBuilder<AnimeDetailsCubit, AnimeDetailsState>(
+                      bloc: cubit,
+                      buildWhen: (previous, current) =>
+                          previous.animeEpisodes != current.animeEpisodes,
+                      builder: (context, state) {
+                        if (state.selectedAnime?.studios == null) {
+                          return Container();
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Bölümler",
+                                style: context.textTheme.headlineSmall),
+                            ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: state.animeEpisodes.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return AnimeEpisodeCard(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              WatchAnimeDetailsView(
+                                            cubit: WatchAnimeDetailsCubit(
+                                                animeEpisode:
+                                                    state.animeEpisodes[index]),
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                  animeEpisode: state.animeEpisodes[index],
-                                );
-                              }),
-                        ],
-                      );
-                    }),
-              ),
-              // studios
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: BlocBuilder<AnimeDetailsCubit, AnimeDetailsState>(
-                    bloc: cubit,
-                    buildWhen: (previous, current) =>
-                        previous.selectedAnime != current.selectedAnime,
-                    builder: (context, state) {
-                      if (state.selectedAnime.studios == null) {
-                        return Container();
-                      }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Stüdyolar",
-                              style: context.textTheme.headlineSmall),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: state.selectedAnime.studios!.length,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  leading: Icon(Icons.fiber_manual_record),
-                                  trailing: Icon(Icons.arrow_forward_ios),
-                                  title:
-                                      Text(state.selectedAnime.studios![index]),
-                                );
-                              }),
-                        ],
-                      );
-                    }),
-              )
-            ],
-          ),
-        );
-      }),
+                                      );
+                                    },
+                                    animeEpisode: state.animeEpisodes[index],
+                                  );
+                                }),
+                          ],
+                        );
+                      }),
+                ),
+                // studios
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: BlocBuilder<AnimeDetailsCubit, AnimeDetailsState>(
+                      bloc: cubit,
+                      buildWhen: (previous, current) =>
+                          previous.selectedAnime != current.selectedAnime,
+                      builder: (context, state) {
+                        if (state.selectedAnime?.studios == null) {
+                          return Container();
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Stüdyolar",
+                                style: context.textTheme.headlineSmall),
+                            ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: state.selectedAnime?.studios!.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    leading: Icon(Icons.fiber_manual_record),
+                                    trailing: Icon(Icons.arrow_forward_ios),
+                                    title: Text(
+                                        state.selectedAnime?.studios![index] ??
+                                            "-"),
+                                  );
+                                }),
+                          ],
+                        );
+                      }),
+                )
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

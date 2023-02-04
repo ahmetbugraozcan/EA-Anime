@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
-import 'package:flutterglobal/Core/Utils/utils.dart';
+
+import 'package:flutterglobal/View/AnimeDetails/anime_details.dart';
+import 'package:flutterglobal/View/AnimeDetails/cubit/anime_details_cubit.dart';
 
 import 'package:flutterglobal/View/WatchAnimeDetails/cubit/watch_anime_details_cubit.dart';
 import 'package:flutterglobal/View/WatchAnimeDetails/cubit/watch_anime_details_state.dart';
@@ -37,7 +39,8 @@ class WatchAnimeDetailsView extends StatelessWidget {
                 buildWhen: (previous, current) =>
                     previous.isVideoLoading != current.isVideoLoading ||
                     previous.selectedOption != current.selectedOption ||
-                    previous.animeEpisode != current.animeEpisode,
+                    previous.animeEpisode != current.animeEpisode ||
+                    previous.parentAnime != current.parentAnime,
                 builder: (context, state) => Stack(
                   children: [
                     state.isVideoLoading
@@ -126,26 +129,73 @@ class WatchAnimeDetailsView extends StatelessWidget {
                               color: Colors.blueAccent.shade100,
                             ),
                             margin: EdgeInsets.symmetric(horizontal: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white),
-                                  onPressed: () {
-                                    cubit.getPreviousEpisode();
-                                  },
-                                  child: Text("Önceki Bölüm"),
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white),
-                                  onPressed: () {
-                                    cubit.getNextEpisode();
-                                  },
-                                  child: Text("Sonraki Bölüm"),
-                                ),
-                              ],
+                            child: BlocBuilder<WatchAnimeDetailsCubit,
+                                WatchAnimeDetailsState>(
+                              bloc: cubit,
+                              buildWhen: (previous, current) =>
+                                  previous.animeEpisode !=
+                                      current.animeEpisode ||
+                                  previous.parentAnime != current.parentAnime,
+                              builder: (context, state) {
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Builder(
+                                      builder: (context) {
+                                        if (state.animeEpisode.episodeNumber !=
+                                                null &&
+                                            state.animeEpisode.episodeNumber! >
+                                                1) {
+                                          return Expanded(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.white),
+                                                onPressed: () {
+                                                  cubit.getPreviousEpisode();
+                                                },
+                                                child: Text("Önceki Bölüm"),
+                                              ),
+                                            ),
+                                          );
+                                        }
+
+                                        return Spacer();
+                                      },
+                                    ),
+                                    Builder(builder: (context) {
+                                      if (state.animeEpisode.episodeNumber !=
+                                              null &&
+                                          state.animeEpisode.episodeNumber! <
+                                              (state.parentAnime
+                                                      ?.episodesCount ??
+                                                  0)) {
+                                        return Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.white),
+                                              onPressed: () {
+                                                cubit.getNextEpisode();
+                                              },
+                                              child: Text("Sonraki Bölüm"),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      return Spacer();
+                                    }),
+                                  ],
+                                );
+                              },
                             ),
                           ),
                           Padding(
@@ -168,13 +218,26 @@ class WatchAnimeDetailsView extends StatelessWidget {
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AnimeDetails(
+                                        cubit: AnimeDetailsCubit(
+                                          animeID: state.animeEpisode.animeId,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
                                 child: Text("Animeye git")),
                           ),
                           BlocBuilder<WatchAnimeDetailsCubit,
                               WatchAnimeDetailsState>(
                             buildWhen: (previous, current) =>
-                                previous.animeEpisodes != current.animeEpisodes,
+                                previous.animeEpisodes !=
+                                    current.animeEpisodes ||
+                                previous.animeEpisode != current.animeEpisode,
                             bloc: cubit,
                             builder: (context, state) {
                               if (state.animeEpisodes.isEmpty) {
@@ -198,6 +261,10 @@ class WatchAnimeDetailsView extends StatelessWidget {
                                       itemCount: state.animeEpisodes.length,
                                       itemBuilder: (context, index) {
                                         return AnimeEpisodeCard(
+                                          isHighlighted: state
+                                                  .animeEpisodes[index]
+                                                  ?.episodeNumber ==
+                                              state.animeEpisode.episodeNumber,
                                           animeEpisode:
                                               state.animeEpisodes[index],
                                           onTap: () {

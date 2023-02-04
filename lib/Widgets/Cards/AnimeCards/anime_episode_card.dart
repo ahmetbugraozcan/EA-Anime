@@ -6,13 +6,16 @@ import 'package:flutterglobal/Models/anime_episode.dart';
 
 class AnimeEpisodeCard extends StatelessWidget {
   AnimeEpisode? animeEpisode;
+  bool? isHighlighted;
   VoidCallback? onTap;
-  AnimeEpisodeCard({super.key, this.animeEpisode, this.onTap});
+  AnimeEpisodeCard(
+      {super.key, this.animeEpisode, this.onTap, this.isHighlighted});
 
   @override
   Widget build(BuildContext context) {
     if (animeEpisode == null) return SizedBox();
     return ListTile(
+      tileColor: isHighlighted ?? false ? Colors.lightBlue.shade100 : null,
       onTap: onTap,
       title: Text(
         Utils.instance.getAnimeEpisodeTitle(animeEpisode),

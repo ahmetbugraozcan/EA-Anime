@@ -5,9 +5,10 @@ import 'package:flutterglobal/Models/anime_episode.dart';
 class AnimeDetailsState extends Equatable {
   final bool isRelatedAnimesLoading;
   final bool isAnimeEpisodesLoading;
+  final bool isAnimeLoading;
   final List<Anime> relatedAnimes;
   final List<AnimeEpisode> animeEpisodes;
-  final Anime selectedAnime;
+  final Anime? selectedAnime;
 
   AnimeDetailsState({
     required this.selectedAnime,
@@ -15,6 +16,7 @@ class AnimeDetailsState extends Equatable {
     this.isAnimeEpisodesLoading = true,
     this.relatedAnimes = const [],
     this.animeEpisodes = const [],
+    this.isAnimeLoading = true,
   });
 
   @override
@@ -24,6 +26,7 @@ class AnimeDetailsState extends Equatable {
         isAnimeEpisodesLoading,
         relatedAnimes,
         animeEpisodes,
+        isAnimeLoading
       ];
 
   AnimeDetailsState copyWith({
@@ -32,6 +35,7 @@ class AnimeDetailsState extends Equatable {
     List<Anime>? relatedAnimes,
     List<AnimeEpisode>? animeEpisodes,
     Anime? selectedAnime,
+    bool? isAnimeLoading,
   }) {
     return AnimeDetailsState(
       selectedAnime: selectedAnime ?? this.selectedAnime,
@@ -41,6 +45,7 @@ class AnimeDetailsState extends Equatable {
           isAnimeEpisodesLoading ?? this.isAnimeEpisodesLoading,
       relatedAnimes: relatedAnimes ?? this.relatedAnimes,
       animeEpisodes: animeEpisodes ?? this.animeEpisodes,
+      isAnimeLoading: isAnimeLoading ?? this.isAnimeLoading,
     );
   }
 }
