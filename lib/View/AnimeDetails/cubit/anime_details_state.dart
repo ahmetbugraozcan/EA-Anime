@@ -16,7 +16,7 @@ class AnimeDetailsState extends Equatable {
     this.isAnimeEpisodesLoading = true,
     this.relatedAnimes = const [],
     this.animeEpisodes = const [],
-    this.isAnimeLoading = true,
+    this.isAnimeLoading = false,
   });
 
   @override
