@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 
 import 'package:flutterglobal/Provider/anime/watch_anime_cubit.dart';
 import 'package:flutterglobal/Provider/anime/watch_anime_state.dart';
+import 'package:flutterglobal/View/AnimeDetails/anime_details.dart';
 import 'package:flutterglobal/View/WatchAnimeDetails/cubit/watch_anime_details_cubit.dart';
 import 'package:flutterglobal/View/WatchAnimeDetails/watch_anime_details_view.dart';
 import 'package:flutterglobal/Widgets/Cards/AnimeCards/anime_card.dart';
@@ -96,7 +96,16 @@ class WatchAnimeView extends StatelessWidget {
                         return AnimeCard(
                           title: state.animeList[index].title,
                           imageUrl: state.animeList[index].thumbnail,
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AnimeDetails(
+                                  anime: state.animeList[index],
+                                ),
+                              ),
+                            );
+                          },
                         );
                       });
                 },

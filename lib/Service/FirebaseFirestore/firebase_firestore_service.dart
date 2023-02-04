@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutterglobal/Models/anime.dart';
 import 'package:flutterglobal/Models/anime_episode.dart';
@@ -47,6 +44,17 @@ class FirebaseFireStoreService extends IFirebaseFirestoreService {
     return null;
   }
 
+  Future<Anime> getAnime(String id) async {
+    var ref = firestore.collection("animes").doc(id);
+
+    var data = await ref.get();
+
+    if (data.exists) {
+      return Anime.fromJson(data.data()!);
+    }
+    return Anime();
+  }
+
   Future<List<Anime>> getAnimeList() async {
     var ref =
         firestore.collection("animes").orderBy("createdAt", descending: true);
@@ -82,8 +90,10 @@ class FirebaseFireStoreService extends IFirebaseFirestoreService {
 
   Future<List<AnimeEpisode>> getAnimeEpisodesForAnime(String? id) async {
     if (id == null) return [];
-    var ref =
-        firestore.collection("animeEpisodes").where("animeId", isEqualTo: id);
+    var ref = firestore
+        .collection("animeEpisodes")
+        .where("animeId", isEqualTo: id)
+        .orderBy("episodeNumber", descending: false);
 
     var data = await ref.get();
 

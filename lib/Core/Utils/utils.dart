@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterglobal/Core/Constants/Enums/application_enums.dart';
 import 'package:flutterglobal/Core/Constants/app_constants.dart';
 import 'package:flutterglobal/Core/Init/Language/locale_keys.g.dart';
+import 'package:flutterglobal/Models/anime_episode.dart';
 import 'package:flutterglobal/Service/wallpaper_manager_service.dart';
 
 class Utils {
@@ -33,6 +34,16 @@ class Utils {
   String getLottiePath(LottieEnums lottieEnums) {
     return AppConstants.instance.LOTTIE_ASSET_PATH +
         "/${lottieEnums.name}.json";
+  }
+
+  String getAnimeEpisodeTitle(AnimeEpisode? animeEpisode) {
+    if (animeEpisode == null) return "";
+    if (animeEpisode.title != null) return animeEpisode.title!;
+    if (animeEpisode.animeName == null) return "";
+
+    return animeEpisode.animeName! +
+        " " +
+        animeEpisode.episodeNumber.toString();
   }
 
   BoxDecoration backgroundDecoration(ImageEnums image,

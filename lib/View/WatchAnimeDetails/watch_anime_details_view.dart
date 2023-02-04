@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
+import 'package:flutterglobal/Core/Utils/utils.dart';
 
 import 'package:flutterglobal/View/WatchAnimeDetails/cubit/watch_anime_details_cubit.dart';
 import 'package:flutterglobal/View/WatchAnimeDetails/cubit/watch_anime_details_state.dart';
@@ -48,17 +49,18 @@ class WatchAnimeDetailsView extends StatelessWidget {
                       },
                       onLoadStop: ((controller, url) {
                         // set video width 100% and height auto
-                        controller.evaluateJavascript(
-                            source:
-                                "document.getElementsByTagName('video')[0].style.width = '100%';");
-                        controller.evaluateJavascript(
-                            source:
-                                "document.getElementsByTagName('video')[0].style.height = 'auto';");
+                        // controller.evaluateJavascript(
+                        //     source:
+                        //         "document.getElementsByTagName('video')[0].style.width = '100%';");
+                        // controller.evaluateJavascript(
+                        //     source:
+                        //         "document.getElementsByTagName('video')[0].style.height = 'auto';");
 
-                        // videojs kullanan playerlar için küçük butonları büyütme
-                        controller.injectCSSCode(
-                            source: ".vjs-control-bar { font-size: 250% }");
-                        // mute the video
+                        // // videojs kullanan playerlar için küçük butonları büyütme
+                        // controller.injectCSSCode(
+                        //     source: ".vjs-control-bar { font-size: 250% }");
+                        // // mute the video
+
                         // controller.evaluateJavascript(
                         //     source:
                         //         "document.getElementsByTagName('video')[0].muted = true;");
@@ -82,16 +84,19 @@ class WatchAnimeDetailsView extends StatelessWidget {
                         }
                         return NavigationActionPolicy.CANCEL;
                       },
-                      initialUrlRequest: URLRequest(
-                          url: Uri.parse(state.selectedOption!.url!)),
+                      // initialUrlRequest: URLRequest(
+                      //     url: Uri.parse(state.selectedOption!.url!)),
+                      initialData: InAppWebViewInitialData(
+                        data: state.selectedOption!.url!,
+                      ),
                       initialOptions: InAppWebViewGroupOptions(
                           crossPlatform: InAppWebViewOptions(
                             mediaPlaybackRequiresUserGesture: false,
                             useShouldOverrideUrlLoading: true,
                           ),
                           android: AndroidInAppWebViewOptions(
-                              // useHybridComposition: true,
-                              ),
+                            useHybridComposition: true,
+                          ),
                           ios: IOSInAppWebViewOptions(
                             allowsInlineMediaPlayback: true,
                           )),
@@ -186,7 +191,46 @@ class WatchAnimeDetailsView extends StatelessWidget {
                                     backgroundColor: Colors.white),
                                 onPressed: () {},
                                 child: Text("Animeye git")),
-                          )
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 16.0),
+                            child: Text("Diğer Bölümler",
+                                style: context.textTheme.headlineSmall),
+                          ),
+                          BlocBuilder<WatchAnimeDetailsCubit,
+                              WatchAnimeDetailsState>(
+                            buildWhen: (previous, current) =>
+                                previous.animeEpisodes != current.animeEpisodes,
+                            bloc: cubit,
+                            builder: (context, state) => Container(
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemCount: state.animeEpisodes.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    onTap: () {
+                                      // cubit.setSelectedEpisode(
+                                      //     state.animeEpisodes[index]);
+                                    },
+                                    title: Text(
+                                      Utils.instance.getAnimeEpisodeTitle(
+                                          state.animeEpisodes[index]),
+                                      style: context.textTheme.titleMedium,
+                                    ),
+                                    subtitle: Text(
+                                      state.animeEpisodes[index]?.description ??
+                                          "Açıklama mevcut değil.",
+                                      style: context.textTheme.bodySmall,
+                                    ),
+                                    trailing: Icon(Icons.arrow_forward_ios),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
                         ],
                       );
                     },
