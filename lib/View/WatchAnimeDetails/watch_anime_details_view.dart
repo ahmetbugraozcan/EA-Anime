@@ -50,10 +50,6 @@ class WatchAnimeDetailsView extends StatelessWidget {
                             },
                             shouldOverrideUrlLoading:
                                 (controller, navigationAction) async {
-                              print("shouldoverride worked" +
-                                  navigationAction.request.url.toString());
-                              print("shouldoverride " +
-                                  state.animeEpisode.episodeNumber.toString());
                               bool canNavigate = false;
                               state.animeEpisode.links!.forEach((element) {
                                 if (navigationAction.request.url.toString() ==
@@ -65,13 +61,6 @@ class WatchAnimeDetailsView extends StatelessWidget {
                                 return await NavigationActionPolicy.ALLOW;
                               }
                               return await NavigationActionPolicy.CANCEL;
-                            },
-                            onUpdateVisitedHistory:
-                                (controller, url, androidIsReload) {
-                              print("onUpdateVisitedHistory worked" +
-                                  url.toString());
-                              print("anime ep. is " +
-                                  state.animeEpisode.episodeNumber.toString());
                             },
                             initialUrlRequest: URLRequest(
                                 url: Uri.parse(state.selectedOption!.url!)),
@@ -166,15 +155,15 @@ class WatchAnimeDetailsView extends StatelessWidget {
                                 style: context.textTheme.headlineSmall),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 12),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
                               state.animeEpisode.description ??
-                                  state.animeEpisode.episodeNumber.toString(),
+                                  "Bölüm açıklaması bulunamadı.",
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(horizontal: 16.0),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 12),
                             width: context.width,
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
@@ -182,30 +171,46 @@ class WatchAnimeDetailsView extends StatelessWidget {
                                 onPressed: () {},
                                 child: Text("Animeye git")),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 16.0),
-                            child: Text("Diğer Bölümler",
-                                style: context.textTheme.headlineSmall),
-                          ),
                           BlocBuilder<WatchAnimeDetailsCubit,
                               WatchAnimeDetailsState>(
                             buildWhen: (previous, current) =>
                                 previous.animeEpisodes != current.animeEpisodes,
                             bloc: cubit,
-                            builder: (context, state) => Container(
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                scrollDirection: Axis.vertical,
-                                itemCount: state.animeEpisodes.length,
-                                itemBuilder: (context, index) {
-                                  return AnimeEpisodeCard(
-                                    animeEpisode: state.animeEpisodes[index],
-                                  );
-                                },
-                              ),
-                            ),
+                            builder: (context, state) {
+                              if (state.animeEpisodes.isEmpty) {
+                                return SizedBox.shrink();
+                              }
+                              return Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0, vertical: 16.0),
+                                      child: Text("Tüm Bölümler",
+                                          style:
+                                              context.textTheme.headlineSmall),
+                                    ),
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: state.animeEpisodes.length,
+                                      itemBuilder: (context, index) {
+                                        return AnimeEpisodeCard(
+                                          animeEpisode:
+                                              state.animeEpisodes[index],
+                                          onTap: () {
+                                            cubit.setSelectedEpisode(
+                                                state.animeEpisodes[index]);
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
                         ],
                       );

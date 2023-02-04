@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutterglobal/Models/anime.dart';
 import 'package:flutterglobal/Models/anime_episode.dart';
 import 'package:flutterglobal/Service/FirebaseFirestore/firebase_firestore_service.dart';
 import 'package:flutterglobal/View/WatchAnimeDetails/cubit/watch_anime_details_state.dart';
@@ -47,6 +48,12 @@ class WatchAnimeDetailsCubit extends Cubit<WatchAnimeDetailsState> {
     await Future.delayed(Duration.zero);
 
     setSelectedOption(animeEpisode.links?.first);
+  }
+
+  void setSelectedEpisode(AnimeEpisode? episode) {
+    if (episode == null) return;
+    emit(state.copyWith(animeEpisode: episode));
+    setSelectedOption(episode.links?.first);
   }
 
   Future<void> setSelectedOption(Links? value) async {
