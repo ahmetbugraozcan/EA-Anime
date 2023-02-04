@@ -88,6 +88,19 @@ class FirebaseFireStoreService extends IFirebaseFirestoreService {
     return list;
   }
 
+  Future<List<Anime>> getRelatedAnimes(List<String>? ids) async {
+    if (ids == null) return [];
+    List<Anime> list = [];
+
+    for (var id in ids) {
+      var anime = await getAnime(id);
+      list.add(anime);
+    }
+
+    print("list is $list");
+    return list;
+  }
+
   Future<List<AnimeEpisode>> getAnimeEpisodesForAnime(String? id) async {
     if (id == null) return [];
     var ref = firestore

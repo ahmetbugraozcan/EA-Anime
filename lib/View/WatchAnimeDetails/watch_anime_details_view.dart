@@ -7,6 +7,7 @@ import 'package:flutterglobal/Core/Utils/utils.dart';
 
 import 'package:flutterglobal/View/WatchAnimeDetails/cubit/watch_anime_details_cubit.dart';
 import 'package:flutterglobal/View/WatchAnimeDetails/cubit/watch_anime_details_state.dart';
+import 'package:flutterglobal/Widgets/Cards/AnimeCards/anime_episode_card.dart';
 
 class WatchAnimeDetailsView extends StatelessWidget {
   WatchAnimeDetailsCubit cubit;
@@ -210,22 +211,8 @@ class WatchAnimeDetailsView extends StatelessWidget {
                                 scrollDirection: Axis.vertical,
                                 itemCount: state.animeEpisodes.length,
                                 itemBuilder: (context, index) {
-                                  return ListTile(
-                                    onTap: () {
-                                      // cubit.setSelectedEpisode(
-                                      //     state.animeEpisodes[index]);
-                                    },
-                                    title: Text(
-                                      Utils.instance.getAnimeEpisodeTitle(
-                                          state.animeEpisodes[index]),
-                                      style: context.textTheme.titleMedium,
-                                    ),
-                                    subtitle: Text(
-                                      state.animeEpisodes[index]?.description ??
-                                          "Açıklama mevcut değil.",
-                                      style: context.textTheme.bodySmall,
-                                    ),
-                                    trailing: Icon(Icons.arrow_forward_ios),
+                                  return AnimeEpisodeCard(
+                                    animeEpisode: state.animeEpisodes[index],
                                   );
                                 },
                               ),

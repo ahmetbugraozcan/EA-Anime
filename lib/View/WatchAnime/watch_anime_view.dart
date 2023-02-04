@@ -5,6 +5,8 @@ import 'package:flutterglobal/Core/Extensions/context_extensions.dart';
 import 'package:flutterglobal/Provider/anime/watch_anime_cubit.dart';
 import 'package:flutterglobal/Provider/anime/watch_anime_state.dart';
 import 'package:flutterglobal/View/AnimeDetails/anime_details.dart';
+import 'package:flutterglobal/View/AnimeDetails/cubit/anime_details_cubit.dart';
+import 'package:flutterglobal/View/AnimeDetails/cubit/anime_details_state.dart';
 import 'package:flutterglobal/View/WatchAnimeDetails/cubit/watch_anime_details_cubit.dart';
 import 'package:flutterglobal/View/WatchAnimeDetails/watch_anime_details_view.dart';
 import 'package:flutterglobal/Widgets/Cards/AnimeCards/anime_card.dart';
@@ -101,7 +103,9 @@ class WatchAnimeView extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AnimeDetails(
-                                  anime: state.animeList[index],
+                                  cubit: AnimeDetailsCubit(
+                                    selectedAnime: state.animeList[index],
+                                  ),
                                 ),
                               ),
                             );
@@ -110,7 +114,7 @@ class WatchAnimeView extends StatelessWidget {
                       });
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
